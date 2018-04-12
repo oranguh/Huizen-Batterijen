@@ -70,7 +70,7 @@ range_y = max(y_list) + 1
 # range_y = 5
 
 # Creates numpy matrix where the elements can be anything i.e. objects
-grid_matrix = np.zeros((range_x, range_y), dtype="object")
+grid_matrix = np.empty((range_x, range_y), dtype="object")
 # print(grid_matrix)
 # creates out very own smart_grid object! yay
 wijk1 = smart_grid(grid_matrix)
@@ -80,22 +80,42 @@ wijk1 = smart_grid(grid_matrix)
 # wijk1.create_house([2,3], 500)
 
 # Populate the houses in the smart_grid
-for house in houses:
+for element in houses:
     position = []
-    position.append(house['x_position'])
-    position.append(house['y_position'])
-    wijk1.create_house(position, house['output'])
+    position.append(element['x_position'])
+    position.append(element['y_position'])
+    wijk1.create_house(position, element['output'])
 
 # populate the batteries in the smart_grid
-for battery in batteries:
+for element in batteries:
     position = []
-    position.append(battery['x_position'])
-    position.append(battery['y_position'])
-    wijk1.create_battery(position, battery['capacity'])
+    position.append(element['x_position'])
+    position.append(element['y_position'])
+    wijk1.create_battery(position, element['capacity'])
 
+# pretty display
+for row in wijk1.grid:
+    for element in row:
+        if element is None:
+            print('  ', end = "")
+        if isinstance(element, battery):
+            print("B ", end = "")
+        if isinstance(element, house):
+            print("H ", end = "")
+    print('|')
 
-print(wijk1)
+# print(wijk1)
 
-# wijk2 = smart_grid()
+# grid_matrix = np.empty((10, 10), dtype="object")
+
+# wijk2 = smart_grid(grid_matrix)
+
+# wijk2.create_house([6, 3], 50)
+# wijk2.create_house([5, 7], 50)
+# wijk2.create_house([2, 8], 50)
+#
+# wijk2.create_battery([4, 5], 60)
+
+# print(wijk2)
 
 # wijk3 = smart_grid()
