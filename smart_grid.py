@@ -1,10 +1,15 @@
+import numpy as np
+
 class smart_grid():
     """ """
-    def __init__(self, grid = None):
-        """ I have been told its better to use numpy for grids """
-        self.grid = grid
-        self.size = len(self.grid)
+    def __init__(self, grid):
+        """ Use must give a numpy matrix as argument """
 
+        self.grid = grid
+        if not isinstance(self.grid, np.ndarray):
+            raise ValueError("Must give numpy array")
+
+        self.size = self.grid.shape
 
     def __str__(self):
         """ print the grid """
@@ -12,6 +17,7 @@ class smart_grid():
 
     def __repr__(self):
         """ prints something """
+
 
     def create_house(self, position, output):
         """ creates house object at position with output"""

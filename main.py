@@ -15,16 +15,18 @@ import numpy as np
 # ?????
 # profit
 
-
+# we still need to determin the range for each wijk
 range_x = 10
 range_y = 10
 
+# Creates numpy matrix where the elements can be anything i.e. objects
 grid_matrix = np.zeros((range_x, range_y), dtype="object")
 
 print(grid_matrix)
 
 wijk1 = smart_grid(grid_matrix)
 
+print(wijk1.size)
 print(wijk1)
 
 wijk2 = smart_grid()
