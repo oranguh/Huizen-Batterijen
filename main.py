@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 from smart_grid import *
+import numpy as np
+
 
 # TODO
 # read the csv files for houses and batteries.
@@ -13,7 +15,17 @@ from smart_grid import *
 # ?????
 # profit
 
-wijk1 = smart_grid()
+
+range_x = 10
+range_y = 10
+
+grid_matrix = np.zeros((range_x, range_y), dtype="object")
+
+print(grid_matrix)
+
+wijk1 = smart_grid(grid_matrix)
+
+print(wijk1)
 
 wijk2 = smart_grid()
 

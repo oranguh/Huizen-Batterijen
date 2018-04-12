@@ -1,9 +1,9 @@
 class smart_grid():
     """ """
-    def __init__(self, grid = []):
-        """ I have been told its better to use numpy """
+    def __init__(self, grid = None):
+        """ I have been told its better to use numpy for grids """
         self.grid = grid
-        self.size = size(self.grid)
+        self.size = len(self.grid)
 
 
     def __str__(self):
@@ -18,12 +18,30 @@ class smart_grid():
         self.position = position
         self.output = output
 
+        self.grid[self.position] = house(self.output)
 
     def create_battery(self, position, capacity):
         """ creates battery object at position with capacity"""
         self.position = position
         self.capacity = capacity
 
+        self.grid[self.position] = battery(self.capacity)
+
     def check_validity():
-        """ Checks whether the smart_grid is fully connected """
+        """ TODO Checks whether the smart_grid is fully connected """
         pass
+
+class house():
+
+    def __init__(self, output):
+        """ makes house object with output"""
+        self.output = output
+    def connected():
+        """ TODO Whether the house is connected to the grid or not"""
+        pass
+
+class battery():
+
+    def __init__(self, capacity):
+        """ makes battery object with capacity"""
+        self.capacity = capacity
