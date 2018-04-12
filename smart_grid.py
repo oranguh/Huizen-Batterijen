@@ -20,18 +20,18 @@ class smart_grid():
 
 
     def create_house(self, position, output):
-        """ creates house object at position with output"""
+        """ creates house object at position [x,y] with output"""
         self.position = position
         self.output = output
 
-        self.grid[self.position] = house(self.output)
+        self.grid[self.position[0], self.position[1]] = house(self.output)
 
     def create_battery(self, position, capacity):
-        """ creates battery object at position with capacity"""
+        """ creates battery object at position [x,y] with capacity (float)"""
         self.position = position
         self.capacity = capacity
 
-        self.grid[self.position] = battery(self.capacity)
+        self.grid[self.position[0], self.position[0]] = battery(self.capacity)
 
     def check_validity():
         """ TODO Checks whether the smart_grid is fully connected """
