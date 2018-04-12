@@ -31,7 +31,7 @@ class smart_grid():
         self.position = position
         self.capacity = capacity
 
-        self.grid[self.position[0], self.position[0]] = battery(self.capacity)
+        self.grid[self.position[0], self.position[1]] = battery(self.capacity)
 
     def check_validity():
         """ TODO Checks whether the smart_grid is fully connected """
