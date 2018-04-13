@@ -41,15 +41,28 @@ class smart_grid():
         """ TODO Checks whether the smart_grid is fully connected """
         pass
 
+    def calc_cost():
+
+    def connect(pos_battery, pos_house):
+        """ Updates the capacity of the battery and the battery_connect of the house"""
+
+        id = self.grid[pos_battery[0], pos_battery[1]].battery_id
+        output = self.grid[pos_house[0], pos_house[1]].output
+
+        self.grid[pos_battery[0], pos_battery[1]].capacity_update(output)
+        self.grid[pos_house[0], pos_house[1]].battery_connect = id
+
 class smart_house():
 
     def __init__(self, output, house_id):
         """ makes house object with output"""
         self.output = output
         self.house_id = house_id
-    def connected():
-        """ TODO Whether the house is connected to the grid or not"""
-        pass
+        self.battery_connect = None
+
+    def connect(battery_id):
+        """ Connect house to battery"""
+        self.battery_connect = battery_id
 
 class smart_battery():
 
@@ -57,3 +70,19 @@ class smart_battery():
         """ makes battery object with capacity"""
         self.capacity = capacity
         self.battery_id = battery_id
+        self.capacity_left = self.capacity
+        if self.capacity is 450:
+            self.name = "lala"
+            self.price = 0
+
+    def capacity_update(output):
+        """ Updates the capacity_left of the battery"""
+        self.capacity_left -= output
+
+
+# class smart_cable():
+#
+#     def __init__(self, number_of_cables):
+#
+#         pass
+#     pass
