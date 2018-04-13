@@ -111,16 +111,7 @@ print("Battery ID: {} has capacity of: {}".format(wijk1.grid[42][3].battery_id, 
 print("There are currently {} houses on the grid".format(wijk1.house_count))
 print("House ID: {} has output of: {}".format(wijk1.grid[10][27].house_id, wijk1.grid[10][27].output))
 
-# grid_matrix = np.empty((10, 10), dtype="object")
-
-# wijk2 = smart_grid(grid_matrix)
-
-# wijk2.create_house([6, 3], 50)
-# wijk2.create_house([5, 7], 50)
-# wijk2.create_house([2, 8], 50)
-#
-# wijk2.create_battery([4, 5], 60)
-
-# print(wijk2)
-
-# wijk3 = smart_grid()
+print(wijk1.grid[42][3].capacity_left)
+wijk1.connect([42, 3], [10, 27])
+print(wijk1.grid[42][3].capacity_left)
+print(wijk1.calc_cost())
