@@ -104,7 +104,9 @@ for row in wijk1.grid:
             print("H ", end = "")
     print('|')
 
-# print(wijk1)
+# print(batteries)
+print("There are currently {} batteries on the grid".format(wijk1.battery_count))
+print("Battery ID: {} Battery capacity: {}".format(wijk1.grid[42][3].battery_id, wijk1.grid[42][3].capacity))
 
 # grid_matrix = np.empty((10, 10), dtype="object")
 
