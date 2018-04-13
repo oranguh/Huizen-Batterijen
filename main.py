@@ -3,6 +3,7 @@
 from smart_grid import *
 import numpy as np
 import csv
+from termcolor import cprint
 
 
 # TODO
@@ -99,7 +100,7 @@ for row in wijk1.grid:
         if element is None:
             print('  ', end = "")
         if isinstance(element, smart_battery):
-            print("B ", end = "")
+            cprint("B ", 'yellow', end = "")
         if isinstance(element, smart_house):
             print("H ", end = "")
     print('|')
