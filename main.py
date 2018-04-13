@@ -95,6 +95,7 @@ for element in batteries:
     position.append(element['y_position'])
     wijk1.create_battery(position, element['capacity'])
 
+wijk1.connect([42, 3], [10, 27])
 
 # pretty display
 for row in wijk1.grid:
@@ -119,5 +120,4 @@ print("House ID: {} has output of: {}".format(wijk1.grid[10][27].house_id, wijk1
 
 print(wijk1.grid[42][3].capacity_left)
 print(wijk1.grid[42][3].capacity_left)
-wijk1.connect([42, 3], [10, 27])
 print(wijk1.calc_cost())
