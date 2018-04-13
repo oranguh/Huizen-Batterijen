@@ -75,7 +75,7 @@ range_y = max(y_list) + 1
 grid_matrix = np.empty((range_x, range_y), dtype="object")
 # print(grid_matrix)
 # creates out very own smart_grid object! yay
-wijk1 = smart_grid(grid_matrix)
+wijk1 = SmartGrid(grid_matrix)
 
 # print(wijk1.size)
 
@@ -102,9 +102,9 @@ for row in wijk1.grid:
     for element in row:
         if element is None:
             print('  ', end = "")
-        if isinstance(element, smart_battery):
+        if isinstance(element, SmartBattery):
             cprint("B ", "yellow", end = "")
-        if isinstance(element, smart_house):
+        if isinstance(element, SmartHouse):
             if element.battery_connect is None:
                 cprint("H ", "red", end = "")
             else:

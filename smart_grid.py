@@ -1,6 +1,8 @@
 import numpy as np
+from simple_solve import *
 
-class smart_grid():
+
+class SmartGrid():
     """ """
     def __init__(self, grid):
         """ Use must give a numpy matrix as argument """
@@ -27,7 +29,7 @@ class smart_grid():
         self.output = output
         self.house_count += 1
 
-        self.grid[self.position[0], self.position[1]] = smart_house(self.position, self.output, self.house_count)
+        self.grid[self.position[0], self.position[1]] = SmartHouse(self.position, self.output, self.house_count)
 
     def create_battery(self, position, capacity):
         """ creates battery object at position [x,y] with capacity (float)"""
@@ -35,7 +37,7 @@ class smart_grid():
         self.capacity = capacity
         self.battery_count += 1
 
-        self.grid[self.position[0], self.position[1]] = smart_battery(self.position, self.capacity, self.battery_count)
+        self.grid[self.position[0], self.position[1]] = SmartBattery(self.position, self.capacity, self.battery_count)
 
     def check_validity():
         """ TODO Checks whether the smart_grid is fully connected """
@@ -43,15 +45,14 @@ class smart_grid():
 
     def calc_cost(self):
 
-
         total_cost = 0
         for row in self.grid:
             for element in row:
                 if element is None:
                     continue
-                if isinstance(element, smart_battery):
+                if isinstance(element, SmartBattery):
                     total_cost += element.price
-                if isinstance(element, smart_house):
+                if isinstance(element, SmartHouse):
                     if element.battery_connect is None:
                         continue
                     diff_x = abs(element.position[0] - element.battery_loc[0])
@@ -77,7 +78,20 @@ class smart_grid():
         self.grid[pos_house[0], pos_house[1]].battery_loc = pos_battery
         return True
 
-class smart_house():
+
+    def solve(self, algorithm = 'simple'):
+        """ Solves the grid using an algorithm, default is simple"""
+
+        if algorithm is 'simple':
+            simple_solve(self)
+        elif algorithm is 'ietsludieks':
+            pass
+
+        else:
+            print("Unknown algorithm")
+
+
+class SmartHouse():
 
     def __init__(self, position,  output, house_id):
         """ makes house object with output"""
@@ -88,7 +102,7 @@ class smart_house():
         self.battery_loc = None
 
 
-class smart_battery():
+class SmartBattery():
 
     def __init__(self, position, capacity, battery_id):
         """ makes battery object with capacity"""
