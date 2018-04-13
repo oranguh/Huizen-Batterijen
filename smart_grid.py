@@ -42,6 +42,8 @@ class smart_grid():
         pass
 
     def calc_cost(self):
+
+
         total_cost = 0
         for row in self.grid:
             for element in row:
@@ -54,7 +56,7 @@ class smart_grid():
                         continue
                     diff_x = abs(element.position[0] - element.battery_loc[0])
                     diff_y = abs(element.position[1] - element.battery_loc[1])
-                    
+
                     total_cost += ((diff_x + diff_y) * 9)
 
         return total_cost
@@ -63,12 +65,17 @@ class smart_grid():
     def connect(self, pos_battery, pos_house):
         """ Updates the capacity of the battery and the battery_connect of the house"""
 
+        # Checks whether battery has enough capacity left
+        if self.grid[pos_house[0], pos_house[1]].output > self.grid[pos_battery[0], pos_battery[1]].capacity_left:
+            return False
+
         id = self.grid[pos_battery[0], pos_battery[1]].battery_id
         output = self.grid[pos_house[0], pos_house[1]].output
 
         self.grid[pos_battery[0], pos_battery[1]].capacity_update(output)
         self.grid[pos_house[0], pos_house[1]].battery_connect = id
         self.grid[pos_house[0], pos_house[1]].battery_loc = pos_battery
+        return True
 
 class smart_house():
 
