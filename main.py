@@ -98,15 +98,18 @@ for row in wijk1.grid:
     for element in row:
         if element is None:
             print('  ', end = "")
-        if isinstance(element, battery):
+        if isinstance(element, smart_battery):
             print("B ", end = "")
-        if isinstance(element, house):
+        if isinstance(element, smart_house):
             print("H ", end = "")
     print('|')
 
 # print(batteries)
+# print(houses)
 print("There are currently {} batteries on the grid".format(wijk1.battery_count))
-print("Battery ID: {} Battery capacity: {}".format(wijk1.grid[42][3].battery_id, wijk1.grid[42][3].capacity))
+print("Battery ID: {} has capacity of: {}".format(wijk1.grid[42][3].battery_id, wijk1.grid[42][3].capacity))
+print("There are currently {} houses on the grid".format(wijk1.house_count))
+print("House ID: {} has output of: {}".format(wijk1.grid[10][27].house_id, wijk1.grid[10][27].output))
 
 # grid_matrix = np.empty((10, 10), dtype="object")
 

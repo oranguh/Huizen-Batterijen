@@ -27,7 +27,7 @@ class smart_grid():
         self.output = output
         self.house_count += 1
 
-        self.grid[self.position[0], self.position[1]] = house(self.output, self.house_count)
+        self.grid[self.position[0], self.position[1]] = smart_house(self.output, self.house_count)
 
     def create_battery(self, position, capacity):
         """ creates battery object at position [x,y] with capacity (float)"""
@@ -35,13 +35,13 @@ class smart_grid():
         self.capacity = capacity
         self.battery_count += 1
 
-        self.grid[self.position[0], self.position[1]] = battery(self.capacity, self.battery_count)
+        self.grid[self.position[0], self.position[1]] = smart_battery(self.capacity, self.battery_count)
 
     def check_validity():
         """ TODO Checks whether the smart_grid is fully connected """
         pass
 
-class house():
+class smart_house():
 
     def __init__(self, output, house_id):
         """ makes house object with output"""
@@ -51,7 +51,7 @@ class house():
         """ TODO Whether the house is connected to the grid or not"""
         pass
 
-class battery():
+class smart_battery():
 
     def __init__(self, capacity, battery_id):
         """ makes battery object with capacity"""
