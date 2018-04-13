@@ -3,6 +3,7 @@
 from smart_grid import *
 import numpy as np
 import csv
+import colorama
 from termcolor import cprint
 
 
@@ -19,7 +20,7 @@ from termcolor import cprint
 # profit
 
 # we still need to determine the range for each wijk
-
+colorama.init()
 # lists of all x and y coordinates
 x_list = []
 y_list = []
@@ -94,15 +95,19 @@ for element in batteries:
     position.append(element['y_position'])
     wijk1.create_battery(position, element['capacity'])
 
+
 # pretty display
 for row in wijk1.grid:
     for element in row:
         if element is None:
             print('  ', end = "")
         if isinstance(element, smart_battery):
-            cprint("B ", 'yellow', end = "")
+            cprint("B ", "yellow", end = "")
         if isinstance(element, smart_house):
-            print("H ", end = "")
+            if element.battery_connect is None:
+                cprint("H ", "red", end = "")
+            else:
+                cprint("H", "green", end = "")
     print('|')
 
 print(batteries)
@@ -113,6 +118,6 @@ print("There are currently {} houses on the grid".format(wijk1.house_count))
 print("House ID: {} has output of: {}".format(wijk1.grid[10][27].house_id, wijk1.grid[10][27].output))
 
 print(wijk1.grid[42][3].capacity_left)
-wijk1.connect([42, 3], [10, 27])
 print(wijk1.grid[42][3].capacity_left)
+wijk1.connect([42, 3], [10, 27])
 print(wijk1.calc_cost())
