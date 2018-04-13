@@ -95,8 +95,8 @@ for element in batteries:
     position.append(element['y_position'])
     wijk1.create_battery(position, element['capacity'])
 
+print("Battery has: {} capacity left".format(wijk1.grid[42][3].capacity_left))
 wijk1.connect([42, 3], [10, 27])
-
 # pretty display
 for row in wijk1.grid:
     for element in row:
@@ -111,13 +111,15 @@ for row in wijk1.grid:
                 cprint("H", "green", end = "")
     print('|')
 
-print(batteries)
+# print(batteries)
 # print(houses)
 print("There are currently {} batteries on the grid".format(wijk1.battery_count))
 print("Battery ID: {} has capacity of: {}".format(wijk1.grid[42][3].battery_id, wijk1.grid[42][3].capacity))
 print("There are currently {} houses on the grid".format(wijk1.house_count))
 print("House ID: {} has output of: {}".format(wijk1.grid[10][27].house_id, wijk1.grid[10][27].output))
 
-print(wijk1.grid[42][3].capacity_left)
-print(wijk1.grid[42][3].capacity_left)
-print(wijk1.calc_cost())
+
+print("Battery has: {} capacity left".format(wijk1.grid[42][3].capacity_left))
+print("The cost of this grid is: {}".format(wijk1.calc_cost()))
+
+wijk1.solve()

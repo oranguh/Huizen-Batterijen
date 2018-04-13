@@ -83,7 +83,7 @@ class SmartGrid():
         """ Solves the grid using an algorithm, default is simple"""
 
         if algorithm is 'simple':
-            simple_solve(self)
+            self.grid = simple_solve(self)
         elif algorithm is 'ietsludieks':
             pass
 
