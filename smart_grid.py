@@ -2,7 +2,7 @@ import numpy as np
 
 class smart_grid():
     """ """
-    def __init__(self, grid, house_count = 0, battery_count = 0):
+    def __init__(self, grid):
         """ Use must give a numpy matrix as argument """
 
         self.grid = grid
@@ -10,8 +10,8 @@ class smart_grid():
             raise ValueError("Must give numpy array")
 
         self.size = self.grid.shape
-        self.house_count = house_count
-        self.battery_count = battery_count
+        self.house_count = 0
+        self.battery_count = 0
 
     def __str__(self):
         """ print the grid """

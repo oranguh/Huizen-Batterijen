@@ -104,7 +104,7 @@ for row in wijk1.grid:
             print("H ", end = "")
     print('|')
 
-# print(batteries)
+print(batteries)
 # print(houses)
 print("There are currently {} batteries on the grid".format(wijk1.battery_count))
 print("Battery ID: {} has capacity of: {}".format(wijk1.grid[42][3].battery_id, wijk1.grid[42][3].capacity))
