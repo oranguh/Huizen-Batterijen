@@ -22,6 +22,13 @@ class SmartGrid():
     def __repr__(self):
         """ prints something """
 
+    def add_house_dictionaries(self, house_dict):
+        """ Adds the whole dictionary for easy access in other functions"""
+        self.house_dict = house_dict
+
+    def add_battery_dictionaries(self, battery_dict):
+        """ Adds the whole dictionary for easy access in other functions"""
+        self.battery_dict = battery_dict
 
     def create_house(self, position, output):
         """ creates house object at position [x,y] with output"""
@@ -66,10 +73,16 @@ class SmartGrid():
     def connect(self, pos_battery, pos_house):
         """ Updates the capacity of the battery and the battery_connect of the house"""
 
-        # Checks whether battery has enough capacity left
-        if self.grid[pos_house[0], pos_house[1]].output > self.grid[pos_battery[0], pos_battery[1]].capacity_left:
+        # Checks whether the house is already connected
+        if not self.grid[pos_house[0], pos_house[1]].battery_connect is None:
+            print("house already connected to grid")
             return False
 
+        # Checks whether battery has enough capacity left
+        if self.grid[pos_house[0], pos_house[1]].output > self.grid[pos_battery[0], pos_battery[1]].capacity_left:
+            print("house requires {} capacity".format(self.grid[pos_battery[0], pos_battery[1]].capacity_left))
+            return False
+        
         id = self.grid[pos_battery[0], pos_battery[1]].battery_id
         output = self.grid[pos_house[0], pos_house[1]].output
 
