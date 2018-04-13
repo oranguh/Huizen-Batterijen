@@ -98,7 +98,13 @@ for element in batteries:
 print("Battery has: {} capacity left".format(wijk1.grid[42][3].capacity_left))
 wijk1.connect([42, 3], [10, 27])
 # pretty display
-for row in wijk1.grid:
+for i,row in enumerate(wijk1.grid):
+    # if i is 0:
+    #     print("  ", end = "")
+    #     for numb in range(51):
+    #         print("{:2}".format(numb), end = "")
+    #     print()
+    print("{:2}| ".format(i), end = "")
     for element in row:
         if element is None:
             print('  ', end = "")
@@ -108,8 +114,8 @@ for row in wijk1.grid:
             if element.battery_connect is None:
                 cprint("H ", "red", end = "")
             else:
-                cprint("H", "green", end = "")
-    print('|')
+                cprint("H ", "green", end = "")
+    print('| {:2}'.format(i,))
 
 # print(batteries)
 # print(houses)
