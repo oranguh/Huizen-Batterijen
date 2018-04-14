@@ -94,10 +94,12 @@ print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 # print("House ID: {} has output of: {}".format(wijk1.grid[10][27].house_id, wijk1.grid[10][27].output))
 # print("Battery has: {} capacity left".format(wijk1.grid[42][3].capacity_left))
 
-wijk1.solve()
+# wijk1.solve()
 
-wijk1.prettify()
-print()
-print("The cost of this grid is: {}".format(wijk1.calc_cost()))
+# wijk1.prettify()
+# print()
+# print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
 wijk1.solve('selected_solve')
+
+wijk1.prettify()
