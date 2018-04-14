@@ -5,12 +5,11 @@ from termcolor import cprint
 
 class SmartGrid():
     """ """
-    def __init__(self, grid):
-        """ Use must give a numpy matrix as argument """
+    def __init__(self, range_x, range_y):
+        """ user inputs ranges to define the matrix dimenions """
 
-        self.grid = grid
-        if not isinstance(self.grid, np.ndarray):
-            raise ValueError("Must give numpy array")
+        # Creates numpy matrix where the elements can be anything i.e. objects
+        self.grid = grid_matrix = np.empty((range_x, range_y), dtype="object")
 
         self.size = self.grid.shape
         self.house_count = 0

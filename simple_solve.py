@@ -8,7 +8,7 @@ def simple_solve(the_grid):
 
     # loop though every battery
     for battery in the_grid.battery_dict:
-        bat_pos = [battery['x_position'], battery['y_position']]
+        bat_pos = battery['position']
 
         print("Now connecting battery: {}".format(bat_pos))
         # Iterates through nearest houses until cap full
@@ -29,7 +29,7 @@ def simple_solve(the_grid):
 def find_nearest_unconnected_houses(battery_position, the_grid):
     """ returns ordered list of all houses nearest to battery using manhattan distance"""
 
-    positions_house = [[dic['x_position'], dic['y_position']] for dic in the_grid.house_dict]
+    positions_house = [dic['position'] for dic in the_grid.house_dict]
     manhattan_distances = []
     for pos in positions_house:
         manhattan_distances.append((abs(pos[0] - battery_position[0]) + abs(pos[1] - battery_position[1])))
