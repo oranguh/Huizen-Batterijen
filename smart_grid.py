@@ -1,5 +1,6 @@
 import numpy as np
 from simple_solve import *
+from weighted_solve import *
 import colorama
 from termcolor import cprint
 
@@ -112,10 +113,17 @@ class SmartGrid():
 
 
     def solve(self, algorithm = 'simple'):
-        """ Solves the grid using an algorithm, default is simple"""
+        """ Solves the grid using an algorithm, default is simple
+            solve takes in the whole SmartGrid object and returns a 'solved' grid
+
+        """
 
         if algorithm is 'simple':
             self.grid = simple_solve(self)
+
+        elif algorithm is 'selected_solve':
+            self.grid = selected_solve(self)
+
         elif algorithm is 'ietsludieks':
             pass
 

@@ -32,6 +32,7 @@ with open('data/wijk1_huizen.csv') as housereader:
         # skips header
         if i is 0:
             continue
+        # make a position list as [x,y]
         position = []
         position.append(int(row[0]))
         position.append(int(row[1]))
@@ -56,8 +57,8 @@ with open('data/wijk1_batterijen.txt') as f:
 # find ranges for the grid matrix
 max_x = max([dic['position'][0] for dic in houses] +
             [dic['position'][0] for dic in batteries]) + 1
-max_y = max([dic['position'][0] for dic in houses] +
-            [dic['position'][0] for dic in batteries]) + 1
+max_y = max([dic['position'][1] for dic in houses] +
+            [dic['position'][1] for dic in batteries]) + 1
 
 # print(batteries)
 # print(houses)

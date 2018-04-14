@@ -1,7 +1,12 @@
 from smart_grid import *
 
 def simple_solve(the_grid):
-    """ Takes an unsolved SmartGrid object and returns a solved smart grid"""
+    """ Takes an unsolved SmartGrid object and returns a solved smart grid
+
+        General idea:
+        Loops through every battery and keeps connecting to the closest house until
+        the capacity is reached.
+    """
 
     print("\n\n\n")
     print("You are now using simple_solve!")
@@ -27,13 +32,18 @@ def simple_solve(the_grid):
     return the_grid.grid
 
 def find_nearest_unconnected_houses(battery_position, the_grid):
-    """ returns ordered list of all houses nearest to battery using manhattan distance"""
+    """ returns sorted list of all houses_positions snearest to battery using manhattan distance
+        takes whole SmartGrid object as argument
+    """
 
+    # creates list of all coordinates
     positions_house = [dic['position'] for dic in the_grid.house_dict]
+    # creates list of manhattan distance per coordinate in relation to the battery distance
     manhattan_distances = []
     for pos in positions_house:
         manhattan_distances.append((abs(pos[0] - battery_position[0]) + abs(pos[1] - battery_position[1])))
 
+    # here I have 2 lists of equal size. I sort both, basing the sort on the manhattan distance
     manhattan_distances, positions_house = zip(*sorted(zip(manhattan_distances, positions_house)))
 
     # print(positions_house)
