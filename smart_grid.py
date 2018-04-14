@@ -1,6 +1,6 @@
 import numpy as np
 from simple_solve import *
-from weighted_solve import *
+from selected_solve import *
 import colorama
 from termcolor import cprint
 
