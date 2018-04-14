@@ -16,22 +16,33 @@ class SmartGrid():
         self.battery_count = 0
 
     def __str__(self):
-        """ print the grid """
+        """ print the grid with objects and its not pretty"""
         return str(self.grid)
 
     def __repr__(self):
-        """ prints something """
+        """ prints something ??? """
 
     def add_house_dictionaries(self, house_dict):
-        """ Adds the whole dictionary for easy access in other functions"""
+        """ Adds the whole dictionary for easy access in other functions
+            dictionary has keys:
+                                position: [x,y]
+                                output: (value)
+        """
         self.house_dict = house_dict
 
     def add_battery_dictionaries(self, battery_dict):
-        """ Adds the whole dictionary for easy access in other functions"""
+        """ Adds the whole dictionary for easy access in other functions
+            dictionary has keys:
+                                position: [x,y]
+                                capacity: (value)
+        """
         self.battery_dict = battery_dict
 
     def create_house(self, position, output):
-        """ creates house object at position [x,y] with output"""
+        """ creates house object at position [x,y] with output
+            (e.g. wijk1.create_house([2,3], 500))
+
+        """
         self.position = position
         self.output = output
         self.house_count += 1
@@ -39,7 +50,9 @@ class SmartGrid():
         self.grid[self.position[0], self.position[1]] = SmartHouse(self.position, self.output, self.house_count)
 
     def create_battery(self, position, capacity):
-        """ creates battery object at position [x,y] with capacity (float)"""
+        """ creates battery object at position [x,y] with capacity (float)
+
+        """
         self.position = position
         self.capacity = capacity
         self.battery_count += 1
@@ -51,7 +64,10 @@ class SmartGrid():
         pass
 
     def calc_cost(self):
-
+        """ Calculates the cost of the SmartGrid by looping through every elemeny
+            for batteries it uses battery.price.
+            For connected houses it calculates the manhattan distance and multiplies by 9
+        """
         total_cost = 0
         for row in self.grid:
             for element in row:
@@ -71,7 +87,10 @@ class SmartGrid():
 
 
     def connect(self, pos_battery, pos_house):
-        """ Updates the capacity of the battery and the battery_connect of the house"""
+        """ Updates the capacity of the battery and the battery_connect of the house
+            (usage: wijk1.connect([42, 3], [10, 27]))
+
+        """
 
         # Checks whether the house is already connected
         if not self.grid[pos_house[0], pos_house[1]].battery_connect is None:

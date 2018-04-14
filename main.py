@@ -66,7 +66,6 @@ max_y = max([dic['position'][0] for dic in houses] +
 wijk1 = SmartGrid(max_x,max_y)
 
 # print(wijk1.size)
-# wijk1.create_house([2,3], 500)
 
 # Populate the houses in the smart_grid
 for element in houses:
@@ -76,6 +75,7 @@ for element in houses:
 for element in batteries:
     wijk1.create_battery(element['position'], element['capacity'])
 
+# adds dictionaries to the SmartGrid object
 wijk1.add_house_dictionaries(houses)
 wijk1.add_battery_dictionaries(batteries)
 
@@ -85,20 +85,16 @@ wijk1.add_battery_dictionaries(batteries)
 
 # pretty display
 wijk1.prettify()
+print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
-# print(batteries)
-# print(houses)
 # print("There are currently {} batteries on the grid".format(wijk1.battery_count))
 # print("Battery ID: {} has capacity of: {}".format(wijk1.grid[42][3].battery_id, wijk1.grid[42][3].capacity))
 # print("There are currently {} houses on the grid".format(wijk1.house_count))
 # print("House ID: {} has output of: {}".format(wijk1.grid[10][27].house_id, wijk1.grid[10][27].output))
 # print("Battery has: {} capacity left".format(wijk1.grid[42][3].capacity_left))
 
-print("The cost of this grid is: {}".format(wijk1.calc_cost()))
-
 wijk1.solve()
 
 wijk1.prettify()
-
 print()
 print("The cost of this grid is: {}".format(wijk1.calc_cost()))
