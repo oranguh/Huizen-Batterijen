@@ -1,6 +1,7 @@
 import numpy as np
 from simple_solve import *
-
+import colorama
+from termcolor import cprint
 
 class SmartGrid():
     """ """
@@ -82,7 +83,7 @@ class SmartGrid():
         if self.grid[pos_house[0], pos_house[1]].output > self.grid[pos_battery[0], pos_battery[1]].capacity_left:
             print("house requires {} capacity".format(self.grid[pos_battery[0], pos_battery[1]].capacity_left))
             return False
-        
+
         id = self.grid[pos_battery[0], pos_battery[1]].battery_id
         output = self.grid[pos_house[0], pos_house[1]].output
 
@@ -102,6 +103,28 @@ class SmartGrid():
 
         else:
             print("Unknown algorithm")
+
+    def prettify(self):
+        """ makes a pretty print version"""
+
+        for i,row in enumerate(self.grid):
+            # if i is 0:
+            #     print("  ", end = "")
+            #     for numb in range(51):
+            #         print("{:2}".format(numb), end = "")
+            #     print()
+            print("{:2}| ".format(i), end = "")
+            for element in row:
+                if element is None:
+                    print('  ', end = "")
+                if isinstance(element, SmartBattery):
+                    cprint("B ", "yellow", end = "")
+                if isinstance(element, SmartHouse):
+                    if element.battery_connect is None:
+                        cprint("H ", "red", end = "")
+                    else:
+                        cprint("H ", "green", end = "")
+            print('| {:2}'.format(i,))
 
 
 class SmartHouse():

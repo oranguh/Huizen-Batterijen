@@ -101,25 +101,9 @@ wijk1.add_battery_dictionaries(batteries)
 
 # print("Battery has: {} capacity left".format(wijk1.grid[42][3].capacity_left))
 # wijk1.connect([42, 3], [10, 27])
+
 # pretty display
-for i,row in enumerate(wijk1.grid):
-    # if i is 0:
-    #     print("  ", end = "")
-    #     for numb in range(51):
-    #         print("{:2}".format(numb), end = "")
-    #     print()
-    print("{:2}| ".format(i), end = "")
-    for element in row:
-        if element is None:
-            print('  ', end = "")
-        if isinstance(element, SmartBattery):
-            cprint("B ", "yellow", end = "")
-        if isinstance(element, SmartHouse):
-            if element.battery_connect is None:
-                cprint("H ", "red", end = "")
-            else:
-                cprint("H ", "green", end = "")
-    print('| {:2}'.format(i,))
+wijk1.prettify()
 
 # print(batteries)
 # print(houses)
@@ -127,28 +111,13 @@ for i,row in enumerate(wijk1.grid):
 # print("Battery ID: {} has capacity of: {}".format(wijk1.grid[42][3].battery_id, wijk1.grid[42][3].capacity))
 # print("There are currently {} houses on the grid".format(wijk1.house_count))
 # print("House ID: {} has output of: {}".format(wijk1.grid[10][27].house_id, wijk1.grid[10][27].output))
+# print("Battery has: {} capacity left".format(wijk1.grid[42][3].capacity_left))
 
-
-print("Battery has: {} capacity left".format(wijk1.grid[42][3].capacity_left))
 print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
 wijk1.solve()
 
-for i,row in enumerate(wijk1.grid):
-    # if i is 0:
-    #     print("  ", end = "")
-    #     for numb in range(51):
-    #         print("{:2}".format(numb), end = "")
-    #     print()
-    print("{:2}| ".format(i), end = "")
-    for element in row:
-        if element is None:
-            print('  ', end = "")
-        if isinstance(element, SmartBattery):
-            cprint("B ", "yellow", end = "")
-        if isinstance(element, SmartHouse):
-            if element.battery_connect is None:
-                cprint("H ", "red", end = "")
-            else:
-                cprint("H ", "green", end = "")
-    print('| {:2}'.format(i,))
+wijk1.prettify()
+
+print()
+print("The cost of this grid is: {}".format(wijk1.calc_cost()))
