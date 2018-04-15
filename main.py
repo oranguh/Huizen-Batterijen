@@ -103,3 +103,4 @@ print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 wijk1.solve('selected_solve')
 
 wijk1.prettify()
+print("The cost of this grid is: {}".format(wijk1.calc_cost()))

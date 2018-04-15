@@ -14,20 +14,26 @@ def selected_solve(the_grid):
         Pseudocode:
         Finds houses which are only close to 1 battery.
             Of those it selects houses with lowest output and connects them first.
-            Then it connects houses of higher output
+            Then it connects houses of higher output (not implemented)
         Finds houses which are only close to 2 batteries.
             Of those it selects houses with lowest output and connects them first.
-            Then it connects houses of higher output
+            Then it connects houses of higher output (not implemented)
         Finds houses which are only close to .... etc. etc.
 
 
         BONUS:
         Once a battery is filled to capacity, do I need to make sure that the battery
         is not longer being considered for further calculations?
+
+
+        idea: biggest_difference_solve()
+        loop through biggest difference between optimal and second optimal connection per house
+        once a battery reaches capacity pop all connection to said battery in houses and
+        update the optimal and second optimal connections accordingly.
     """
     print("\n\n\n")
     print("You are now using selected_solve!")
-
+    cap_limit = 25
     the_grid.house_dict = house_dict_with_manhattan_distances(the_grid)
 
 
@@ -39,53 +45,54 @@ def selected_solve(the_grid):
     for i in range(len(all_batteries)):
         all_distances += [dic_item[all_batteries[i]][1] for dic_item in the_grid.house_dict]
     # print(all_distances)
-    q75, q50, q25 = np.percentile(all_distances, [75, 50 ,25])
+    q100, q75, q50, q25 = np.percentile(all_distances, [100, 75, 50 ,25])
+    print("The iqr 100, 75, 50, 25 are: {}, {}, {} \n".format( q75, q50, q25))
+    q0 = np.max(all_distances)
 
-    print("The iqr 75, 50, 25 are: {}, {}, {} \n".format(q75, q50, q25))
-    for house in the_grid.house_dict:
-        connections = [house[battery] for battery in all_batteries]
-        under_q25 = [(q25 <= connect[1]) for connect in connections]
-        above_q75 = [(q75 >= connect[1]) for connect in connections]
-
-        # print(sum(under_q25))
-        if (sum(under_q25) == 1) and (sum(above_q75) == 4):
-            print("close to only 1")
-            # print(under_q25)
-            # print(above_q75)
-            best_connections = []
+    for iqr in [q75, q50, q25]:
+        for r_iqr in reversed([q75, q50, q25]):
             for i in range(len(all_batteries)):
-                  best_connections += [house[all_batteries[i]]]
-            # must use numpy to index array in an easy way
-            best_connections = np.array(best_connections)
-            # print(best_connections[:,0])
-            best = best_connections[np.argmin(best_connections[:,1]),0]
-            if the_grid.connect(best, house['position']):
-                print("connected battery: {} with house {}".format(best, house['position']))
-            else:
-                print("Failed to connect")
+                # print("\nclose to only: {} far from: {}\n".format(i, (len(all_batteries) - i)))
+                for index_house, house in enumerate(the_grid.house_dict):
+                    connections = [house[battery] for battery in all_batteries]
+                    logicals_q25 = [(r_iqr <= connect[1]) for connect in connections]
+                    logicals_q75 = [(iqr >= connect[1]) for connect in connections]
 
-        # if (sum(under_q25) == 2) and (sum(above_q75) == 3):
-        #     print("2, 3")
-        #     print(under_q25)
-        #     print(above_q75)
-        # if sum(under_q25) == 3 and sum(above_q75) == 2:
-        #     print("3, 2")
-        #     print(under_q25)
-        #     print(above_q75)
-        # if sum(under_q25) == 4 and sum(above_q75) == 1:
-        #     print("4, 1")
-        #     print(under_q25)
-        #     print(above_q75)
-        # if sum(under_q25) == 5:
-        #     print(under_q25)
+                    # note that q25 returns the 'worst' connections and q75 returns the best
+                    # print(sum(under_q25))
+                    # print(i)
+                    if (sum(logicals_q75) == i) and (sum(logicals_q25) == len(all_batteries) - i):
+                        # print(logicals_q25)
+                        # print(logicals_q75)
+                        best_connections = []
+                        for j in range(len(all_batteries)):
+                              best_connections += [house[all_batteries[j]]]
+                        # must use numpy to index array in an easy way
+                        best_connections = np.array(best_connections)
+                        # print(all_batteries)
+                        best = best_connections[np.argmin(best_connections[:,1]),0]
 
+
+                        if the_grid.connect(best, house['position']):
+                            # print("connected battery: {} with house {}".format(best, house['position']))
+                            # CAUTION I am changing the list I am workin in, is that dangerous?
+                            the_grid.house_dict.pop(index_house)
+
+                            # Full battery removal
+                            if the_grid.grid[best[0],best[1]].capacity_left < cap_limit:
+                                all_batteries.remove('distance_to_' + str(best))
+                        else:
+                            print("Failed to connect")
 
     # print(the_grid.house_dict[0:3])
     # plt.hist(all_distances)
     # plt.ylabel('count')
     # plt.xlabel('manhattan_distances')
     # plt.show()
-
+    # print(the_grid.grid[42, 3].capacity_left)
+    # print(the_grid.grid[43, 13].capacity_left)
+    # print(the_grid.house_dict)
+    # the_grid.solve()
     return the_grid.grid
 
 def house_dict_with_manhattan_distances(the_grid):

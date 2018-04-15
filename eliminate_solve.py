@@ -15,6 +15,8 @@ def eliminate_solve(the_grid):
         alpha: weight of length
         beta: weight of connection
 
+        then we eliminate the worst solutions, or we connect the best ones first.
+
         BONUS:
         I also want to make a third variable theta which considers the house's
         connections in relation to the rest of the grid. I.e. if house_A has 4
