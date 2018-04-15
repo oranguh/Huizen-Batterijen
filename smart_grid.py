@@ -100,7 +100,9 @@ class SmartGrid():
 
         # Checks whether battery has enough capacity left
         if self.grid[pos_house[0], pos_house[1]].output > self.grid[pos_battery[0], pos_battery[1]].capacity_left:
-            print("house requires {} capacity".format(self.grid[pos_house[0], pos_house[1]].output))
+            print("house requires {} capacity. Battery cap at: {}".format(
+            self.grid[pos_house[0], pos_house[1]].output,
+            self.grid[pos_battery[0], pos_battery[1]].capacity_left))
             return False
 
         id = self.grid[pos_battery[0], pos_battery[1]].battery_id

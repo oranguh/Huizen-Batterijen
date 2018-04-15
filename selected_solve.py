@@ -33,7 +33,7 @@ def selected_solve(the_grid):
     """
     print("\n\n\n")
     print("You are now using selected_solve!")
-    cap_limit = 25
+    cap_limit = 36
     the_grid.house_dict = house_dict_with_manhattan_distances(the_grid)
 
 
@@ -45,13 +45,13 @@ def selected_solve(the_grid):
     for i in range(len(all_batteries)):
         all_distances += [dic_item[all_batteries[i]][1] for dic_item in the_grid.house_dict]
     # print(all_distances)
-    q100, q75, q50, q25 = np.percentile(all_distances, [100, 75, 50 ,25])
-    print("The iqr 100, 75, 50, 25 are: {}, {}, {} \n".format( q75, q50, q25))
+    q75, q50, q25 = np.percentile(all_distances, [75, 50 ,25])
+    print("The iqr 75, 50, 25 are: {}, {}, {} \n".format(q75, q50, q25))
     q0 = np.max(all_distances)
 
     for iqr in [q75, q50, q25]:
-        for r_iqr in reversed([q75, q50, q25]):
-            for i in range(len(all_batteries)):
+        for r_iqr in reversed([q75, q50, q25, q0]):
+            for i in range(len(all_batteries)+1):
                 # print("\nclose to only: {} far from: {}\n".format(i, (len(all_batteries) - i)))
                 for index_house, house in enumerate(the_grid.house_dict):
                     connections = [house[battery] for battery in all_batteries]
@@ -61,6 +61,8 @@ def selected_solve(the_grid):
                     # note that q25 returns the 'worst' connections and q75 returns the best
                     # print(sum(under_q25))
                     # print(i)
+                    #  I suspect the problem is here. The indexing using i is not good.
+                    # especially since I also dynamically change the length of all_batteries
                     if (sum(logicals_q75) == i) and (sum(logicals_q25) == len(all_batteries) - i):
                         # print(logicals_q25)
                         # print(logicals_q75)
