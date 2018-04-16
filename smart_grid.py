@@ -5,7 +5,12 @@ import colorama
 from termcolor import cprint
 
 class SmartGrid():
-    """ """
+    """
+        things to add?
+        .clear()
+        .check_validity()
+        .visualize_wires()
+    """
     def __init__(self, range_x, range_y):
         """ user inputs ranges to define the matrix dimenions """
 
@@ -153,6 +158,29 @@ class SmartGrid():
                     else:
                         cprint("H ", "green", end = "")
             print('| {:2}'.format(i,))
+
+    def house_dict_with_manhattan_distances(self):
+        """
+            updates the house_dict to contain the manhattan distances to each battery
+
+            the items are created as: {'distance_to_[x,y]':[x, y], <distance>}
+            where x,y are the coordinates of the battery
+        """
+
+        # iterate through every battery
+        for battery in self.battery_dict:
+            battery_pos = battery['position']
+
+            # iterate through every item in list of dictionary
+            for i,house in enumerate(self.house_dict):
+                key_string = 'distance_to_' + str(battery_pos)
+                house_pos = house['position']
+
+                # update dict with manhattan distances
+                self.house_dict[i][key_string] = [
+                battery_pos,
+                abs(house_pos[0] - battery_pos[0]) +
+                abs(house_pos[1] - battery_pos[1])]
 
 
 class SmartHouse():

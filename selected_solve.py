@@ -34,7 +34,7 @@ def selected_solve(the_grid):
     print("\n\n\n")
     print("You are now using selected_solve!")
     cap_limit = 36
-    the_grid.house_dict = house_dict_with_manhattan_distances(the_grid)
+    the_grid.house_dict_with_manhattan_distances()
 
 
     all_batteries = [dic_item['position'] for dic_item in the_grid.battery_dict]
@@ -96,25 +96,3 @@ def selected_solve(the_grid):
     # print(the_grid.house_dict)
     # the_grid.solve()
     return the_grid.grid
-
-def house_dict_with_manhattan_distances(the_grid):
-    """
-        updates the house_dict to contain the manhattan distances to each battery
-
-        the keys names are as follows: ['distance_to_[x,y]']
-        where x,y are the coordinates of the battery
-
-        takes as input a SmartGrid and returns the updated SmartGrid.house_dict
-    """
-
-    for battery in the_grid.battery_dict:
-        battery_pos = battery['position']
-        for i,house in enumerate(the_grid.house_dict):
-            key_string = 'distance_to_' + str(battery_pos)
-            house_pos = house['position']
-            the_grid.house_dict[i][key_string] = [
-            battery_pos,
-            abs(house_pos[0] - battery_pos[0]) +
-            abs(house_pos[1] - battery_pos[1])]
-
-    return the_grid.house_dict

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 from smart_grid import *
+from read_data import read_data
 import numpy as np
-import csv
 import colorama
 from termcolor import cprint
 
@@ -21,38 +21,12 @@ from termcolor import cprint
 
 colorama.init()
 
-# list of dictionary items
-houses = []
-batteries = []
 
-# trivial csv reading and writing to dictionary
-with open('data/wijk1_huizen.csv') as housereader:
-    houses_info = csv.reader(housereader)
-    for i, row in enumerate(houses_info):
-        # skips header
-        if i is 0:
-            continue
-        # make a position list as [x,y]
-        position = []
-        position.append(int(row[0]))
-        position.append(int(row[1]))
-        # add dictionary item to houses
-        houses.append({'position': position, 'output': float(row[2])})
+house_path = 'data/wijk1_huizen.csv'
+battery_path = 'data/wijk1_batterijen.txt'
 
-with open('data/wijk1_batterijen.txt') as f:
-    reader = csv.reader(f, csv.excel_tab)
-    for i, row in enumerate(reader):
-        # skips header
-        if i is 0:
-            continue
-        # remove any empty elements
-        row = list(filter(None, row))
-        # the first element is a bit weird, so had to get it correct
-        position = row[0].strip('[]').split(',')
-        # int cast all elements
-        position = [int(x) for x in position]
-        # add dictionary item to batteries
-        batteries.append({'position': position, 'capacity': float(row[1])})
+houses, batteries = read_data(house_path, battery_path)
+
 
 # find ranges for the grid matrix
 max_x = max([dic['position'][0] for dic in houses] +
@@ -60,15 +34,10 @@ max_x = max([dic['position'][0] for dic in houses] +
 max_y = max([dic['position'][1] for dic in houses] +
             [dic['position'][1] for dic in batteries]) + 1
 
-# print(batteries)
-# print(houses)
-
-# creates out very own smart_grid object! yay
+# creates our very own smart_grid object! yay
 wijk1 = SmartGrid(max_x,max_y)
 
-# print(wijk1.size)
-
-# Populate the houses in the smart_grid
+# Populate the houses in the smart_grid, should I make this a method?
 for element in houses:
     wijk1.create_house(element['position'], element['output'])
 
@@ -97,7 +66,6 @@ print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 wijk1.solve()
 
 # wijk1.prettify()
-# print()
 # print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
 # wijk1.solve('selected_solve')
