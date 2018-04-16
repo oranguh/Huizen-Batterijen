@@ -4,7 +4,7 @@ from selected_solve import *
 import colorama
 from termcolor import cprint
 
-class SmartGrid():
+class SmartGrid:
     """
         things to add?
         .clear()
@@ -183,7 +183,7 @@ class SmartGrid():
                 abs(house_pos[1] - battery_pos[1])]
 
 
-class SmartHouse():
+class SmartHouse:
 
     def __init__(self, position,  output, house_id):
         """ makes house object with output"""
@@ -194,7 +194,7 @@ class SmartHouse():
         self.battery_loc = None
 
 
-class SmartBattery():
+class SmartBattery:
 
     def __init__(self, position, capacity, battery_id):
         """ makes battery object with capacity"""
