@@ -7,9 +7,14 @@ from termcolor import cprint
 class SmartGrid:
     """
         things to add?
-        .clear()
+        .buckets oplossing
+        .calcost + validity --> +optie loggen
+        .visualisatie:kleuren/nummers + x-as
         .check_validity()
-        .visualize_wires()
+        .visualize_wires()?
+        .disconect --> update dict!!!!
+        .hillclimb
+        .move --> batterijkes (let op de dict!)
     """
     def __init__(self, range_x, range_y):
         """ user inputs ranges to define the matrix dimenions """

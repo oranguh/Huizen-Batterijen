@@ -38,10 +38,10 @@ max_y = max([dic['position'][1] for dic in houses] +
 outputs = [dic['output'] for dic in houses]
 print(outputs)
 
-plt.hist(outputs)
-plt.ylabel('count')
-plt.xlabel('max output')
-plt.show()
+# plt.hist(outputs)
+# plt.ylabel('count')
+# plt.xlabel('max output')
+# plt.show()
 
 # creates our very own smart_grid object! yay
 wijk1 = SmartGrid(max_x,max_y)
@@ -83,3 +83,9 @@ wijk1.prettify()
 print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
 wijk1.cap_left()
+
+house_path = 'data/wijk3_huizen.csv'
+houses, batteries = read_data(house_path, battery_path)
+
+x = sorted([house_element['position'] for house_element in houses])
+print(x)
