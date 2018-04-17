@@ -163,7 +163,7 @@ class SmartGrid:
         """
             updates the house_dict to contain the manhattan distances to each battery
 
-            the items are created as: {'distance_to_[x,y]':[x, y], <distance>}
+            the items are created as: {'distance_to_[x,y]':[[x, y], <distance>]}
             where x,y are the coordinates of the battery
         """
 
@@ -182,6 +182,11 @@ class SmartGrid:
                 abs(house_pos[0] - battery_pos[0]) +
                 abs(house_pos[1] - battery_pos[1])]
 
+    def cap_left(self):
+        """ """
+
+        bat_cap_left = [self.grid[dict_element['position'][0], dict_element['position'][1]].capacity_left for dict_element in self.battery_dict]
+        print(bat_cap_left)
 
 class SmartHouse:
 
@@ -219,6 +224,7 @@ class SmartBattery:
     def capacity_update(self, output):
         """ Updates the capacity_left of the battery"""
         self.capacity_left -= output
+
 
 
 # class smart_cable():

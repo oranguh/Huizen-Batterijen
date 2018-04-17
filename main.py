@@ -5,6 +5,7 @@ from read_data import read_data
 import numpy as np
 import colorama
 from termcolor import cprint
+import matplotlib.pyplot as plt
 
 
 # TODO
@@ -33,6 +34,14 @@ max_x = max([dic['position'][0] for dic in houses] +
             [dic['position'][0] for dic in batteries]) + 1
 max_y = max([dic['position'][1] for dic in houses] +
             [dic['position'][1] for dic in batteries]) + 1
+
+outputs = [dic['output'] for dic in houses]
+print(outputs)
+
+plt.hist(outputs)
+plt.ylabel('count')
+plt.xlabel('max output')
+plt.show()
 
 # creates our very own smart_grid object! yay
 wijk1 = SmartGrid(max_x,max_y)
@@ -63,12 +72,14 @@ print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 # print("House ID: {} has output of: {}".format(wijk1.grid[10][27].house_id, wijk1.grid[10][27].output))
 # print("Battery has: {} capacity left".format(wijk1.grid[42][3].capacity_left))
 
-wijk1.solve()
+# wijk1.solve()
 
 # wijk1.prettify()
 # print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
-# wijk1.solve('selected_solve')
+wijk1.solve('selected_solve')
 
 wijk1.prettify()
 print("The cost of this grid is: {}".format(wijk1.calc_cost()))
+
+wijk1.cap_left()
