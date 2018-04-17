@@ -4,8 +4,9 @@ def simple_solve3(the_grid):
     """ Takes an unsolved SmartGrid object and returns a solved smart grid
 
         General idea:
-        Loops through every battery and keeps connecting to the closest house until
-        the capacity is reached.
+        makes a list with the houses sorted on descending order on output. Then tries
+        to fill a battery untill the output is more then the capacity_left, then fills the next
+        battery untill all houses are connected!
 
         BONUS:
         maybe looping through houses instead might be better?
