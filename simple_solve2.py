@@ -12,35 +12,31 @@ def simple_solve2(the_grid):
     """
 
     print("\n\n\n")
-    print("You are now using simple_solve!")
+    print("You are now using simple_solve2!")
     # cap_limit telling the iterator to stop when battery_cap below this value
     cap_limit = 20
 
     # loop though every battery
-    for house in the_grid.house_dict:
-        house_pos = house['position']
-        print(house_pos)
-        output = the_grid.grid[house_pos[0]][house_pos[1]].output
-        print(output)
+    n_bat = len(the_grid.battery_dict)
+    count = 0
+    bat_pos = [dic['position'] for dic in the_grid.battery_dict]
+    print(bat_pos[0])
 
-        sort_on_output(the_grid)
-        # print("Now connecting battery: {}".format(bat_pos))
-        # Iterates through nearest houses until cap full
-        for house_pos in find_nearest_unconnected_houses(bat_pos, the_grid):
-            # print("capacity left: {}".format(the_grid.grid[bat_pos[0]][bat_pos[1]].capacity_left))
+    # Iterates through nearest houses until cap full
+    for house_pos in sort_on_output(the_grid):
+        # print(count)
+        if the_grid.connect(bat_pos[count], house_pos):
+            print("connected battery: {} with house {}".format(bat_pos, house_pos))
+            continue
+        else:
+            print("Failed to connect")
+            continue
+        count += 1
 
-            # keep connecting to battery until the cap is close to full
-            if the_grid.grid[bat_pos[0]][bat_pos[1]].capacity_left < cap_limit:
-                # print("Capacity reached")
-                break
-            if not the_grid.grid[house_pos[0]][house_pos[1]].battery_connect is None:
-                continue
-            if the_grid.connect(bat_pos, house_pos):
-                # print("connected battery: {} with house {}".format(bat_pos, house_pos))
-                continue
-            else:
-                # print("Failed to connect")
-                continue
+        if count == n_bat:
+            count = 0
+
+        print(count)
 
     return the_grid.grid
 
@@ -51,18 +47,14 @@ def sort_on_output(the_grid):
 
     # creates list of all coordinates
     positions_house = [dic['position'] for dic in the_grid.house_dict]
-    print(positions_house)
-    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-    # creates list of manhattan distance per coordinate in relation to the battery distance
+
+    # creates list of outputs per house
     outputs = []
     for pos in positions_house:
         outputs.append(the_grid.grid[pos[0]][pos[1]].output)
 
-    # here I have 2 lists of equal size. I sort both, basing the sort on the manhattan distance
+    # here I have 2 lists of equal size. I sort both, basing the sort on the output
     outputs, positions_house = zip(*sorted(zip(outputs, positions_house), reverse=True))
-    print(positions_house)
 
-    # print(positions_house)
-    # print(manhattan_distances)
 
     return positions_house
