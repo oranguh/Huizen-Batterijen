@@ -27,16 +27,15 @@ def simple_solve2(the_grid):
         # print(count)
         if the_grid.connect(bat_pos[count], house_pos):
             print("connected battery: {} with house {}".format(bat_pos, house_pos))
+            count += 1
+            if count == n_bat:
+                count = 0
+            print(count)
             continue
         else:
             print("Failed to connect")
             continue
-        count += 1
 
-        if count == n_bat:
-            count = 0
-
-        print(count)
 
     return the_grid.grid
 
