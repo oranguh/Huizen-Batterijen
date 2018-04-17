@@ -1,6 +1,6 @@
 from smart_grid import *
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 def selected_solve(the_grid):
     """ Takes an unsolved SmartGrid object and returns a solved smart grid
