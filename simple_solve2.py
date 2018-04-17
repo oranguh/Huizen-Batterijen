@@ -57,11 +57,10 @@ def sort_on_output(the_grid):
     outputs = []
     for pos in positions_house:
         outputs.append(the_grid.grid[pos[0]][pos[1]].output)
-    print(outputs)
-    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+
     # here I have 2 lists of equal size. I sort both, basing the sort on the manhattan distance
-    outputs1 = sorted(zip(outputs, positions_house), reverse=True)
-    print(outputs1)
+    outputs, positions_house = zip(*sorted(zip(outputs, positions_house), reverse=True))
+    print(positions_house)
 
     # print(positions_house)
     # print(manhattan_distances)
