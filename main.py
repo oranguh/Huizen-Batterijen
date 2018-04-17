@@ -60,7 +60,7 @@ wijk1.add_battery_dictionaries(batteries)
 
 
 # print("Battery has: {} capacity left".format(wijk1.grid[42][3].capacity_left))
-# wijk1.connect([42, 3], [10, 27])
+# wijk1.connect([42, 3 [10, 27])
 
 # pretty display
 wijk1.prettify()
@@ -77,7 +77,7 @@ print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 # wijk1.prettify()
 # print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
-wijk1.solve('selected_solve')
+wijk1.solve('simple_solve2')
 
 wijk1.prettify()
 print("The cost of this grid is: {}".format(wijk1.calc_cost()))

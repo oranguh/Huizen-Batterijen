@@ -1,6 +1,7 @@
 import numpy as np
 from simple_solve import *
 from selected_solve import *
+from simple_solve2 import *
 import colorama
 from termcolor import cprint
 
@@ -136,8 +137,8 @@ class SmartGrid:
         elif algorithm is 'selected_solve':
             self.grid = selected_solve(self)
 
-        elif algorithm is 'ietsludieks':
-            pass
+        elif algorithm is 'simple_solve2':
+            self.grid = simple_solve2(self)
 
         else:
             print("Unknown algorithm")

@@ -1,6 +1,6 @@
 from smart_grid import *
 
-def simple_solve(the_grid):
+def simple_solve2(the_grid):
     """ Takes an unsolved SmartGrid object and returns a solved smart grid
 
         General idea:
@@ -17,9 +17,13 @@ def simple_solve(the_grid):
     cap_limit = 20
 
     # loop though every battery
-    for battery in the_grid.battery_dict:
-        bat_pos = battery['position']
+    for house in the_grid.house_dict:
+        house_pos = house['position']
+        print(house_pos)
+        output = the_grid.grid[house_pos[0]][house_pos[1]].output
+        print(output)
 
+        sort_on_output(the_grid)
         # print("Now connecting battery: {}".format(bat_pos))
         # Iterates through nearest houses until cap full
         for house_pos in find_nearest_unconnected_houses(bat_pos, the_grid):
@@ -40,20 +44,24 @@ def simple_solve(the_grid):
 
     return the_grid.grid
 
-def find_nearest_unconnected_houses(battery_position, the_grid):
+def sort_on_output(the_grid):
     """ returns sorted list of all houses_positions snearest to battery using manhattan distance
         takes whole SmartGrid object as argument
     """
 
     # creates list of all coordinates
     positions_house = [dic['position'] for dic in the_grid.house_dict]
+    print(positions_house)
+    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
     # creates list of manhattan distance per coordinate in relation to the battery distance
-    manhattan_distances = []
+    outputs = []
     for pos in positions_house:
-        manhattan_distances.append((abs(pos[0] - battery_position[0]) + abs(pos[1] - battery_position[1])))
-
+        outputs.append(the_grid.grid[pos[0]][pos[1]].output)
+    print(outputs)
+    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
     # here I have 2 lists of equal size. I sort both, basing the sort on the manhattan distance
-    manhattan_distances, positions_house = zip(*sorted(zip(manhattan_distances, positions_house)))
+    outputs1 = sorted(zip(outputs, positions_house), reverse=True)
+    print(outputs1)
 
     # print(positions_house)
     # print(manhattan_distances)

@@ -29,7 +29,7 @@ def selected_solve(the_grid):
         idea: biggest_difference_solve()
         loop through biggest difference between optimal and second optimal connection per house
         once a battery reaches capacity pop all connection to said battery in houses and
-        update the optimal and second optimal connections accordingly.
+        update the optimal and seconit d optimal connections accordingly.
     """
     print("\n\n\n")
     print("You are now using selected_solve!")
