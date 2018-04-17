@@ -1,6 +1,6 @@
 from smart_grid import *
 
-def simple_solve2(the_grid):
+def simple_solve3(the_grid):
     """ Takes an unsolved SmartGrid object and returns a solved smart grid
 
         General idea:
@@ -25,14 +25,14 @@ def simple_solve2(the_grid):
     # Iterates through nearest houses until cap full
     for house_pos in sort_on_output(the_grid):
         # print(count)
-        if the_grid.connect(bat_pos[count], house_pos):
-            print("connected battery: {} with house {}".format(bat_pos, house_pos))
+        while not the_grid.connect(bat_pos[count], house_pos):
+            print("Failed to connect")
             count += 1
             if count == n_bat:
                 count = 0
             continue
         else:
-            print("Failed to connect")
+            print("connected battery: {} with house {}".format(bat_pos, house_pos))
             continue
 
 
