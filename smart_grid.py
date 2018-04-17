@@ -147,23 +147,28 @@ class SmartGrid:
         """ makes a pretty print version"""
 
         for i,row in enumerate(self.grid):
-            # if i is 0:
-            #     print("  ", end = "")
-            #     for numb in range(51):
-            #         print("{:2}".format(numb), end = "")
-            #     print()
-            print("{:2}| ".format(i), end = "")
+            if i is 0:
+                print("   ", end = "")
+                for numb in range(51):
+                    print("{:3}".format(numb), end = "")
+                print()
+            print("{:3}| ".format(i), end = "")
             for element in row:
                 if element is None:
-                    print('  ', end = "")
+                    print('   ', end = "")
                 if isinstance(element, SmartBattery):
-                    cprint("B ", "yellow", end = "")
+                    cprint(" B ", "yellow", end = "")
                 if isinstance(element, SmartHouse):
                     if element.battery_connect is None:
-                        cprint("H ", "red", end = "")
+                        cprint(" H ", "red", end = "")
                     else:
-                        cprint("H ", "green", end = "")
-            print('| {:2}'.format(i,))
+                        cprint(" H ", "green", end = "")
+            print('| {:3}'.format(i,))
+
+        print("   ", end = "")
+        for numb in range(51):
+            print("{:3}".format(numb), end = "")
+        print()
 
     def house_dict_with_manhattan_distances(self):
         """
