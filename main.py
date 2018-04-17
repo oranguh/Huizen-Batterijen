@@ -77,7 +77,7 @@ print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 # wijk1.prettify()
 # print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
-wijk1.solve()
+wijk1.solve("simple_solve2")
 
 wijk1.prettify()
 print("The cost of this grid is: {}".format(wijk1.calc_cost()))
