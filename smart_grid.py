@@ -205,14 +205,20 @@ class SmartGrid:
 
     def disconnect(self, pos_house):
         """ disconnects the house and restores the batteries capacity_left"""
+
+        # checks if house is connected
         if self.grid[pos_house[0], pos_house[1]].battery_connect is None:
             return False
 
+        # gets the output and the position of the house of the battery
         output = self.grid[pos_house[0], pos_house[1]].output
         bat_pos = self.grid[pos_house[0], pos_house[1]].battery_loc
+
+        # updates the house and battery
         self.grid[pos_house[0], pos_house[1]].battery_connect = None
         self.grid[pos_house[0], pos_house[1]].battery_loc = None
         self.grid[bat_pos[0]][bat_pos[1]].capacity_update(output, False)
+
         print("disconnected battery: {} with house {}".format(bat_pos, pos_house))
 
 
@@ -251,7 +257,8 @@ class SmartBattery:
             self.price = 5000
 
     def capacity_update(self, output, subtract):
-        """ Updates the capacity_left of the battery"""
+        """ Updates the capacity_left of the battery. Subtract is True if a
+            battery is connected and false if disconnected"""
         if subtract is False:
             self.capacity_left -= output
         else:
