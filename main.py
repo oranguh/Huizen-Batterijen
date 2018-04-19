@@ -23,8 +23,8 @@ import matplotlib.pyplot as plt
 colorama.init()
 
 
-house_path = 'data/wijk1_huizen.csv'
-battery_path = 'data/wijk1_batterijen.txt'
+house_path = 'data/wijk2_huizen.csv'
+battery_path = 'data/wijk2_batterijen.txt'
 
 houses, batteries = read_data(house_path, battery_path)
 
@@ -84,8 +84,12 @@ print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
 wijk1.cap_left()
 
-house_path = 'data/wijk3_huizen.csv'
-houses, batteries = read_data(house_path, battery_path)
-
-x = sorted([house_element['position'] for house_element in houses])
-print(x)
+house_coordinatesx = [dic['position'][0] for dic in houses]
+house_coordinatesy = [dic['position'][1] for dic in houses]
+print(houses)
+print(house_coordinatesx)
+x = [2, 4, 10]
+y = [2, 4, 10]
+print(house_coordinatesy)
+plt.scatter(house_coordinatesx, house_coordinatesy)
+plt.show()
