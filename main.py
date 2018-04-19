@@ -83,13 +83,10 @@ wijk1.prettify()
 print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
 wijk1.cap_left()
+# wijk1.disconnect(houses[1]["position"])
 
-house_coordinatesx = [dic['position'][0] for dic in houses]
-house_coordinatesy = [dic['position'][1] for dic in houses]
-print(houses)
-print(house_coordinatesx)
-x = [2, 4, 10]
-y = [2, 4, 10]
-print(house_coordinatesy)
-plt.scatter(house_coordinatesx, house_coordinatesy)
-plt.show()
+# house_coordinatesx = [dic['position'][0] for dic in houses]
+# house_coordinatesy = [dic['position'][1] for dic in houses]
+#
+# plt.scatter(house_coordinatesx, house_coordinatesy)
+# plt.show()

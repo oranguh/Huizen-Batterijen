@@ -120,7 +120,7 @@ class SmartGrid:
         id = self.grid[pos_battery[0], pos_battery[1]].battery_id
         output = self.grid[pos_house[0], pos_house[1]].output
 
-        self.grid[pos_battery[0], pos_battery[1]].capacity_update(output)
+        self.grid[pos_battery[0], pos_battery[1]].capacity_update(output, True)
         self.grid[pos_house[0], pos_house[1]].battery_connect = id
         self.grid[pos_house[0], pos_house[1]].battery_loc = pos_battery
         return True
@@ -203,6 +203,20 @@ class SmartGrid:
         bat_cap_left = [self.grid[dict_element['position'][0], dict_element['position'][1]].capacity_left for dict_element in self.battery_dict]
         print(bat_cap_left)
 
+    def disconnect(self, pos_house):
+        """ disconnects the house and restores the batteries capacity_left"""
+        if self.grid[pos_house[0], pos_house[1]].battery_connect is None:
+            return False
+
+        output = self.grid[pos_house[0], pos_house[1]].output
+        bat_pos = self.grid[pos_house[0], pos_house[1]].battery_loc
+        self.grid[pos_house[0], pos_house[1]].battery_connect = None
+        self.grid[pos_house[0], pos_house[1]].battery_loc = None
+        self.grid[bat_pos[0]][bat_pos[1]].capacity_update(output, False)
+        print("disconnected battery: {} with house {}".format(bat_pos, pos_house))
+
+
+
 class SmartHouse:
 
     def __init__(self, position,  output, house_id):
@@ -236,9 +250,13 @@ class SmartBattery:
             self.name = "Defeault"
             self.price = 5000
 
-    def capacity_update(self, output):
+    def capacity_update(self, output, subtract):
         """ Updates the capacity_left of the battery"""
-        self.capacity_left -= output
+        if subtract is False:
+            self.capacity_left -= output
+        else:
+            self.capacity_left += output
+
 
 
 
