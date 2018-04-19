@@ -3,6 +3,7 @@ from simple_solve import *
 from selected_solve import *
 from simple_solve2 import *
 from simple_solve3 import *
+from random_solve import *
 import colorama
 from termcolor import cprint
 
@@ -107,14 +108,14 @@ class SmartGrid:
 
         # Checks whether the house is already connected
         if not self.grid[pos_house[0], pos_house[1]].battery_connect is None:
-            print("house already connected to grid")
+            #print("house already connected to grid")
             return False
 
         # Checks whether battery has enough capacity left
         if self.grid[pos_house[0], pos_house[1]].output > self.grid[pos_battery[0], pos_battery[1]].capacity_left:
-            print("house requires {} capacity. Battery cap at: {}".format(
-            self.grid[pos_house[0], pos_house[1]].output,
-            self.grid[pos_battery[0], pos_battery[1]].capacity_left))
+            # print("house requires {} capacity. Battery cap at: {}".format(
+            # self.grid[pos_house[0], pos_house[1]].output,
+            # self.grid[pos_battery[0], pos_battery[1]].capacity_left))
             return False
 
         id = self.grid[pos_battery[0], pos_battery[1]].battery_id
@@ -143,6 +144,8 @@ class SmartGrid:
 
         elif algorithm is 'simple_solve3':
             self.grid = simple_solve3(self)
+        elif algorithm is 'random_solve':
+            self.grid = random_solve(self)
 
         else:
             print("Unknown algorithm")
@@ -259,7 +262,7 @@ class SmartBattery:
     def capacity_update(self, output, subtract):
         """ Updates the capacity_left of the battery. Subtract is True if a
             battery is connected and false if disconnected"""
-        if subtract is False:
+        if subtract is True:
             self.capacity_left -= output
         else:
             self.capacity_left += output

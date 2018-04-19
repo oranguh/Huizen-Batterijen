@@ -14,16 +14,16 @@ def simple_solve3(the_grid):
 
     print("\n\n\n")
     print("You are now using simple_solve2!")
-    # cap_limit telling the iterator to stop when battery_cap below this value
-    cap_limit = 20
 
-    # loop though every battery
+    # gets number of batteries
     n_bat = len(the_grid.battery_dict)
+
+    # count to keep looping through batteries
     count = 0
     bat_pos = [dic['position'] for dic in the_grid.battery_dict]
     print(bat_pos[0])
 
-    # Iterates through nearest houses until cap full
+    # Iterates through houses until it doesn't fit in the current battery, then tries next
     for house_pos in sort_on_output(the_grid):
         # print(count)
         while not the_grid.connect(bat_pos[count], house_pos):
@@ -31,7 +31,7 @@ def simple_solve3(the_grid):
             count += 1
             if count == n_bat:
                 count = 0
-            continue
+                continue
         else:
             print("connected battery: {} with house {}".format(bat_pos, house_pos))
             continue
@@ -40,8 +40,8 @@ def simple_solve3(the_grid):
     return the_grid.grid
 
 def sort_on_output(the_grid):
-    """ returns sorted list of all houses_positions snearest to battery using manhattan distance
-        takes whole SmartGrid object as argument
+    """ returns sorted list of all houses_positions based on output
+        with largest output first
     """
 
     # creates list of all coordinates

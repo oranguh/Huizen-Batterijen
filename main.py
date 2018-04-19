@@ -23,8 +23,8 @@ import matplotlib.pyplot as plt
 colorama.init()
 
 
-house_path = 'data/wijk2_huizen.csv'
-battery_path = 'data/wijk2_batterijen.txt'
+house_path = 'data/wijk1_huizen.csv'
+battery_path = 'data/wijk1_batterijen.txt'
 
 houses, batteries = read_data(house_path, battery_path)
 
@@ -77,7 +77,7 @@ print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 # wijk1.prettify()
 # print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
-wijk1.solve("simple_solve3")
+wijk1.solve("random_solve")
 
 wijk1.prettify()
 print("The cost of this grid is: {}".format(wijk1.calc_cost()))

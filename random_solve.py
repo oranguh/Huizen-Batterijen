@@ -1,59 +1,57 @@
 from smart_grid import *
+import random
 
-def simple_solve3(the_grid):
-    """ Takes an unsolved SmartGrid object and returns a solved smart grid
-
-        General idea:
-        makes a list with the houses sorted on descending order on output. Then tries
-        to fill a battery untill the output is more then the capacity_left, then fills the next
-        battery untill all houses are connected!
-
-        BONUS:
-        maybe looping through houses instead might be better?
-    """
+def random_solve(the_grid):
+    """    """
 
     print("\n\n\n")
-    print("You are now using simple_solve2!")
+    print("You are now using random_solve!")
     # cap_limit telling the iterator to stop when battery_cap below this value
-    cap_limit = 20
 
-    # loop though every battery
+    # get number of batteries
     n_bat = len(the_grid.battery_dict)
-    count = 0
+    # count to keep looping through batteries, keep count to keep track of number of failures
     bat_pos = [dic['position'] for dic in the_grid.battery_dict]
-    print(bat_pos[0])
+    best_list = []
+    best_score = 80000
+    for i in range(1000000):
+        # Iterates through nearest houses until cap full
+        keepcount = 0
+        count = 0
+        for house_pos in shuffle(the_grid):
 
-    # Iterates through nearest houses until cap full
-    for house_pos in sort_on_output(the_grid):
-        # print(count)
-        while not the_grid.connect(bat_pos[count], house_pos):
-            print("Failed to connect")
-            count += 1
-            if count == n_bat:
-                count = 0
-            continue
-        else:
-            print("connected battery: {} with house {}".format(bat_pos, house_pos))
-            continue
+            if keepcount is n_bat:
+                break
+            while not the_grid.connect(bat_pos[count], house_pos):
+                #print("Failed to connect")
+                count += 1
+                keepcount += 1
+
+                if count is n_bat:
+                    count = 0
+                if keepcount is n_bat:
+                    break
+            else:
+                #print("connected battery: {} with house {}".format(bat_pos, house_pos))
+                continue
+        score = the_grid.calc_cost()
+        if score < best_score:
+            best_score = score
+            best_list = house_pos
 
 
+    print(best_score)
     return the_grid.grid
 
-def sort_on_output(the_grid):
+
+
+def shuffle(the_grid):
     """ returns sorted list of all houses_positions snearest to battery using manhattan distance
         takes whole SmartGrid object as argument
     """
 
     # creates list of all coordinates
     positions_house = [dic['position'] for dic in the_grid.house_dict]
-
-    # creates list of outputs per house
-    outputs = []
-    for pos in positions_house:
-        outputs.append(the_grid.grid[pos[0]][pos[1]].output)
-
-    # here I have 2 lists of equal size. I sort both, basing the sort on the output
-    outputs, positions_house = zip(*sorted(zip(outputs, positions_house), reverse=True))
-
+    random.shuffle(positions_house)
 
     return positions_house
