@@ -14,7 +14,7 @@ def random_solve(the_grid):
     bat_pos = [dic['position'] for dic in the_grid.battery_dict]
     best_list = []
     best_score = 80000
-    for i in range(1000000):
+    for i in range(1000):
         # Iterates through nearest houses until cap full
         keepcount = 0
         count = 0
