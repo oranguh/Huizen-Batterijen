@@ -6,7 +6,7 @@ import numpy as np
 import colorama
 from termcolor import cprint
 import matplotlib.pyplot as plt
-
+from heat_map import heat_map
 
 # TODO
 # DONE read the csv files for houses and batteries.
@@ -83,6 +83,8 @@ wijk1.prettify()
 print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
 wijk1.cap_left()
+
+heat_map(wijk1)
 # wijk1.disconnect(houses[1]["position"])
 
 # house_coordinatesx = [dic['position'][0] for dic in houses]

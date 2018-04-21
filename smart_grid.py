@@ -1,6 +1,6 @@
 import numpy as np
 from simple_solve import *
-from selected_solve import *
+from selected_solve import selected_solve
 from simple_solve2 import *
 from simple_solve3 import *
 from random_solve import *
@@ -23,7 +23,7 @@ class SmartGrid:
         """ user inputs ranges to define the matrix dimenions """
 
         # Creates numpy matrix where the elements can be anything i.e. objects
-        self.grid = grid_matrix = np.empty((range_x, range_y), dtype="object")
+        self.grid = np.empty((range_x, range_y), dtype="object")
 
         self.size = self.grid.shape
         self.house_count = 0
