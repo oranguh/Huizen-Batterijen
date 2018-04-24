@@ -1,0 +1,7 @@
+matplotlib
+numpy
+random
+colorama
+termcolor
+mpl_toolkits
+scipy
