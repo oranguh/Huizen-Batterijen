@@ -10,7 +10,7 @@
 
 class node:
 
-    def __init__(self, houseNumber = 0, batterydict, housePositions, subPrice = 0, bestPrice):
+    def __init__(self, houseNumber = 0, batterydict, houseDict, subPrice = 0, bestPrice):
         self.houseNumber = houseNumber
         self.lastNode = False
         self.subPrice = price
@@ -19,6 +19,7 @@ class node:
         self.bestPrice = bestPrice
         # battery dict = pos, capacity_left
         #house dict = pos, output, connected_to
+
     def solve(self, bestPrice):
         for i, battery in enumerate(self.batteries):
             if self.houses[houseNumber]['output'] < battery['capacity_left']
