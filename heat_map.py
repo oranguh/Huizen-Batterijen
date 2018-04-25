@@ -36,7 +36,7 @@ def heat_map(the_grid):
     heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
 
     # The sub plot part
-    largest_val = np.max([np.max(guass_heatmatrix_battery), np.max(guass_heatmatrix_battery)])
+    largest_val = np.max([np.max(guass_heatmatrix_battery), np.max(guass_heatmatrix_house)])
 
     cmap = plt.get_cmap('bwr')
     # diverging colormaps: 'spectral' 'bwr' 'seismic' 'PiYG' 'PuOr' 'RdYlGn'
@@ -45,7 +45,7 @@ def heat_map(the_grid):
     axs[0, 0].matshow(heatmatrix_house, vmin=None, vmax=None, cmap= 'Reds')
     axs[0, 1].matshow(heatmatrix_battery, vmin=None, vmax=None, cmap = 'Blues')
 
-    im = axs[1, 0].matshow(guass_heatmatrix_house, vmin= largest_val*-1, vmax= largest_val, cmap=cmap)
+    im = axs[1, 0].matshow(guass_heatmatrix_house, vmin= largest_val*-1, cmap=cmap)
     axs[1, 1].matshow(guass_heatmatrix_battery *-1, vmin= largest_val*-1, vmax= largest_val, cmap=cmap)
     axs[2, 0].matshow(heatmatrix_difference, vmin= largest_val*-1, vmax= largest_val, cmap=cmap)
     axs[2, 1].matshow(heatmatrix_difference, vmin= largest_val*-1, vmax= largest_val, cmap=cmap)
