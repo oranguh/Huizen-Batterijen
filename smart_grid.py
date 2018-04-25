@@ -139,11 +139,9 @@ class SmartGrid:
         elif algorithm is 'selected_solve':
             self.grid = selected_solve(self)
 
-        elif algorithm is 'simple_solve2':
-            self.grid = simple_solve2(self)
-
         elif algorithm is 'simple_solve3':
             self.grid = simple_solve3(self)
+
         elif algorithm is 'random_solve':
             self.grid = random_solve(self)
 
