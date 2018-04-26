@@ -20,8 +20,8 @@ class node:
             # print(self.subPrice)
 
 
-            print(self.batteries)
-            print("HouseNumber: {}".format(self.houseNumber))
+            # print(self.batteries)
+            # print("HouseNumber: {}".format(self.houseNumber))
             if self.houses[self.houseNumber]['output'] < battery['capacity']:
                 diff_x = abs(self.houses[self.houseNumber]['position'][0] - battery['position'][0])
                 diff_y = abs(self.houses[self.houseNumber]['position'][1] - battery['position'][1])
@@ -41,22 +41,25 @@ class node:
                             writer.writerow([nextSubPrice, self.houses])
                         print("Er is een beter oplossing gevonden!!!")
 
-                        self.batteries[i]['capacity'] += self.houses[self.houseNumber - 1]['output']
+                        self.batteries[self.previousBattery]['capacity'] += self.houses[self.houseNumber - 1]['output']
                         battery['capacity'] += self.houses[self.houseNumber]['output']
                         return nextSubPrice
                     else:
-
-                        self.batteries[i]['capacity'] += self.houses[self.houseNumber - 1]['output']
+                        # print("111")
+                        self.batteries[self.previousBattery]['capacity'] += self.houses[self.houseNumber - 1]['output']
                         battery['capacity'] += self.houses[self.houseNumber]['output']
                         return self.bestPrice
 
 
                 elif nextSubPrice < self.bestPrice:
-                    # print("volgende solve")
+                    # print("2")
                     self.bestPrice = newNode.solve()
-                # else:
-                #     # print("Deze solve wordt gestopt met HouseNumber {}".format(nextHouseNumber))
-                #     return self.bestPrice
+                else:
+                    # print ("3!")
+                # print("Deze solve wordt gestopt met HouseNumber {}".format(nextHouseNumber
+                    self.batteries[self.previousBattery]['capacity'] += self.houses[self.houseNumber - 1]['output']
+                    battery['capacity'] += self.houses[self.houseNumber]['output']
+                    return self.bestPrice
 
             #if niet kan connecten
             elif battery['capacity'] < 20: #willen we dit 20?
@@ -72,5 +75,6 @@ class node:
         # print("1")
         # print(self.batteries)
         # print("Einde for loop bereikt")
+        self.batteries[self.previousBattery]['capacity'] += self.houses[self.houseNumber - 1]['output']
         battery['capacity'] += self.houses[self.houseNumber]['output']
         return self.bestPrice
