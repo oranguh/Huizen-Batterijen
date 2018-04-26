@@ -7,7 +7,7 @@ battery_path = 'data/wijk1_batterijen.txt'
 
 houses, batteries = read_data(house_path, battery_path)
 
-# root = node(batteries, houses, 77497)
-# root.solve()
-
-solve2(batteries, houses, 77497)
+root = node(batteries, houses, 77497)
+root.solve()
+print("klaar")
+# solve2(batteries, houses, 77497)

@@ -1,24 +1,25 @@
 import csv
-
+import sys
 class node:
 
-    def __init__(self, batteryDict, houseDict, bestPrice, subPrice = 0,houseNumber = 0):
+    def __init__(self, batteryDict, houseDict, bestPrice, subPrice = 0,houseNumber = 0, previousBattery = None):
         self.houseNumber = houseNumber
         self.subPrice = subPrice
         self.batteries = batteryDict
         self.houses = houseDict
         self.bestPrice = bestPrice
-        for i, battery in enumerate(self.batteries):
-            float battiji = battery[caoacity]
+        self.previousBattery = previousBattery
 
         # battery dict = pos, capacity_left
         #house dict = pos, output, connected_to
 
     def solve(self):
-
         for i, battery in enumerate(self.batteries):
             # print(battery)
             # If kan connecten
+            # print(self.subPrice)
+
+
             print(self.batteries)
             print("HouseNumber: {}".format(self.houseNumber))
             if self.houses[self.houseNumber]['output'] < battery['capacity']:
@@ -29,7 +30,7 @@ class node:
                 battery['capacity'] -= self.houses[self.houseNumber]['output']
                 self.houses[self.houseNumber]['connected_to'] = battery['position']
                 # print(self.batteries)
-                newNode = node(self.batteries, self.houses, self.bestPrice, nextSubPrice, nextHouseNumber)
+                newNode = node(self.batteries, self.houses, self.bestPrice, nextSubPrice, nextHouseNumber, i)
                 # Hier is dus de laatste geconnect
                 if nextHouseNumber is len(self.houses):
                     # Is dit de beste oplossing tot nu toe?
@@ -38,8 +39,15 @@ class node:
                             writer = csv.writer(f)
                             writer.writerow(["score", "configuration"])
                             writer.writerow([nextSubPrice, self.houses])
+                        print("Er is een beter oplossing gevonden!!!")
+
+                        self.batteries[i]['capacity'] += self.houses[self.houseNumber - 1]['output']
+                        battery['capacity'] += self.houses[self.houseNumber]['output']
                         return nextSubPrice
                     else:
+
+                        self.batteries[i]['capacity'] += self.houses[self.houseNumber - 1]['output']
+                        battery['capacity'] += self.houses[self.houseNumber]['output']
                         return self.bestPrice
 
 
@@ -52,16 +60,17 @@ class node:
 
             #if niet kan connecten
             elif battery['capacity'] < 20: #willen we dit 20?
-                print("batteryfull")
+                # print("batteryfull")
                 # Delete de batterij uit de node als er minder dan 20 capacity over is
                 # print("3")
                 # del self.batteries[i]
                 continue
             else:
-                print("123batteryfull")
+                # print("123batteryfull")
                 # print("4")
                 continue
         # print("1")
         # print(self.batteries)
         # print("Einde for loop bereikt")
+        battery['capacity'] += self.houses[self.houseNumber]['output']
         return self.bestPrice
