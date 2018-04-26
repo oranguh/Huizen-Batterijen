@@ -108,14 +108,16 @@ class SmartGrid:
 
         # Checks whether the house is already connected
         if not self.grid[pos_house[0], pos_house[1]].battery_connect is None:
-            #print("house already connected to grid")
+            print("house already connected to grid")
             return False
 
         # Checks whether battery has enough capacity left
         if self.grid[pos_house[0], pos_house[1]].output > self.grid[pos_battery[0], pos_battery[1]].capacity_left:
-            # print("house requires {} capacity. Battery cap at: {}".format(
-            # self.grid[pos_house[0], pos_house[1]].output,
-            # self.grid[pos_battery[0], pos_battery[1]].capacity_left))
+            print("house {} requires {} capacity. Battery {} cap'd at: {}".format(
+            [pos_house[0], pos_house[1]],
+            self.grid[pos_house[0], pos_house[1]].output,
+            [pos_battery[0], pos_battery[1]],
+            self.grid[pos_battery[0], pos_battery[1]].capacity_left))
             return False
 
         id = self.grid[pos_battery[0], pos_battery[1]].battery_id

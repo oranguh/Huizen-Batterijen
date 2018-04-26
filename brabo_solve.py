@@ -35,10 +35,10 @@ class node:
                 if nextHouseNumber is len(self.houses):
                     # Is dit de beste oplossing tot nu toe?
                     if (nextSubPrice < self.bestPrice):
-                        with open("Best_brabo_solution", "w") as f:
+                        with open("Best_brabo_solution.csv", "w") as f:
                             writer = csv.writer(f)
                             writer.writerow(["score", "configuration"])
-                            writer.writerow([nextSubPrice, self.houses])
+                            writer.writerow([nextSubPrice, {"DATA": self.houses}])
                         print("Er is een beter oplossing gevonden!!!")
 
                         self.batteries[self.previousBattery]['capacity'] += self.houses[self.houseNumber - 1]['output']
