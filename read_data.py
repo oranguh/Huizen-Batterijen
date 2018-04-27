@@ -2,7 +2,7 @@ import csv
 
 
 
-def read_data(house_path, battery_path):
+def read_data(house_path, battery_path, intify = False):
     """
         Reads the data of batteries and houses and returns a list of dictionaries
         in the format:
@@ -23,8 +23,10 @@ def read_data(house_path, battery_path):
             position.append(int(row[0]))
             position.append(int(row[1]))
             # add dictionary item to houses
-            houses.append({'position': position, 'output': float(row[2])})
-
+            if intify == False:
+                houses.append({'position': position, 'output': float(row[2])})
+            else:
+                houses.append({'position': position, 'output': int(float(row[2])*1000)})
     with open(battery_path) as f:
         reader = csv.reader(f, csv.excel_tab)
         for i, row in enumerate(reader):
@@ -38,6 +40,9 @@ def read_data(house_path, battery_path):
             # int cast all elements
             position = [int(x) for x in position]
             # add dictionary item to batteries
-            batteries.append({'position': position, 'capacity': float(row[1])})
+            if intify == False:
+                batteries.append({'position': position, 'capacity': float(row[1])})
+            else:
+                batteries.append({'position': position, 'capacity': int(float(row[1])*1000)})
 
     return houses, batteries

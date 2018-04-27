@@ -18,16 +18,18 @@ class node:
             # print(battery)
             # If kan connecten
             # print(self.subPrice)
-
-
             # print(self.batteries)
             # print("HouseNumber: {}".format(self.houseNumber))
             if self.houses[self.houseNumber]['output'] < battery['capacity']:
                 diff_x = abs(self.houses[self.houseNumber]['position'][0] - battery['position'][0])
                 diff_y = abs(self.houses[self.houseNumber]['position'][1] - battery['position'][1])
+                # print(type(diff_y))
                 nextSubPrice = self.subPrice + ((diff_x + diff_y) * 9)
                 nextHouseNumber = self.houseNumber + 1
+                # print(type(nextSubPrice))
+                # print(type(nextHouseNumber))
                 battery['capacity'] -= self.houses[self.houseNumber]['output']
+                # print(type(battery['capacity']))
                 self.houses[self.houseNumber]['connected_to'] = battery['position']
                 # print(self.batteries)
                 newNode = node(self.batteries, self.houses, self.bestPrice, nextSubPrice, nextHouseNumber, i)
@@ -35,7 +37,7 @@ class node:
                 if nextHouseNumber is len(self.houses):
                     # Is dit de beste oplossing tot nu toe?
                     if (nextSubPrice < self.bestPrice):
-                        with open("Best_brabo_solution.csv", "w") as f:
+                        with open("best_brabo_solution.csv", "w") as f:
                             writer = csv.writer(f)
                             writer.writerow(["score", "configuration"])
                             writer.writerow([nextSubPrice, {"DATA": self.houses}])
@@ -54,9 +56,11 @@ class node:
                 elif nextSubPrice < self.bestPrice:
                     # print("2")
                     self.bestPrice = newNode.solve()
+
                 else:
                     # print ("3!")
                 # print("Deze solve wordt gestopt met HouseNumber {}".format(nextHouseNumber
+                    # print("waarom kom ik hier")
                     self.batteries[self.previousBattery]['capacity'] += self.houses[self.houseNumber - 1]['output']
                     battery['capacity'] += self.houses[self.houseNumber]['output']
                     return self.bestPrice
@@ -76,5 +80,5 @@ class node:
         # print(self.batteries)
         # print("Einde for loop bereikt")
         self.batteries[self.previousBattery]['capacity'] += self.houses[self.houseNumber - 1]['output']
-        battery['capacity'] += self.houses[self.houseNumber]['output']
+        # battery['capacity'] += self.houses[self.houseNumber]['output']
         return self.bestPrice

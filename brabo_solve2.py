@@ -19,7 +19,7 @@ def solve(batteryDict, houseDict, bestPrice, subPrice = 0,houseNumber = 0):
             if nextHouseNumber is len(houseDict):
                 # Is dit de beste oplossing tot nu toe?
                 if (nextSubPrice < bestPrice):
-                    with open("Best_brabo_solution.csv", "w") as f:
+                    with open("best_brabo_solution.csv", "w") as f:
                         writer = csv.writer(f)
                         writer.writerow(["score", "configuration"])
                         writer.writerow([nextSubPrice, {"DATA":houseDict}])
