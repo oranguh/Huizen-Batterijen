@@ -1,12 +1,8 @@
 import csv
 
-def solve(batteryDict, houseDict, bestPrice, subPrice = 0,houseNumber = 0):
-
+def solve(batteryDict, houseDict, bestPrice, subPrice = 0,houseNumber = 0, previousBattery = None):
     for i, battery in enumerate(batteryDict):
-        # print(battery)
         # If kan connecten
-        print(batteryDict)
-        print("HouseNumber: {}".format(houseNumber))
         if houseDict[houseNumber]['output'] < battery['capacity']:
             diff_x = abs(houseDict[houseNumber]['position'][0] - battery['position'][0])
             diff_y = abs(houseDict[houseNumber]['position'][1] - battery['position'][1])
@@ -14,7 +10,6 @@ def solve(batteryDict, houseDict, bestPrice, subPrice = 0,houseNumber = 0):
             nextHouseNumber = houseNumber + 1
             battery['capacity'] -= houseDict[houseNumber]['output']
             houseDict[houseNumber]['connected_to'] = battery['position']
-            # print(batteryDict)
             # Hier is dus de laatste geconnect
             if nextHouseNumber is len(houseDict):
                 # Is dit de beste oplossing tot nu toe?
@@ -23,30 +18,24 @@ def solve(batteryDict, houseDict, bestPrice, subPrice = 0,houseNumber = 0):
                         writer = csv.writer(f)
                         writer.writerow(["score", "configuration"])
                         writer.writerow([nextSubPrice, {"DATA":houseDict}])
+                        print("Betere oplossing gevonden!")
+                    batteryDict[previousBattery]['capacity'] += houseDict[houseNumber - 1]['output']
+                    battery['capacity'] += houseDict[houseNumber]['output']
                     return nextSubPrice
                 else:
+                    batteryDict[previousBattery]['capacity'] += houseDict[houseNumber - 1]['output']
+                    battery['capacity'] += houseDict[houseNumber]['output']
                     return bestPrice
-
-
             elif nextSubPrice < bestPrice:
-                # print("volgende solve")
-                solve(batteryDict, houseDict, bestPrice, nextSubPrice, nextHouseNumber)
-            # else:
-            #     # print("Deze solve wordt gestopt met HouseNumber {}".format(nextHouseNumber))
-            #     return bestPrice
-
+                bestPrice = solve(batteryDict, houseDict, bestPrice, nextSubPrice, nextHouseNumber, i)
+            else:
+                batteryDict[previousBattery]['capacity'] += houseDict[houseNumber - 1]['output']
+                battery['capacity'] += houseDict[houseNumber]['output']
+                return bestPrice
         #if niet kan connecten
-        elif battery['capacity'] < 20: #willen we dit 20?
-            print("batteryfull")
-            # Delete de batterij uit de node als er minder dan 20 capacity over is
-            # print("3")
-            # del batteryDict[i]
-            continue
+        # elif battery['capacity'] < 20: #willen we dit 20?
+        #     continue
         else:
-            print("123batteryfull")
-            # print("4")
             continue
-    # print("1")
-    # print(batteryDict)
-    # print("Einde for loop bereikt")
+    batteryDict[previousBattery]['capacity'] += houseDict[houseNumber - 1]['output']
     return bestPrice
