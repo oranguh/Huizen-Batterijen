@@ -32,7 +32,7 @@ class node:
                 # print(type(battery['capacity']))
                 self.houses[self.houseNumber]['connected_to'] = battery['position']
                 # print(self.batteries)
-                newNode = node(self.batteries, self.houses, self.bestPrice, nextSubPrice, nextHouseNumber, i)
+                # newNode = node(self.batteries, self.houses, self.bestPrice, nextSubPrice, nextHouseNumber, i)
                 # Hier is dus de laatste geconnect
                 if nextHouseNumber is len(self.houses):
                     # Is dit de beste oplossing tot nu toe?
@@ -55,6 +55,7 @@ class node:
 
                 elif nextSubPrice < self.bestPrice:
                     # print("2")
+                    newNode = node(self.batteries, self.houses, self.bestPrice, nextSubPrice, nextHouseNumber, i)
                     self.bestPrice = newNode.solve()
 
                 else:
