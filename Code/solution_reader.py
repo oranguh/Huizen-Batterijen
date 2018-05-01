@@ -7,8 +7,8 @@ from termcolor import cprint
 
 data_path = 'best_brabo_solution.csv'
 
-house_path = 'data/wijk1_huizen.csv'
-battery_path = 'data/wijk1_batterijen.txt'
+house_path = '../data/wijk1_huizen.csv'
+battery_path = '../data/wijk1_batterijen.txt'
 
 houses, batteries = read_data(house_path, battery_path)
 
@@ -20,7 +20,7 @@ with open(data_path, 'r') as f:
         # for some reason the csv contains empty lists?
         if len(row) == 0:
             continue
-        if i == 2:
+        if i == 1:
             # print(row[1])
             row[1] = row[1].replace("'", '"')
             parsed_data = json.loads(row[1])
