@@ -185,21 +185,16 @@ class SmartGrid:
             where x,y are the coordinates of the battery
         """
 
-        # iterate through every battery
-        for battery in self.battery_dict:
-            battery_pos = battery['position']
+        self.house_data = []
+        for i, house in enumerate(self.house_dict):
+            self.house_data.append([])
+            for j, battery in enumerate(self.battery_dict):
 
-            # iterate through every item in list of dictionary
-            for i,house in enumerate(self.house_dict):
-                key_string = 'distance_to_' + str(battery_pos)
-                house_pos = house['position']
+                self.house_data[i].append((abs(house["position"][0] - battery["position"][0]) +
+                abs(house["position"][1] - battery["position"][1]) * 9))
 
-                # update dict with manhattan distances
-                self.house_dict[i][key_string] = [
-                battery_pos,
-                abs(house_pos[0] - battery_pos[0]) +
-                abs(house_pos[1] - battery_pos[1])]
-
+            self.house_data[i].append(house["output"])
+        print(self.house_data)
     def cap_left(self):
         """ """
 

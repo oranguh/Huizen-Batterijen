@@ -23,8 +23,8 @@ from heat_map import heat_map
 colorama.init()
 
 
-house_path = 'data/wijk1_huizen.csv'
-battery_path = 'data/wijk1_batterijen.txt'
+house_path = '../Data/wijk1_huizen.csv'
+battery_path = '../Data/wijk1_batterijen.txt'
 
 houses, batteries = read_data(house_path, battery_path)
 
@@ -66,17 +66,6 @@ wijk1.add_battery_dictionaries(batteries)
 wijk1.prettify()
 print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
-# print("There are currently {} batteries on the grid".format(wijk1.battery_count))
-# print("Battery ID: {} has capacity of: {}".format(wijk1.grid[42][3].battery_id, wijk1.grid[42][3].capacity))
-# print("There are currently {} houses on the grid".format(wijk1.house_count))
-# print("House ID: {} has output of: {}".format(wijk1.grid[10][27].house_id, wijk1.grid[10][27].output))
-# print("Battery has: {} capacity left".format(wijk1.grid[42][3].capacity_left))
-
-# wijk1.solve()
-
-# wijk1.prettify()
-# print("The cost of this grid is: {}".format(wijk1.calc_cost()))
-
 wijk1.solve("simple_solve3")
 
 wijk1.prettify()
@@ -85,6 +74,8 @@ print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 wijk1.cap_left()
 
 heat_map(wijk1)
+
+wijk1.house_dict_with_manhattan_distances();
 # wijk1.disconnect(houses[1]["position"])
 
 # house_coordinatesx = [dic['position'][0] for dic in houses]

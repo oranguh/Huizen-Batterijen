@@ -15,24 +15,17 @@ class node:
 
     def solve(self):
         for i, battery in enumerate(self.batteries):
-            # print(battery)
             # If kan connecten
-            # print(self.subPrice)
-            # print(self.batteries)
-            # print("HouseNumber: {}".format(self.houseNumber))
+
             if self.houses[self.houseNumber]['output'] < battery['capacity']:
                 diff_x = abs(self.houses[self.houseNumber]['position'][0] - battery['position'][0])
                 diff_y = abs(self.houses[self.houseNumber]['position'][1] - battery['position'][1])
-                # print(type(diff_y))
                 nextSubPrice = self.subPrice + ((diff_x + diff_y) * 9)
                 nextHouseNumber = self.houseNumber + 1
-                # print(type(nextSubPrice))
-                # print(type(nextHouseNumber))
+
                 battery['capacity'] -= self.houses[self.houseNumber]['output']
-                # print(type(battery['capacity']))
                 self.houses[self.houseNumber]['connected_to'] = battery['position']
-                # print(self.batteries)
-                # newNode = node(self.batteries, self.houses, self.bestPrice, nextSubPrice, nextHouseNumber, i)
+
                 # Hier is dus de laatste geconnect
                 if nextHouseNumber is len(self.houses):
                     # Is dit de beste oplossing tot nu toe?
@@ -54,32 +47,17 @@ class node:
 
 
                 elif nextSubPrice < self.bestPrice:
-                    # print("2")
+
                     newNode = node(self.batteries, self.houses, self.bestPrice, nextSubPrice, nextHouseNumber, i)
                     self.bestPrice = newNode.solve()
 
                 else:
-                    # print ("3!")
-                # print("Deze solve wordt gestopt met HouseNumber {}".format(nextHouseNumber
-                    # print("waarom kom ik hier")
+
                     self.batteries[self.previousBattery]['capacity'] += self.houses[self.houseNumber - 1]['output']
                     battery['capacity'] += self.houses[self.houseNumber]['output']
                     return self.bestPrice
 
             #if niet kan connecten
-            elif battery['capacity'] < 20: #willen we dit 20?
-                # print("batteryfull")
-                # Delete de batterij uit de node als er minder dan 20 capacity over is
-                # print("3")
-                # del self.batteries[i]
-                continue
-            else:
-                # print("123batteryfull")
-                # print("4")
-                continue
-        # print("1")
-        # print(self.batteries)
-        # print("Einde for loop bereikt")
+
         self.batteries[self.previousBattery]['capacity'] += self.houses[self.houseNumber - 1]['output']
-        # battery['capacity'] += self.houses[self.houseNumber]['output']
         return self.bestPrice
