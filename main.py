@@ -1,14 +1,21 @@
 #!/usr/bin/env python
-
-from Code.Helper_Functions.smart_grid import SmartGrid, SmartHouse, SmartBattery
-from Code.Helper_Functions.read_data import read_data
-from Code.Helper_Functions.heat_map import heat_map
-from Code.Helper_Functions.solution_reader import solution_reader
-
+import sys
 import numpy as np
 import colorama
 from termcolor import cprint
 import matplotlib.pyplot as plt
+
+sys.path.append('Code/Helper_Functions')
+sys.path.append('Code/Algorithms')
+sys.path.append('Data/')
+sys.path.append('Results/')
+
+from smart_grid import SmartGrid, SmartHouse, SmartBattery
+from read_data import read_data
+from heat_map import heat_map
+from solution_reader import solution_reader
+
+
 
 def main():
     colorama.init()
@@ -57,7 +64,7 @@ def main():
     wijk1.prettify()
     print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
-    solution_reader(wijk1, 'Code/Helper_Functions/best_brabo_solution.csv')
+    solution_reader(wijk1, 'Results/best_brabo_solution.csv')
     # wijk1.solve("simple_solve3")
 
     # wijk1.prettify()

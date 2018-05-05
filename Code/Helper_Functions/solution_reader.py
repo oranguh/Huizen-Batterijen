@@ -1,31 +1,36 @@
 import csv
 import json
-# from smart_grid import *
-# from read_data import read_data
 import colorama
 from termcolor import cprint
+import sys
+
+sys.path.append('../../Code/Algorithms')
+sys.path.append('../../Data')
+sys.path.append('../../Results')
+from read_data import read_data
+from smart_grid import *
+
 
 def main():
-    """ currently broken"""
-    # house_path = '../../Data/data/wijk1_huizen.csv'
-    # battery_path = '../../Data/data/wijk1_batterijen.txt'
-    #
-    # houses, batteries = read_data(house_path, battery_path)
-    #
-    # wijk_brabo = SmartGrid(51,51)
-    # wijk_brabo.add_house_dictionaries(houses)
-    # wijk_brabo.add_battery_dictionaries(batteries)
-    #
-    # solution_reader(wijk_brabo)
-    #
-    # for element in houses:
-    #     wijk_brabo.create_house(element['position'], element['output'])
-    # for element in batteries:
-    #     wijk_brabo.create_battery(element['position'], element['capacity'])
-    #
-    # solution_reader(wijk_brabo)
+    """ fixed, you can now use this as both a function and as script"""
 
-def solution_reader(wijk_brabo, results_path = 'best_brabo_solution.csv'):
+    house_path = '../../Data/wijk1_huizen.csv'
+    battery_path = '../../Data/wijk1_batterijen.txt'
+
+    houses, batteries = read_data(house_path, battery_path)
+
+    wijk_brabo = SmartGrid(51,51)
+    wijk_brabo.add_house_dictionaries(houses)
+    wijk_brabo.add_battery_dictionaries(batteries)
+
+    for element in houses:
+        wijk_brabo.create_house(element['position'], element['output'])
+    for element in batteries:
+        wijk_brabo.create_battery(element['position'], element['capacity'])
+
+    solution_reader(wijk_brabo, '../../Results/best_brabo_solution.csv')
+
+def solution_reader(wijk_brabo, results_path = 'Results/best_brabo_solution.csv'):
     """
     Reads the solution from a file
     """

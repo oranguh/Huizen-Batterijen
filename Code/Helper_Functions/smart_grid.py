@@ -1,11 +1,13 @@
 import numpy as np
-from ..Algorithms.simple_solve import *
-from ..Algorithms.selected_solve import selected_solve
-from ..Algorithms.simple_solve2 import *
-from ..Algorithms.simple_solve3 import *
-from ..Algorithms.random_solve import *
 import colorama
 from termcolor import cprint
+
+from simple_solve import *
+from selected_solve import selected_solve
+from simple_solve2 import *
+from simple_solve3 import *
+from random_solve import *
+
 
 class SmartGrid:
     """
