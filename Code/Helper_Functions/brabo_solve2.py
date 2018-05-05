@@ -1,4 +1,5 @@
 import csv
+import json
 
 def solve(batteryDict, houseDict, bestPrice, subPrice = 0,houseNumber = 0, previousBattery = None):
     for i, battery in enumerate(batteryDict):
@@ -14,6 +15,9 @@ def solve(batteryDict, houseDict, bestPrice, subPrice = 0,houseNumber = 0, previ
             if nextHouseNumber is len(houseDict):
                 # Is dit de beste oplossing tot nu toe?
                 if (nextSubPrice < bestPrice):
+                    savefile = 'brabo_solutions/' + str(nextSubPrice) + '.json'
+                    with open(savefile, 'w') as jsonfile:
+                        json.dump({"DATA": self.houses}, jsonfile)
                     with open("best_brabo_solution.csv", "w") as f:
                         writer = csv.writer(f)
                         writer.writerow(["score", "configuration"])

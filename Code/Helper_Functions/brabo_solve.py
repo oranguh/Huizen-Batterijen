@@ -1,5 +1,6 @@
 import csv
 import sys
+import json
 class node:
 
     def __init__(self, batteryDict, houseDict, bestPrice, subPrice = 0,houseNumber = 0, previousBattery = None):
@@ -30,6 +31,9 @@ class node:
                 if nextHouseNumber is len(self.houses):
                     # Is dit de beste oplossing tot nu toe?
                     if (nextSubPrice < self.bestPrice):
+                        savefile = 'brabo_solutions/' + str(nextSubPrice) + '.json'
+                        with open(savefile, 'w') as jsonfile:
+                            json.dump({"DATA": self.houses}, jsonfile)
                         with open("best_brabo_solution.csv", "w") as f:
                             writer = csv.writer(f)
                             writer.writerow(["score", "configuration"])
