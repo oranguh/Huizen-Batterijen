@@ -3,23 +3,13 @@
 from Code.Helper_Functions.smart_grid import SmartGrid, SmartHouse, SmartBattery
 from Code.Helper_Functions.read_data import read_data
 from Code.Helper_Functions.heat_map import heat_map
+from Code.Helper_Functions.solution_reader import solution_reader
 
 import numpy as np
 import colorama
 from termcolor import cprint
 import matplotlib.pyplot as plt
 
-
-# DONE read the csv files for houses and batteries.
-# DONE maybe make a dictionary containing all battery/houses?
-# DONE determine the range for x and y for each neighborhood.
-# DONE populate the grid with houses and batteries with house and battery objects.
-# N/A also make wire objects?
-# DONE create a scoring function which calculates the cost of the smart grid configuration
-#
-# Partially DONE make algorithms
-# ?????
-# profit
 def main():
     colorama.init()
 
@@ -67,9 +57,10 @@ def main():
     wijk1.prettify()
     print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
-    wijk1.solve("simple_solve3")
+    solution_reader(wijk1, 'Code/Helper_Functions/best_brabo_solution.csv')
+    # wijk1.solve("simple_solve3")
 
-    wijk1.prettify()
+    # wijk1.prettify()
     print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
     wijk1.cap_left()
@@ -84,6 +75,7 @@ def main():
     #
     # plt.scatter(house_coordinatesx, house_coordinatesy)
     # plt.show()
+
 
 if __name__ == "__main__":
     main()
