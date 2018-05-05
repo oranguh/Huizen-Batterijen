@@ -5,15 +5,15 @@ from read_data import read_data
 import colorama
 from termcolor import cprint
 
-data_path = 'best_brabo_solution.csv'
+results_path = '../../Results/best_brabo_solution.csv'
 
-house_path = '../data/wijk1_huizen.csv'
-battery_path = '../data/wijk1_batterijen.txt'
+house_path = '../../Data/data/wijk1_huizen.csv'
+battery_path = '../../Data/data/wijk1_batterijen.txt'
 
 houses, batteries = read_data(house_path, battery_path)
 
 
-with open(data_path, 'r') as f:
+with open(results_path, 'r') as f:
     best_reader = csv.reader(f)
     for i, row in enumerate(best_reader):
 

@@ -1,4 +1,4 @@
-from smart_grid import *
+# from ..Helper_Functions.smart_grid import *
 
 def simple_solve(the_grid):
     """ Takes an unsolved SmartGrid object and returns a solved smart grid

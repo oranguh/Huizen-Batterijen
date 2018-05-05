@@ -1,7 +1,5 @@
 import csv
 
-
-
 def read_data(house_path, battery_path, intify = False):
     """
         Reads the data of batteries and houses and returns a list of dictionaries

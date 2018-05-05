@@ -1,8 +1,8 @@
-from smart_grid import *
 from scipy.ndimage import gaussian_filter
 import matplotlib.pyplot as plt
 from matplotlib import style
 from mpl_toolkits.mplot3d.axes3d import Axes3D
+import numpy as np
 
 def heat_map(the_grid):
     """
@@ -15,8 +15,9 @@ def heat_map(the_grid):
 
     A quick and dirty method would be to get the average length of connections?
     """
-    # I think 15 is a nice value?
-    SIGMA = 15
+    # determining sigma is important. A quick a dirty value is dimensions/batteries
+    # 51/5 = 10
+    SIGMA = 10
     style.use('classic')
 
 
