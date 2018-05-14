@@ -198,6 +198,8 @@ class SmartGrid:
             self.house_data[i].append(0)
             self.house_data[i].append(house["output"])
         print(self.house_data)
+        return(self.house_data)
+
     def cap_left(self):
         """ """
 
