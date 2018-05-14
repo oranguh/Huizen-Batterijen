@@ -16,7 +16,6 @@ class node:
     def solve(self):
         for i, battery in enumerate(self.batteries):
             # If kan connecten
-
             if self.houses[self.houseNumber]['output'] < battery['capacity']:
                 diff_x = abs(self.houses[self.houseNumber]['position'][0] - battery['position'][0])
                 diff_y = abs(self.houses[self.houseNumber]['position'][1] - battery['position'][1])
@@ -30,7 +29,7 @@ class node:
                 if nextHouseNumber is len(self.houses):
                     # Is dit de beste oplossing tot nu toe?
                     if (nextSubPrice < self.bestPrice):
-                        with open("best_brabo_solution.csv", "w") as f:
+                        with open("best_brabo_solution.csv1", "w") as f:
                             writer = csv.writer(f)
                             writer.writerow(["score", "configuration"])
                             writer.writerow([nextSubPrice, {"DATA": self.houses}])
