@@ -10,7 +10,7 @@ sys.path.append('Code/Algorithms')
 sys.path.append('Data/')
 sys.path.append('Results/')
 
-from smart_grid import SmartGrid, SmartHouse, SmartBattery
+from smart_grid import SmartGrid
 from read_data import read_data
 from heat_map import heat_map
 from solution_reader import solution_reader
@@ -74,7 +74,7 @@ def main():
 
     heat_map(wijk1)
 
-    wijk1.house_dict_with_manhattan_distances();
+    wijk1.house_dict_with_manhattan_distances()
     # wijk1.disconnect(houses[1]["position"])
 
     # house_coordinatesx = [dic['position'][0] for dic in houses]

@@ -3,12 +3,13 @@ import sys
 sys.path.append('../../Code/Algorithms')
 sys.path.append('../../Data')
 sys.path.append('../../Results')
-sys.path.append('Code/Helper_Functions')
+sys.path.append('../../Code/Helper_Functions')
 
 from smart_grid import SmartGrid
 from read_data import read_data
-from brabo_solve import node
-from brabo_solve2 import solve as solve2
+# from brabo_solve import node
+# from brabo_solve2 import solve as solve2
+from brabo_solve_new_datarep import node
 
 house_path = '../../Data/wijk1_huizen.csv'
 battery_path = '../../Data/wijk1_batterijen.txt'
@@ -23,10 +24,10 @@ max_y = max([dic['position'][1] for dic in houses] +
 wijk1 = SmartGrid(max_x,max_y)
 wijk1.add_house_dictionaries(houses)
 wijk1.add_battery_dictionaries(batteries)
-houses = wijk1.house_dict_with_manhattan_distances
+houses = wijk1.house_dict_with_manhattan_distances()
 
 
-
-root = node(batteries, houses, 49581)
+print(houses)
+root = node(batteries, houses, 5000000)
 root.solve()
 print("klaar")

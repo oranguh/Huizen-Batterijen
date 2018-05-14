@@ -187,10 +187,11 @@ class SmartGrid:
             the items are created as: {'distance_to_[x,y]':[[x, y], <distance>]}
             where x,y are the coordinates of the battery
         """
-
+        print("JAAA")
         self.house_data = []
         for i, house in enumerate(self.house_dict):
             self.house_data.append([])
+            print(house["output"])
             for j, battery in enumerate(self.battery_dict):
 
                 self.house_data[i].append((abs(house["position"][0] - battery["position"][0]) +

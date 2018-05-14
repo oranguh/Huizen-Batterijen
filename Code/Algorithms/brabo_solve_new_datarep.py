@@ -22,7 +22,7 @@ class node:
                 nextHouseNumber = self.houseNumber + 1
 
                 battery['capacity'] -= self.houses[self.houseNumber][-1]
-                self.houses[self.houseNumber][-2] = battery[i]
+                self.houses[self.houseNumber][-2] = i
 
                 # Hier is dus de laatste geconnect
                 if nextHouseNumber is len(self.houses):
@@ -35,7 +35,7 @@ class node:
                         print("Er is een beter oplossing gevonden!!!")
 
                         self.batteries[self.previousBattery]['capacity'] += self.houses[self.houseNumber - 1][-1]
-                        battery['capacity'] += self.houses[self.houseNumber]['output']
+                        battery['capacity'] += self.houses[self.houseNumber][-1]
                         return nextSubPrice
                     else:
                         # print("111")
