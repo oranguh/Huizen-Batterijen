@@ -6,7 +6,7 @@ sys.path.append('../../Code/Algorithms')
 sys.path.append('../../Data')
 sys.path.append('../../Results')
 
-from solution_reader import solution_reader
+from solution_reader_new_format import solution_reader
 from read_data import read_data
 from smart_grid import *
 
