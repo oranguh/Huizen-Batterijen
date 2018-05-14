@@ -195,8 +195,9 @@ class SmartGrid:
 
                 self.house_data[i].append((abs(house["position"][0] - battery["position"][0]) +
                 abs(house["position"][1] - battery["position"][1]) * 9))
-            self.house_data[i].append(0)
+            self.house_data[i].append(None)
             self.house_data[i].append(house["output"])
+
         return(self.house_data)
 
     def cap_left(self):
