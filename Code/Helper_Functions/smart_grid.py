@@ -187,7 +187,6 @@ class SmartGrid:
             the items are created as: {'distance_to_[x,y]':[[x, y], <distance>]}
             where x,y are the coordinates of the battery
         """
-        print("JAAA")
         self.house_data = []
         for i, house in enumerate(self.house_dict):
             self.house_data.append([])
@@ -198,7 +197,6 @@ class SmartGrid:
                 abs(house["position"][1] - battery["position"][1]) * 9))
             self.house_data[i].append(0)
             self.house_data[i].append(house["output"])
-        print(self.house_data)
         return(self.house_data)
 
     def cap_left(self):
