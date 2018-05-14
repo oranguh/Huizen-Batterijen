@@ -181,7 +181,8 @@ class SmartGrid:
 
     def house_dict_with_manhattan_distances(self):
         """
-            updates the house_dict to contain the manhattan distances to each battery
+            updates the house_dict to contain the manhattan distances to each battery * cost
+            [[cost to battery1, cost to battery2, ... , cost to battery n, connected to battery, output][...]]
 
             the items are created as: {'distance_to_[x,y]':[[x, y], <distance>]}
             where x,y are the coordinates of the battery
@@ -194,7 +195,7 @@ class SmartGrid:
 
                 self.house_data[i].append((abs(house["position"][0] - battery["position"][0]) +
                 abs(house["position"][1] - battery["position"][1]) * 9))
-
+            self.house_data[i].append(0)
             self.house_data[i].append(house["output"])
         print(self.house_data)
     def cap_left(self):
