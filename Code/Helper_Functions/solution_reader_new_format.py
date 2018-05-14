@@ -30,19 +30,20 @@ def main():
 
     solution_reader(wijk_brabo, '../../Results/best_brabo_solution.csv')
 
-def solution_reader(wijk_brabo, results_path = 'best_brabo_solution.json'):
+def solution_reader(wijk_brabo, results_path = "../../Results/best_brabo_solution.json"):
     """
     Reads the solution from a file
     """
     # with open(results_path, 'r') as f:
         # best_reader = csv.reader(f)
         # for i, row in enumerate(best_reader):
+    # print(results_path)
     with open(results_path) as f:
         parsed_data = json.load(f)
-
+    # print(parsed_data)
 
     best_houses = parsed_data['DATA']
-
+    # print(best_houses)
 
     wijk_brabo.house_dict_with_manhattan_distances = best_houses
 

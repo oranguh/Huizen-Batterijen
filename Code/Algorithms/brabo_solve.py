@@ -29,7 +29,7 @@ class node:
                 if nextHouseNumber is len(self.houses):
                     # Is dit de beste oplossing tot nu toe?
                     if (nextSubPrice < self.bestPrice):
-                        with open("best_brabo_solution.csv1", "w") as f:
+                        with open("../../Results/best_brabo_solution.csv1", "w") as f:
                             writer = csv.writer(f)
                             writer.writerow(["score", "configuration"])
                             writer.writerow([nextSubPrice, {"DATA": self.houses}])

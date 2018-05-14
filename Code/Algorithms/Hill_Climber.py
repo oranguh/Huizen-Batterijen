@@ -26,9 +26,9 @@ def main():
     for element in batteries:
         wijk_brabo.create_battery(element['position'], element['capacity'])
 
-    solution_reader(wijk_brabo, '../../Results/best_brabo_solution.csv')
-
-    hillclimberke = hillclimber(wijk_brabo.house_data, wijk_brabo.battery_dict)
+    solution_reader(wijk_brabo, "../../Results/best_brabo_solution.json")
+    # print(wijk_brabo.house_dict_with_manhattan_distances)
+    hillclimberke = hillclimber(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.battery_dict)
 
     combs = combinations(range(150), 2)
     ploep = True
