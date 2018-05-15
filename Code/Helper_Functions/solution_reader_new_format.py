@@ -42,10 +42,12 @@ def solution_reader(wijk_brabo, results_path = "../../Results/best_brabo_solutio
         parsed_data = json.load(f)
     # print(parsed_data)
 
-    best_houses = parsed_data['DATA']
+    best_houses = parsed_data['META']['DATA']
+    batteries = parsed_data['META']['BATTERIES']
     # print(best_houses)
 
     wijk_brabo.house_dict_with_manhattan_distances = best_houses
+    wijk_brabo.batteries = batteries
 
     # wijk_brabo.prettify()
     # print(wijk_brabo.calc_cost())

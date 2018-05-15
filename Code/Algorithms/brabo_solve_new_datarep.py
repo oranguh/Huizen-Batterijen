@@ -29,7 +29,7 @@ class node:
                     # Is dit de beste oplossing tot nu toe?
                     if (nextSubPrice < self.bestPrice):
                         with open("../../Results/best_brabo_solution.json", 'w') as jsonfile:
-                            json.dump({"DATA": self.houses}, jsonfile)
+                            json.dump({"META": {"DATA": self.houses, "BATTERIES": self.batteries}}, jsonfile)
                         with open("../../Results/best_brabo_solution.csv1", "w") as f:
                             writer = csv.writer(f)
                             writer.writerow(["score", "configuration"])

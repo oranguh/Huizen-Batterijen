@@ -203,8 +203,9 @@ class SmartGrid:
     def cap_left(self):
         """ """
 
-        bat_cap_left = [self.grid[dict_element['position'][0], dict_element['position'][1]].capacity_left for dict_element in self.battery_dict]
-        print(bat_cap_left)
+        self.bat_cap_left = [self.grid[dict_element['position'][0], dict_element['position'][1]].capacity_left for dict_element in self.battery_dict]
+        print(self.bat_cap_left)
+
 
     def disconnect(self, pos_house):
         """ disconnects the house and restores the batteries capacity_left"""
