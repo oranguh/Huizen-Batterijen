@@ -30,11 +30,14 @@ def main():
     # print(wijk_brabo.house_dict_with_manhattan_distances)
     hillclimberke = hillclimber(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.battery_dict)
 
+    print(batteries)
+
     combs = combinations(range(150), 2)
     ploep = True
     while ploep:
         print("ploep")
         ploep = hillclimberke.run(combs)
+
 
 
 class hillclimber:
@@ -46,25 +49,25 @@ class hillclimber:
     def run(self, combs):
         combs = combinations(range(150), 2)
         for i, j in combs:
+            # Nog batterij capaciteit aanpassen
             if self.swap_check(self.batteries, self.houses[i], self.houses[j]):
-                temp = houses[i][-2]
-                houses[i][-2] = houses[j][-2]
-                houses[j][-2] = temp
+                temp = self.houses[i][-2]
+                self.houses[i][-2] = self.houses[j][-2]
+                self.houses[j][-2] = temp
                 combs = combinations(range(150), 2)
                 print("Swap!")
-                return
-            # print("komt ie dus hier")
-        ploep = False
-        return ploep
+                return True
+        print("komt ie dus hier")
+        return False
 
 
     def swap_check(self, batteries, house1, house2):
-        print("Check")
-        # if house1[-2] is not house2[-2]:
-        print("check2")
-        if batteries[house1[-2]].capacity_left < house2[-1] and batteries[house2[-2]].capacity_left < house1[-1]:
-            if (house1[house1[-2]] + house2[house2[-2]]) > (house1[house2[-2]] + house2[house1[-2]]):
-                return True
+        # print("Check")
+        if house1[-2] is not house2[-2]:
+        # print("check2")
+            if batteries[house1[-2]]['capacity'] < house2[-1] and batteries[house2[-2]]['capacity'] < house1[-1]:
+                if (house1[house1[-2]] + house2[house2[-2]]) > (house1[house2[-2]] + house2[house1[-2]]):
+                    return True
         return False
 
 
