@@ -71,6 +71,7 @@ def main():
     print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
     wijk1.cap_left()
+    print("The remaining capacity of batteries are: {}".format(wijk1.bat_cap_left))
 
     # heat_map(wijk1)
 
@@ -83,7 +84,7 @@ def main():
     # plt.scatter(house_coordinatesx, house_coordinatesy)
     # plt.show()
     wijk1.get_lower_bound()
-    print(wijk1.lower_bound)
+    print("Lower bound of grid is: {}".format(wijk1.lower_bound))
 
 
 if __name__ == "__main__":

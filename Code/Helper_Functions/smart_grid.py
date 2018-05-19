@@ -206,7 +206,7 @@ class SmartGrid:
         self.house_data = []
         for i, house in enumerate(self.house_dict):
             self.house_data.append([])
-            print(house["output"])
+            # print(house["output"])
             for j, battery in enumerate(self.battery_dict):
 
                 self.house_data[i].append((abs(house["position"][0] - battery["position"][0]) +
@@ -220,7 +220,7 @@ class SmartGrid:
         """ """
 
         self.bat_cap_left = [self.grid[dict_element['position'][0], dict_element['position'][1]].capacity_left for dict_element in self.battery_dict]
-        print(self.bat_cap_left)
+        # print(self.bat_cap_left)
 
 
     def disconnect(self, pos_house):
@@ -246,16 +246,24 @@ class SmartGrid:
         """
         self.lower_bound = 0
         for bat in self.battery_dict:
-            self.lower_bound += 5000
-
+            if (bat['capacity'] == 1507.0):
+                self.lower_bound += 5000
+            elif (bat['capacity'] == 450):
+                self.lower_bound += 900
+            elif (bat['capacity'] == 900):
+                self.lower_bound += 1350
+            elif (bat['capacity'] == 1800):
+                self.lower_bound += 1800
+            else:
+                print("unknown battery type")
         if self.house_data == None:
-            print("nothing here")
+            print("Missing self.house_data")
             pass
         else:
-            print("done! test")
+            # print("done! test")
             print(len(self.house_data))
             for house in self.house_data:
-                shortest_cable_cost = 5000
+                shortest_cable_cost = 99999
                 for cable_cost in house[0:-2]:
                     # print(battery_distance)
                     if cable_cost < shortest_cable_cost:
