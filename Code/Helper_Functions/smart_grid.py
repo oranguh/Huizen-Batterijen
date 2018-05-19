@@ -75,9 +75,25 @@ class SmartGrid:
 
         self.grid[self.position[0], self.position[1]] = SmartBattery(self.position, self.capacity, self.battery_count)
 
-    def check_validity():
-        """ TODO Checks whether the smart_grid is fully connected """
-        pass
+    def check_validity(self):
+        """ Checks validity of grid
+
+        """
+        self.validity = True
+        for row in self.grid:
+            for element in row:
+                if element is None:
+                    continue
+                if isinstance(element, SmartBattery):
+                    if element.capacity_left < 0:
+                        self.validity = False
+                        return False
+                if isinstance(element, SmartHouse):
+                    if element.battery_connect is None:
+                        self.validity = False
+                        return False
+        self.validity = True
+        return True
 
     def calc_cost(self):
         """ Calculates the cost of the SmartGrid by looping through every elemeny
@@ -110,16 +126,16 @@ class SmartGrid:
 
         # Checks whether the house is already connected
         if not self.grid[pos_house[0], pos_house[1]].battery_connect is None:
-            print("house already connected to grid")
+            # print("house already connected to grid")
             return False
 
         # Checks whether battery has enough capacity left
         if self.grid[pos_house[0], pos_house[1]].output > self.grid[pos_battery[0], pos_battery[1]].capacity_left:
-            print("house {} requires {} capacity. Battery {} cap'd at: {}".format(
-            [pos_house[0], pos_house[1]],
-            self.grid[pos_house[0], pos_house[1]].output,
-            [pos_battery[0], pos_battery[1]],
-            self.grid[pos_battery[0], pos_battery[1]].capacity_left))
+            # print("house {} requires {} capacity. Battery {} cap'd at: {}".format(
+            # [pos_house[0], pos_house[1]],
+            # self.grid[pos_house[0], pos_house[1]].output,
+            # [pos_battery[0], pos_battery[1]],
+            # self.grid[pos_battery[0], pos_battery[1]].capacity_left))
             return False
 
         id = self.grid[pos_battery[0], pos_battery[1]].battery_id
@@ -225,7 +241,28 @@ class SmartGrid:
 
         print("disconnected battery: {} with house {}".format(bat_pos, pos_house))
 
+    def get_lower_bound(self):
+        """ determines lower bound of the grid configuration
+        """
+        self.lower_bound = 0
+        for bat in self.battery_dict:
+            self.lower_bound += 5000
 
+        if self.house_data == None:
+            print("nothing here")
+            pass
+        else:
+            print("done! test")
+            print(len(self.house_data))
+            for house in self.house_data:
+                shortest_cable_cost = 5000
+                for cable_cost in house[0:-2]:
+                    # print(battery_distance)
+                    if cable_cost < shortest_cable_cost:
+                        shortest_cable_cost = cable_cost
+                # print(shortest_cable_cost)
+                # print(self.lower_bound)
+                self.lower_bound += shortest_cable_cost
 
 class SmartHouse:
 

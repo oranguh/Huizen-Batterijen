@@ -72,7 +72,7 @@ def main():
 
     wijk1.cap_left()
 
-    heat_map(wijk1)
+    # heat_map(wijk1)
 
     wijk1.house_dict_with_manhattan_distances()
     # wijk1.disconnect(houses[1]["position"])
@@ -82,6 +82,8 @@ def main():
     #
     # plt.scatter(house_coordinatesx, house_coordinatesy)
     # plt.show()
+    wijk1.get_lower_bound()
+    print(wijk1.lower_bound)
 
 
 if __name__ == "__main__":

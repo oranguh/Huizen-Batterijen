@@ -43,9 +43,9 @@ def random_solve(the_grid):
     bat_pos = [dic['position'] for dic in the_grid.battery_dict]
     solutions_list = []
     # best_score = 80000
-    limit = 4000
-
-    for i in range(limit):
+    limit = 100
+    i = 0
+    while i is not limit:
         # Iterates through nearest houses until cap full
         keepcount = 0
         count = 0
@@ -65,9 +65,10 @@ def random_solve(the_grid):
             else:
                 #print("connected battery: {} with house {}".format(bat_pos, house_pos))
                 continue
-
-        score = the_grid.calc_cost()
-        solutions_list.append(score)
+        if the_grid.check_validity():
+            i += 1
+            score = the_grid.calc_cost()
+            solutions_list.append(score)
 
         house_path = '../../Data/wijk1_huizen.csv'
         battery_path = '../../Data/wijk1_batterijen.txt'
