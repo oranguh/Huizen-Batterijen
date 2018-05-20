@@ -53,7 +53,7 @@ def battery_placer(the_grid, SIGMA = 10):
     numb_battery = 5
     battery_capacity = 1507.0
     best_heat = 99999
-    Algo = "Exhaust"
+    # Algo = "Exhaust"
     Algo = "Hill_climb"
 
     heatmatrix_house = np.zeros(the_grid.size)
@@ -124,8 +124,8 @@ def battery_placer(the_grid, SIGMA = 10):
                 counter = 0
                 best_heat = score_battery_position
                 best_config = new_config
-                print(best_config)
-                print(best_heat)
+                # print(best_config)
+                # print(best_heat)
                 path = "Results/Battery_configurations/" + "SCORE:" + str(int(best_heat)) + "_SIGMA:" + str(SIGMA) + ".csv"
                 with open(path, "w") as f:
                     writer = csv.writer(f,delimiter=':',quoting=csv.QUOTE_NONE)
