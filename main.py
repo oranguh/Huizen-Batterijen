@@ -14,7 +14,7 @@ from smart_grid import SmartGrid
 from read_data import read_data
 from heat_map import heat_map
 from solution_reader import solution_reader
-
+from battery_placer import battery_placer
 
 
 def main():
@@ -85,7 +85,8 @@ def main():
     # plt.show()
     wijk1.get_lower_bound()
     print("Lower bound of grid is: {}".format(wijk1.lower_bound))
-
+    x = battery_placer(wijk1)
+    print(x)
 
 if __name__ == "__main__":
     main()

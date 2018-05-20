@@ -19,18 +19,18 @@ def main():
 
     houses, batteries = read_data(house_path, battery_path)
 
-    wijk_brabo = SmartGrid(51,51)
-    wijk_brabo.add_house_dictionaries(houses)
-    wijk_brabo.add_battery_dictionaries(batteries)
+    smart_wijk = SmartGrid(51,51)
+    smart_wijk.add_house_dictionaries(houses)
+    smart_wijk.add_battery_dictionaries(batteries)
 
     for element in houses:
-        wijk_brabo.create_house(element['position'], element['output'])
+        smart_wijk.create_house(element['position'], element['output'])
     for element in batteries:
-        wijk_brabo.create_battery(element['position'], element['capacity'])
+        smart_wijk.create_battery(element['position'], element['capacity'])
 
-    solution_reader(wijk_brabo, '../../Results/best_brabo_solution.csv')
+    solution_reader(smart_wijk, '../../Results/best_brabo_solution.csv')
 
-def solution_reader(wijk_brabo, results_path = "../../Results/best_brabo_solution.json"):
+def solution_reader(smart_wijk, results_path = "../../Results/best_brabo_solution.json"):
     """
     Reads the solution from a file
     """
@@ -46,12 +46,12 @@ def solution_reader(wijk_brabo, results_path = "../../Results/best_brabo_solutio
     batteries = parsed_data['META']['BATTERIES']
     # print(best_houses)
 
-    wijk_brabo.house_dict_with_manhattan_distances = best_houses
-    wijk_brabo.batteries = batteries
+    smart_wijk.house_dict_with_manhattan_distances = best_houses
+    smart_wijk.batteries = batteries
 
-    # wijk_brabo.prettify()
-    # print(wijk_brabo.calc_cost())
-    # wijk_brabo.cap_left()
+    # smart_wijk.prettify()
+    # print(smart_wijk.calc_cost())
+    # smart_wijk.cap_left()
 
 if __name__ == "__main__":
     main()

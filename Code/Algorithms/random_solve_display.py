@@ -43,7 +43,7 @@ def random_solve(the_grid):
     bat_pos = [dic['position'] for dic in the_grid.battery_dict]
     solutions_list = []
     # best_score = 80000
-    limit = 1000
+    limit = 100
     i = 0
     while i < limit:
         # Iterates through nearest houses until cap full
@@ -67,7 +67,7 @@ def random_solve(the_grid):
                 continue
         if the_grid.check_validity():
             i += 1
-            print(i)
+            # print(i)
             score = the_grid.calc_cost()
             solutions_list.append(score)
 
