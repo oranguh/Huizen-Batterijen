@@ -17,6 +17,7 @@ from smart_grid import *
 def main():
     house_path = '../../../Data/wijk1_huizen.csv'
     battery_path = '../../../Data/wijk1_batterijen.txt'
+    battery_path = '../../../Results/Battery_configurations/SCORE:4486_SIGMA:10.csv'
 
     houses, batteries = read_data(house_path, battery_path)
 
@@ -44,8 +45,8 @@ def main():
     print(siman.accepted)
     print("score")
     siman.calc_cost()
-    print(siman.batteries)
-    print(siman.houses)
+    # print(siman.batteries)
+    # print(siman.houses)
 
 
 
@@ -85,6 +86,7 @@ class simulated_annealing:
                 gain = (house1[house1[-2]] + house2[house2[-2]]) - (house1[house2[-2]] + house2[house1[-2]])
                 temperature = 80000 * (20/80000) ** (self.iterations / self.maxiterations)
                 # temperature = 80000 - self.iterations * (80000/20) /self.maxiterations
+                temperature
                 chance = math.e ** (gain/temperature)
                 if chance > random.random():
                     self.accepted += 1
