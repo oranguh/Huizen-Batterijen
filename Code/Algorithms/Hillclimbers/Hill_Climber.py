@@ -1,10 +1,10 @@
 from itertools import combinations
 import sys
 
-sys.path.append('../../Code/Helper_Functions')
-sys.path.append('../../Code/Algorithms')
-sys.path.append('../../Data')
-sys.path.append('../../Results')
+sys.path.append('../../../Code/Helper_Functions')
+sys.path.append('../../../Code/Algorithms')
+sys.path.append('../../../Data')
+sys.path.append('../../../Results')
 
 from solution_reader_new_format import solution_reader
 from read_data import read_data
@@ -47,16 +47,10 @@ class hillclimber:
         for i, j in combs:
             # Nog batterij capaciteit aanpassen
             if self.swap_check(self.batteries, self.houses[i], self.houses[j]):
-                print(self.batteries[self.houses[i][-2]]['capacity'])
                 battery_index = self.houses[i][-2]
-                battery_jndex = self.houses[j][-2]
-                print(self.houses[i][-1])
-                print(self.houses[j][-1])
-
                 self.batteries[battery_index]['capacity'] += self.houses[i][-1]
                 self.batteries[battery_index]['capacity'] -= self.houses[j][-1]
                 self.batteries[battery_jndex]['capacity'] += (self.houses[j][-1] - self.houses[i][-1])
-                print(self.batteries[self.houses[i][-2]]['capacity'])
                 temp = self.houses[i][-2]
                 self.houses[i][-2] = self.houses[j][-2]
                 self.houses[j][-2] = temp
@@ -67,9 +61,7 @@ class hillclimber:
 
 
     def swap_check(self, batteries, house1, house2):
-        # print("Check")
         if house1[-2] is not house2[-2]:
-        # print("check2")
             if (batteries[house1[-2]]['capacity'] + house1[-1]) >= house2[-1] and (batteries[house2[-2]]['capacity'] + house2[-1]) >= house1[-1]:
                 if (house1[house1[-2]] + house2[house2[-2]]) > (house1[house2[-2]] + house2[house1[-2]]):
                     return True
