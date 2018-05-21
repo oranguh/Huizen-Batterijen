@@ -118,7 +118,7 @@ class SmartGrid:
         return total_cost
 
 
-    def connect(self, pos_battery, pos_house):
+    def connect(self, pos_battery, pos_house, VIS = False):
         """ Updates the capacity of the battery and the battery_connect of the house
             (usage: wijk1.connect([42, 3], [10, 27]))
 
@@ -126,16 +126,18 @@ class SmartGrid:
 
         # Checks whether the house is already connected
         if not self.grid[pos_house[0], pos_house[1]].battery_connect is None:
-            # print("house already connected to grid")
+            if VIS:
+                print("house already connected to grid")
             return False
 
         # Checks whether battery has enough capacity left
         if self.grid[pos_house[0], pos_house[1]].output > self.grid[pos_battery[0], pos_battery[1]].capacity_left:
-            # print("house {} requires {} capacity. Battery {} cap'd at: {}".format(
-            # [pos_house[0], pos_house[1]],
-            # self.grid[pos_house[0], pos_house[1]].output,
-            # [pos_battery[0], pos_battery[1]],
-            # self.grid[pos_battery[0], pos_battery[1]].capacity_left))
+            if VIS:
+                print("house {} requires {} capacity. Battery {} cap'd at: {}".format(
+                [pos_house[0], pos_house[1]],
+                self.grid[pos_house[0], pos_house[1]].output,
+                [pos_battery[0], pos_battery[1]],
+                self.grid[pos_battery[0], pos_battery[1]].capacity_left))
             return False
 
         id = self.grid[pos_battery[0], pos_battery[1]].battery_id
@@ -217,7 +219,9 @@ class SmartGrid:
         return(self.house_data)
 
     def cap_left(self):
-        """ """
+        """
+            Calculates the cost of this grid
+        """
 
         self.bat_cap_left = [self.grid[dict_element['position'][0], dict_element['position'][1]].capacity_left for dict_element in self.battery_dict]
         # print(self.bat_cap_left)
@@ -271,6 +275,17 @@ class SmartGrid:
                 # print(shortest_cable_cost)
                 # print(self.lower_bound)
                 self.lower_bound += shortest_cable_cost
+
+    def connect_from_new_structure(self, new_data_struture):
+        if not len(new_data_struture) == 150:
+            print("LIST DOES NOT CONTAIN 150 houses")
+
+        self.battery_dict[i]
+        self.house_dict[i]
+        for i, element in enumerate(new_data_struture):
+            # print(self.battery_dict[i])
+            # print(self.house_dict[element])
+            self.connect(self.battery_dict[i], self.house_dict[element], True)
 
 class SmartHouse:
 
