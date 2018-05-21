@@ -92,9 +92,13 @@ def main():
         wijk1.create_battery(element['position'], element['capacity'])
 
     wijk1.add_battery_dictionaries(batteries)
-
+    wijk1.house_dict_with_manhattan_distances()
     heat_map(wijk1)
     wijk1.prettify()
+    print(len(wijk1.house_data))
+
+    # DO SIMULATED ANNEALING HERE
+    # get the score of the sim annealing, set x to battery placement score. Plot    
 
 if __name__ == "__main__":
     main()
