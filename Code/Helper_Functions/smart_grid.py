@@ -212,7 +212,7 @@ class SmartGrid:
             for j, battery in enumerate(self.battery_dict):
 
                 self.house_data[i].append((abs(house["position"][0] - battery["position"][0]) +
-                abs(house["position"][1] - battery["position"][1]) * 9))
+                abs(house["position"][1] - battery["position"][1])) * 9)
             self.house_data[i].append(None)
             self.house_data[i].append(house["output"])
 

@@ -51,7 +51,7 @@ def main():
         writer.writerow(["score", "configuration"])
         writer.writerow([hillclimberke.calc_cost(), {"DATA": hillclimberke.houses}])
 
-    hillclimberke.calc_cost()
+    print(hillclimberke.calc_cost())
 
 
 class hillclimber:
@@ -90,6 +90,7 @@ class hillclimber:
 
     def calc_cost(self):
         total_cost = 0
+        print(self.houses)
         for house in self.houses:
             total_cost += house[house[-2]]
 
