@@ -1,10 +1,12 @@
 from itertools import combinations
+from random import shuffle as shuffelke
 import sys
 
 sys.path.append('../../../Code/Helper_Functions')
 sys.path.append('../../../Code/Algorithms')
 sys.path.append('../../../Data')
 sys.path.append('../../../Results')
+
 
 from solution_reader_new_format import solution_reader
 from read_data import read_data
@@ -30,7 +32,11 @@ def main():
     # print(wijk_brabo.house_dict_with_manhattan_distances)
     hillclimberke = hillclimber(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
     print(wijk_brabo.batteries)
-    combs = combinations(range(150), 2)
+    combs = []
+    comb = combinations(range(150), 2)
+    # Creates a list of the combs to be able to call shuffle
+    for i in comb:
+        combs.append(i)
     ploep = True
     while ploep:
         ploep = hillclimberke.run(combs)
@@ -44,6 +50,7 @@ class hillclimber:
         self.batteries = batteries
 
     def run(self, combs):
+        shuffelke(combs)
         for i, j in combs:
             # Nog batterij capaciteit aanpassen
             if self.swap_check(self.batteries, self.houses[i], self.houses[j]):
