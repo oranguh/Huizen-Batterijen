@@ -4,6 +4,16 @@ import numpy as np
 import csv
 import random
 
+# for i in range(50):
+#     # print([-1,1][random.randrange(2)])
+#     # print(random.randint(0,1))
+#     print(random.randint(0, 4))
+
+
+
+config = [1,2,3,4]
+if any(config) in config:
+    print("duplicate")
 def battery_placer(the_grid, SIGMA = 10):
     """
     convolves a gaussian filter onto the grid, then visualizes this as a heat map
@@ -85,7 +95,7 @@ def battery_placer(the_grid, SIGMA = 10):
                         [random.randint(0, 50),random.randint(0, 50)],
                         [random.randint(0, 50),random.randint(0, 50)],
                         [random.randint(0, 50),random.randint(0, 50)]]
-
+        new_config = best_config
         heatmatrix_battery = np.zeros(the_grid.size)
 
         for position in best_config:
@@ -96,17 +106,24 @@ def battery_placer(the_grid, SIGMA = 10):
         best_heat = np.sum(np.absolute(heatmatrix_difference))
 
         counter = 0
-        while counter < 10000:
-            new_config = Battery_climber(best_config)
+        inner_counter = 0
+        while counter < 100:
+            if inner_counter > 1000:
+                new_config = Battery_climber(best_config)
+                inner_counter = 0
+                counter += 1
+            else:
+                # print("searching")
+                new_config = Battery_climber(new_config)
+                inner_counter += 1
             # print(new_config)
             heatmatrix_battery = np.zeros(the_grid.size)
             for position in new_config:
-                heatmatrix_battery[new_config[0], new_config[1]] = battery_capacity
+                heatmatrix_battery[position[0], position[1]] = battery_capacity
 
             guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA)
             heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
             score_battery_position = np.sum(np.absolute(heatmatrix_difference))
-            counter += 1
             if score_battery_position < best_heat:
                 counter = 0
                 best_heat = score_battery_position
@@ -122,24 +139,41 @@ def battery_placer(the_grid, SIGMA = 10):
                         bad_format = "[" + str(battery[0]) + ", " + str(battery[1]) + "]\t" + str(1507.0)
                         # print(bad_format)
                         writer.writerow([bad_format])
-            else:
-                pass
-                # new_config = best_config
     else:
         pass
     print(best_heat)
     return(best_config)
 
-def Battery_climber(best_config):
+def Battery_climber(config):
 
-    battery_index = random.randint(0, len(best_config)-1)
+    battery_index = random.randint(0, len(config)-1)
     x_or_y = random.randint(0,1)
     add_or_subtract = [-1,1][random.randrange(2)]
 
-    if best_config[battery_index][x_or_y] == 0:
-        best_config[battery_index][x_or_y] += 1
-    elif best_config[battery_index][x_or_y] == 50:
-        best_config[battery_index][x_or_y] -= 1
+    if config[battery_index][x_or_y] <= 0:
+        config[battery_index][x_or_y] += 1
+    elif config[battery_index][x_or_y] >= 50:
+        config[battery_index][x_or_y] -= 1
     else:
-        best_config[battery_index][x_or_y] += add_or_subtract
-    return best_config
+        config[battery_index][x_or_y] += add_or_subtract
+    duplo = check_unique(config)
+    if duplo:
+        for item in config:
+            if item == duplo:
+                if item[0] > 25:
+                    item[0] -= 1
+                else:
+                    item[0] += 1
+            break
+    return config
+
+
+
+def check_unique(listed):
+    checked = []
+    for i in listed:
+        if i in checked:
+            # print(listed)
+            return i
+        checked.append(i)
+    return None

@@ -83,9 +83,9 @@ def main():
     # plt.show()
     # wijk1.get_lower_bound()
     # print("Lower bound of grid is: {}".format(wijk1.lower_bound))
-    battery_placer(wijk1)
+    battery_placer(wijk1, 10)
     # print(x)
-    battery_path = 'Results/Battery_configurations/BESTSCORE_SIGMA_5.csv'
+    battery_path = 'Results/Battery_configurations/BESTSCORE_SIGMA_10.csv'
 
     houses, batteries = read_data(house_path, battery_path)
     for element in batteries:

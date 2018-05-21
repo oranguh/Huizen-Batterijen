@@ -46,8 +46,9 @@ def heat_map(the_grid):
     axs[0, 0].matshow(heatmatrix_house, vmin=None, vmax=None, cmap= 'Reds')
     axs[0, 1].matshow(heatmatrix_battery, vmin=None, vmax=None, cmap = 'Blues')
 
-    im = axs[1, 0].matshow(guass_heatmatrix_house, vmin= largest_val*-1, vmax= largest_val, cmap=cmap)
-    axs[1, 1].matshow(guass_heatmatrix_battery *-1, vmin= largest_val*-1, vmax= largest_val, cmap=cmap)
+    axs[1, 0].matshow(guass_heatmatrix_house, vmin= 0, cmap=cmap)
+    # im = axs[1, 0].matshow(guass_heatmatrix_house, vmin= largest_val*-1, vmax= largest_val, cmap=cmap)
+    im = axs[1, 1].matshow(guass_heatmatrix_battery *-1, vmin= largest_val*-1, vmax= largest_val, cmap=cmap)
     axs[2, 0].matshow(heatmatrix_difference, vmin= largest_val*-1, vmax= largest_val, cmap=cmap)
     axs[2, 1].matshow(heatmatrix_difference, vmin= largest_val*-1, vmax= largest_val, cmap=cmap)
     # plt.subplot_tool()
@@ -59,40 +60,41 @@ def heat_map(the_grid):
     print("The penalty score for this battery configuration is: {}".format(score_battery_position))
 
     # 3-D subplots
-    fig = plt.figure(figsize=plt.figaspect(0.5))
-    ax = fig.add_subplot(2, 2, 1, projection='3d')
-    plt.title("Houses gaussian smoothed")
+    if False:
+        fig = plt.figure(figsize=plt.figaspect(0.5))
+        ax = fig.add_subplot(2, 2, 1, projection='3d')
+        plt.title("Houses gaussian smoothed")
 
-    X = np.arange(0, 51, 1)
-    Y = np.arange(0, 51, 1)
-    X, Y = np.meshgrid(X, Y)
+        X = np.arange(0, 51, 1)
+        Y = np.arange(0, 51, 1)
+        X, Y = np.meshgrid(X, Y)
 
-    Z = guass_heatmatrix_house
-    surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, vmin= largest_val*-1, vmax= largest_val,
-                           cmap=cmap, linewidth=0, antialiased=False)
-    ax.set_zlim(largest_val*-1, largest_val)
-    ax.view_init(30, 180)
+        Z = guass_heatmatrix_house
+        surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, vmin= largest_val*-1, vmax= largest_val,
+                               cmap=cmap, linewidth=0, antialiased=False)
+        ax.set_zlim(largest_val*-1, largest_val)
+        ax.view_init(30, 180)
 
-    ax = fig.add_subplot(2, 2, 2, projection='3d')
-    plt.title("Batteries gaussian smoothed")
+        ax = fig.add_subplot(2, 2, 2, projection='3d')
+        plt.title("Batteries gaussian smoothed")
 
-    Z = guass_heatmatrix_battery*-1
-    ax.plot_surface(X, Y, Z, rstride=1, cstride=1, vmin= largest_val*-1, vmax= largest_val,
-                           cmap=cmap, linewidth=0, antialiased=False)
-    ax.set_zlim(largest_val*-1, largest_val)
-    ax.view_init(30, 180)
+        Z = guass_heatmatrix_battery*-1
+        ax.plot_surface(X, Y, Z, rstride=1, cstride=1, vmin= largest_val*-1, vmax= largest_val,
+                               cmap=cmap, linewidth=0, antialiased=False)
+        ax.set_zlim(largest_val*-1, largest_val)
+        ax.view_init(30, 180)
 
-    ax = fig.add_subplot(2, 2, 3, projection='3d')
-    plt.title("Difference between houses and batteries")
+        ax = fig.add_subplot(2, 2, 3, projection='3d')
+        plt.title("Difference between houses and batteries")
 
-    Z = heatmatrix_difference
-    ax.plot_surface(X, Y, Z, rstride=1, cstride=1, vmin= largest_val*-1, vmax= largest_val,
-                           cmap=cmap, linewidth=0, antialiased=False)
-    ax.set_zlim(largest_val*-1, largest_val)
-    ax.view_init(30, 180)
+        Z = heatmatrix_difference
+        ax.plot_surface(X, Y, Z, rstride=1, cstride=1, vmin= largest_val*-1, vmax= largest_val,
+                               cmap=cmap, linewidth=0, antialiased=False)
+        ax.set_zlim(largest_val*-1, largest_val)
+        ax.view_init(30, 180)
 
 
 
-    fig.colorbar(surf, aspect=10)
-    plt.tight_layout()
-    plt.show()
+        fig.colorbar(surf, aspect=10)
+        plt.tight_layout()
+        plt.show()
