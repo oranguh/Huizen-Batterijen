@@ -45,7 +45,7 @@ def main():
             part_sets_copy.remove(part_set)
     part_sets_copy = list(part_sets_copy)
     for setsies in part_sets_copy:
-        dict_of_set = {"batteries": [], "cost": 0, "score": 0}
+        dict_of_set = {"batteries": [],"bat_positions":[], "cost": 0, "score": 0}
         for battery in list(setsies):
             if battery == 4:
                 dict_of_set["batteries"].append(1800)
