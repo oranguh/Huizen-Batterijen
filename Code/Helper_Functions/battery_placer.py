@@ -126,7 +126,7 @@ def battery_placer(the_grid, SIGMA = 10):
                 best_config = new_config
                 # print(best_config)
                 # print(best_heat)
-                path = "Results/Battery_configurations/" + "SCORE:" + str(int(best_heat)) + "_SIGMA:" + str(SIGMA) + ".csv"
+                path = "Results/Battery_configurations/" + "SCORE_" + str(int(best_heat)) + "_SIGMA_" + str(SIGMA) + ".csv"
                 with open(path, "w") as f:
                     writer = csv.writer(f,delimiter=':',quoting=csv.QUOTE_NONE)
                     writer.writerow(["pos		cap"])
