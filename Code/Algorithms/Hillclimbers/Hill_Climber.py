@@ -12,8 +12,8 @@ from smart_grid import *
 
 
 def main():
-    house_path = '../../Data/wijk1_huizen.csv'
-    battery_path = '../../Data/wijk1_batterijen.txt'
+    house_path = '../../../Data/wijk1_huizen.csv'
+    battery_path = '../../../Data/wijk1_batterijen.txt'
 
     houses, batteries = read_data(house_path, battery_path)
 
@@ -26,7 +26,7 @@ def main():
     for element in batteries:
         wijk_brabo.create_battery(element['position'], element['capacity'])
 
-    solution_reader(wijk_brabo, "../../Results/best_brabo_solution.json")
+    solution_reader(wijk_brabo, "../../../Results/best_brabo_solution.json")
     # print(wijk_brabo.house_dict_with_manhattan_distances)
     hillclimberke = hillclimber(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
     print(wijk_brabo.batteries)
