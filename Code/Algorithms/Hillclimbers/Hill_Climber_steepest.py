@@ -32,16 +32,10 @@ def main():
     # print(wijk_brabo.house_dict_with_manhattan_distances)
     hillclimberke = hillclimber(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
     print(wijk_brabo.batteries)
-    combs = []
-    comb = combinations(range(150), 2)
-    # Creates a list of the combs to be able to call shuffle
-    for i in comb:
-        combs.append(i)
+    combs = combinations(range(150), 2)
     ploep = True
     while ploep:
         ploep = hillclimberke.run(combs)
-
-    hillclimberke.calc_cost()
 
 
 
@@ -50,41 +44,41 @@ class hillclimber:
     def __init__(self, houses, batteries):
         self.houses = houses
         self.batteries = batteries
-        self.swaps = 0
 
     def run(self, combs):
-        shuffelke(combs)
+        besti, bestj
         for i, j in combs:
             # Nog batterij capaciteit aanpassen
-            if self.swap_check(self.houses[i], self.houses[j]):
+            if self.swap_check(self.batteries, self.houses[i], self.houses[j]):
                 battery_index = self.houses[i][-2]
                 battery_jndex = self.houses[j][-2]
-                self.batteries[battery_index]['capacity'] += (self.houses[i][-1] - self.houses[j][-1])
+                self.batteries[battery_index]['capacity'] += self.houses[i][-1]
+                self.batteries[battery_index]['capacity'] -= self.houses[j][-1]
                 self.batteries[battery_jndex]['capacity'] += (self.houses[j][-1] - self.houses[i][-1])
                 temp = self.houses[i][-2]
                 self.houses[i][-2] = self.houses[j][-2]
                 self.houses[j][-2] = temp
-                self.swaps += 1
+                print("Swap!")
                 return True
         print("beste gevonden")
-        print("swaps: ")
-        print(self.swaps)
         return False
 
 
-    def swap_check(self, house1, house2):
-        if house1[-2] is not house2[-2]:
-            if (self.batteries[house1[-2]]['capacity'] + house1[-1]) >= house2[-1] and (self.batteries[house2[-2]]['capacity'] + house2[-1]) >= house1[-1]:
-                if (house1[house1[-2]] + house2[house2[-2]]) > (house1[house2[-2]] + house2[house1[-2]]):
-                    return True
+    def swap_check(self, i, j):
+        if self.houses[i][-2] is not self.houses[j][-2]:
+            if (self.batteries[self.houses[i][-2]]['capacity'] + self.houses[i][-1]) >= self.houses[j][-1] and (self.batteries[self.houses[j][-2]]['capacity'] + self.houses[j][-1]) >= self.houses[i][-1]:
+                if (self.houses[i][self.houses[i][-2]] + self.houses[j][self.houses[j][-2]]) > (self.houses[i][self.houses[j][-2]] + self.houses[j][self.houses[i][-2]]):
+                    return i , j
         return False
 
-    def calc_cost(self):
-        total_cost = 0
-        for house in self.houses:
-            total_cost += house[house[-2]]
+    def best_swap(self, combs):
+        besti, bestj = 0, 0
+        for i, j  in combs:
+            i , j = self.swap_check(i, j)
 
-        print(total_cost)
+
+
+
 
 
 if __name__ == "__main__":
