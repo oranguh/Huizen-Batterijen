@@ -1,6 +1,8 @@
 from itertools import combinations
 from random import shuffle as shuffelke
 import sys
+import json
+import csv
 
 sys.path.append('../../../Code/Helper_Functions')
 sys.path.append('../../../Code/Algorithms')
@@ -16,6 +18,7 @@ from smart_grid import *
 def main():
     house_path = '../../../Data/wijk1_huizen.csv'
     battery_path = '../../../Data/wijk1_batterijen.txt'
+    # battery_path = '../../../Results/Battery_configurations/SCORE:4486_SIGMA:10.csv'
 
     houses, batteries = read_data(house_path, battery_path)
 
@@ -41,8 +44,14 @@ def main():
     while ploep:
         ploep = hillclimberke.run(combs)
 
-    hillclimberke.calc_cost()
+    with open("../../../Results/best_hillclimber.json", 'w') as jsonfile:
+        json.dump({"META": {"DATA": hillclimberke.houses, "BATTERIES": hillclimberke.batteries}}, jsonfile)
+    with open("../../../Results/best_hillclimber.csv1", "w") as f:
+        writer = csv.writer(f)
+        writer.writerow(["score", "configuration"])
+        writer.writerow([hillclimberke.calc_cost(), {"DATA": hillclimberke.houses}])
 
+    hillclimberke.calc_cost()
 
 
 class hillclimber:
@@ -84,7 +93,7 @@ class hillclimber:
         for house in self.houses:
             total_cost += house[house[-2]]
 
-        print(total_cost)
+        return total_cost
 
 
 if __name__ == "__main__":
