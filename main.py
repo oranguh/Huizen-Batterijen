@@ -49,33 +49,31 @@ def main():
         wijk1.create_house(element['position'], element['output'])
 
     # populate the batteries in the smart_grid
-    for element in batteries:
-        wijk1.create_battery(element['position'], element['capacity'])
+    # for element in batteries:
+    #     wijk1.create_battery(element['position'], element['capacity'])
 
     # adds dictionaries to the SmartGrid object
     wijk1.add_house_dictionaries(houses)
-    wijk1.add_battery_dictionaries(batteries)
+    # wijk1.add_battery_dictionaries(batteries)
 
 
-    # print("Battery has: {} capacity left".format(wijk1.grid[42][3].capacity_left))
-    # wijk1.connect([42, 3 [10, 27])
 
     # pretty display
-    wijk1.prettify()
+    # wijk1.prettify()
     print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
-    solution_reader(wijk1, 'Results/best_brabo_solution.csv')
+    # solution_reader(wijk1, 'Results/best_brabo_solution.csv')
     # wijk1.solve("simple_solve3")
 
     # wijk1.prettify()
     print("The cost of this grid is: {}".format(wijk1.calc_cost()))
 
-    wijk1.cap_left()
-    print("The remaining capacity of batteries are: {}".format(wijk1.bat_cap_left))
+    # wijk1.cap_left()
+    # print("The remaining capacity of batteries are: {}".format(wijk1.bat_cap_left))
 
     # heat_map(wijk1)
 
-    wijk1.house_dict_with_manhattan_distances()
+    # wijk1.house_dict_with_manhattan_distances()
     # wijk1.disconnect(houses[1]["position"])
 
     # house_coordinatesx = [dic['position'][0] for dic in houses]
@@ -83,10 +81,20 @@ def main():
     #
     # plt.scatter(house_coordinatesx, house_coordinatesy)
     # plt.show()
-    wijk1.get_lower_bound()
-    print("Lower bound of grid is: {}".format(wijk1.lower_bound))
-    x = battery_placer(wijk1)
-    print(x)
+    # wijk1.get_lower_bound()
+    # print("Lower bound of grid is: {}".format(wijk1.lower_bound))
+    battery_placer(wijk1)
+    # print(x)
+    battery_path = 'Results/Battery_configurations/BESTSCORE_SIGMA_5.csv'
+
+    houses, batteries = read_data(house_path, battery_path)
+    for element in batteries:
+        wijk1.create_battery(element['position'], element['capacity'])
+
+    wijk1.add_battery_dictionaries(batteries)
+
+    heat_map(wijk1)
+    wijk1.prettify()
 
 if __name__ == "__main__":
     main()

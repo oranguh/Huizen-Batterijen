@@ -87,8 +87,9 @@ def battery_placer(the_grid, SIGMA = 10):
                         [random.randint(0, 50),random.randint(0, 50)]]
 
         heatmatrix_battery = np.zeros(the_grid.size)
+
         for position in best_config:
-            heatmatrix_battery[best_config[0], best_config[1]] = battery_capacity
+            heatmatrix_battery[position[0], position[1]] = battery_capacity
 
         guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA)
         heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
@@ -110,9 +111,10 @@ def battery_placer(the_grid, SIGMA = 10):
                 counter = 0
                 best_heat = score_battery_position
                 best_config = new_config
-                # print(best_config)
-                # print(best_heat)
-                path = "Results/Battery_configurations/" + "SCORE_" + str(int(best_heat)) + "_SIGMA_" + str(SIGMA) + ".csv"
+                print(best_config)
+                print(best_heat)
+                # path = "Results/Battery_configurations/" + "SCORE_" + str(int(best_heat)) + "_SIGMA_" + str(SIGMA) + ".csv"
+                path = "Results/Battery_configurations/" + "BESTSCORE" + "_SIGMA_" + str(SIGMA) + ".csv"
                 with open(path, "w") as f:
                     writer = csv.writer(f,delimiter=':',quoting=csv.QUOTE_NONE)
                     writer.writerow(["pos		cap"])
@@ -120,6 +122,9 @@ def battery_placer(the_grid, SIGMA = 10):
                         bad_format = "[" + str(battery[0]) + ", " + str(battery[1]) + "]\t" + str(1507.0)
                         # print(bad_format)
                         writer.writerow([bad_format])
+            else:
+                pass
+                # new_config = best_config
     else:
         pass
     print(best_heat)
