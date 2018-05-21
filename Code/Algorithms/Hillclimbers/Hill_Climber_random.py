@@ -44,9 +44,9 @@ def main():
     while ploep:
         ploep = hillclimberke.run(combs)
 
-    with open("../../../Results/best_hillclimber.json", 'w') as jsonfile:
+    with open("../../../Results/best_hillclimber_dobbelsteen.json", 'w') as jsonfile:
         json.dump({"META": {"DATA": hillclimberke.houses, "BATTERIES": hillclimberke.batteries}}, jsonfile)
-    with open("../../../Results/best_hillclimber.csv1", "w") as f:
+    with open("../../../Results/best_hillclimber_dobbelsteen.csv1", "w") as f:
         writer = csv.writer(f)
         writer.writerow(["score", "configuration"])
         writer.writerow([hillclimberke.calc_cost(), {"DATA": hillclimberke.houses}])
