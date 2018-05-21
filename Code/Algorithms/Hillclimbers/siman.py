@@ -17,7 +17,7 @@ from smart_grid import *
 def main():
     house_path = '../../../Data/wijk1_huizen.csv'
     battery_path = '../../../Data/wijk1_batterijen.txt'
-    battery_path = '../../../Results/Battery_configurations/SCORE:4486_SIGMA:10.csv'
+    # battery_path = '../../../Results/Battery_configurations/SCORE:4486_SIGMA:10.csv'
 
     houses, batteries = read_data(house_path, battery_path)
 
@@ -37,7 +37,7 @@ def main():
     comb = combinations(range(150), 2)
     # Creates a list of the combs to be able to call shuffle
     for i in comb:
-        combs.append(i)
+        combs.append(i)    
     ploep = True
     while siman.iterations < siman.maxiterations:
         ploep = siman.run(random.choice(combs))

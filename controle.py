@@ -4,6 +4,7 @@ import colorama
 from termcolor import cprint
 import matplotlib.pyplot as plt
 
+
 sys.path.append('Code/Helper_Functions')
 sys.path.append('Code/Algorithms')
 sys.path.append('Data/')
@@ -45,9 +46,11 @@ wijk1.prettify()
 
 # solution_reader_new(wijk1, 'Results/best_hillclimber.json')
 
-# print(wijk1.house_dict_with_manhattan_distances)
-
-# wijk1.connect_from_new_structure(wijk1.house_dict_with_manhattan_distances)
+wijk1.connect_from_new_structure(wijk1.house_dict_with_manhattan_distances)
+heat_map(wijk1)
+wijk1.cap_left()
+print(wijk1.calc_cost())
+print(wijk1.check_validity())
 
 # wijk1.cap_left()
 # print(wijk1.calc_cost())
