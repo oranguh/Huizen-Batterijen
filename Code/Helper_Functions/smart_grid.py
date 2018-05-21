@@ -277,15 +277,18 @@ class SmartGrid:
                 self.lower_bound += shortest_cable_cost
 
     def connect_from_new_structure(self, new_data_struture):
+        # print(len(new_data_struture))
         if not len(new_data_struture) == 150:
             print("LIST DOES NOT CONTAIN 150 houses")
 
-        self.battery_dict[i]
-        self.house_dict[i]
+        # self.battery_dict[i]
+        # self.house_dict[i]
         for i, element in enumerate(new_data_struture):
-            # print(self.battery_dict[i])
-            # print(self.house_dict[element])
-            self.connect(self.battery_dict[i], self.house_dict[element], True)
+            # print(self.battery_dict[i]['position'])
+            # print(element[-2])
+            # print(self.house_dict[element[-2]]['position'])
+            # print(i)
+            self.connect(self.battery_dict[element[-2]]['position'], self.house_dict[i]['position'], True)
 
 class SmartHouse:
 
