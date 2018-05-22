@@ -43,7 +43,8 @@ def random_solve(the_grid):
     bat_pos = [dic['position'] for dic in the_grid.battery_dict]
     solutions_list = []
     # best_score = 80000
-    limit = 100
+    limit = 10000
+    invalids = 0
     i = 0
     while i < limit:
         # Iterates through nearest houses until cap full
@@ -70,6 +71,8 @@ def random_solve(the_grid):
             # print(i)
             score = the_grid.calc_cost()
             solutions_list.append(score)
+        else:
+            invalids += 1
 
         house_path = '../../Data/wijk1_huizen.csv'
         battery_path = '../../Data/wijk1_batterijen.txt'
@@ -92,11 +95,12 @@ def random_solve(the_grid):
         writer.writerow(solutions_list)
 
     # print(solutions_list)
-    title_string = 'Random solve distribution n = ' + str(limit)
+    title_string = 'Random solve distribution n = ' + str(limit) + '\n' + 'Invalid solutions: ' + str(invalids)
     plt.hist(solutions_list, 50, facecolor='blue')
     plt.xlabel('Grid Score')
     plt.ylabel('Count')
     plt.title(title_string)
+    plt.xlim(xmin = 30000)
     plt.show()
     # return the_grid.grid
 
