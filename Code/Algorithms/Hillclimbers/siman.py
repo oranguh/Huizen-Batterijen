@@ -18,8 +18,10 @@ from smart_grid import *
 
 def main():
     house_path = '../../../Data/wijk1_huizen.csv'
-    battery_path = '../../../Data/wijk1_batterijen.txt'
+    # battery_path = '../../../Data/wijk1_batterijen.txt'
     # battery_path = '../../../Results/Battery_configurations/SCORE:4486_SIGMA:10.csv'
+    battery_path = '../../../Results/Battery_configurations/1137_nice_sigma10.csv'
+
 
     houses, batteries = read_data(house_path, battery_path)
 
@@ -33,8 +35,10 @@ def main():
         wijk_brabo.create_battery(element['position'], element['capacity'])
 
     # solution_reader(wijk_brabo, "../../../Results/best_brabo_solution.json")
-    solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_normal.json")
+    # solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_normal.json")
     # print(wijk_brabo.house_dict_with_manhattan_distances)
+    solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_marco.json")
+    # solution_reader(wijk_brabo, "../../../Results/best_hc_marco.json")
     siman = simulated_annealing(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
     combs = []
     comb = combinations(range(150), 2)
@@ -94,8 +98,8 @@ class simulated_annealing:
         if house1[-2] is not house2[-2]:
             if (self.batteries[house1[-2]]['capacity'] + house1[-1]) >= house2[-1] and (self.batteries[house2[-2]]['capacity'] + house2[-1]) >= house1[-1]:
                 gain = (house1[house1[-2]] + house2[house2[-2]]) - (house1[house2[-2]] + house2[house1[-2]])
-                # temperature = 80000 * (20/80000) ** (self.iterations / self.maxiterations)
-                temperature = 80000 - self.iterations * (80000/20) /self.maxiterations
+                temperature = 80000 * (20/80000) ** (self.iterations / self.maxiterations)
+                # temperature = 80000 - self.iterations * (80000/20) /self.maxiterations
                 # temperature = 20 + ((8000 -20) / (1 + math.exp(0.3 * (self.iterations - self.maxiterations/2))))
                 chance = math.e ** (gain/temperature)
                 if chance > random.random():

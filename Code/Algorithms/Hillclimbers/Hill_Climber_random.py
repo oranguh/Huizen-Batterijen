@@ -17,8 +17,9 @@ from smart_grid import *
 
 def main():
     house_path = '../../../Data/wijk1_huizen.csv'
-    battery_path = '../../../Data/wijk1_batterijen.txt'
+    # battery_path = '../../../Data/wijk1_batterijen.txt'
     # battery_path = '../../../Results/Battery_configurations/SCORE:4486_SIGMA:10.csv'
+    battery_path = '../../../Results/Battery_configurations/1137_nice_sigma10.csv'
 
     houses, batteries = read_data(house_path, battery_path)
 
@@ -31,7 +32,7 @@ def main():
     for element in batteries:
         wijk_brabo.create_battery(element['position'], element['capacity'])
 
-    solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_normal.json")
+    solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_marco.json")
     # print(wijk_brabo.house_dict_with_manhattan_distances)
     hillclimberke = hillclimber(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
     print(hillclimberke.calc_cost())
@@ -44,9 +45,9 @@ def main():
     while ploep:
         ploep = hillclimberke.run(combs)
 
-    with open("../../../Results/best_hc_1.json", 'w') as jsonfile:
+    with open("../../../Results/best_hc_marco.json", 'w') as jsonfile:
         json.dump({"META": {"DATA": hillclimberke.houses, "BATTERIES": hillclimberke.batteries}}, jsonfile)
-    with open("../../../Results/best_hc_1.csv1", "w") as f:
+    with open("../../../Results/best_hc_marco.csv1", "w") as f:
         writer = csv.writer(f)
         writer.writerow(["score", "configuration"])
         writer.writerow([hillclimberke.calc_cost(), {"DATA": hillclimberke.houses}])
