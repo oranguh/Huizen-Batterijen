@@ -31,10 +31,10 @@ def main():
     for element in batteries:
         wijk_brabo.create_battery(element['position'], element['capacity'])
 
-    solution_reader(wijk_brabo, "../../../Results/best_brabo_solution.json")
+    solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_normal.json")
     # print(wijk_brabo.house_dict_with_manhattan_distances)
     hillclimberke = hillclimber(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
-    print(wijk_brabo.batteries)
+    print(hillclimberke.calc_cost())
     combs = []
     comb = combinations(range(150), 2)
     # Creates a list of the combs to be able to call shuffle
@@ -44,9 +44,9 @@ def main():
     while ploep:
         ploep = hillclimberke.run(combs)
 
-    with open("../../../Results/best_hillclimber_dobbelsteen.json", 'w') as jsonfile:
+    with open("../../../Results/best_hc_1.json", 'w') as jsonfile:
         json.dump({"META": {"DATA": hillclimberke.houses, "BATTERIES": hillclimberke.batteries}}, jsonfile)
-    with open("../../../Results/best_hillclimber_dobbelsteen.csv1", "w") as f:
+    with open("../../../Results/best_hc_1.csv1", "w") as f:
         writer = csv.writer(f)
         writer.writerow(["score", "configuration"])
         writer.writerow([hillclimberke.calc_cost(), {"DATA": hillclimberke.houses}])
@@ -90,7 +90,6 @@ class hillclimber:
 
     def calc_cost(self):
         total_cost = 0
-        print(self.houses)
         for house in self.houses:
             total_cost += house[house[-2]]
 

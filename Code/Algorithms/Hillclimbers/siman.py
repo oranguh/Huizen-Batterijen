@@ -2,6 +2,8 @@ from itertools import combinations
 from random import choice, random
 import math
 import sys
+import json
+import csv
 
 sys.path.append('../../../Code/Helper_Functions')
 sys.path.append('../../../Code/Algorithms')
@@ -30,21 +32,29 @@ def main():
     for element in batteries:
         wijk_brabo.create_battery(element['position'], element['capacity'])
 
-    solution_reader(wijk_brabo, "../../../Results/best_brabo_solution.json")
+    # solution_reader(wijk_brabo, "../../../Results/best_brabo_solution.json")
+    solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_normal.json")
     # print(wijk_brabo.house_dict_with_manhattan_distances)
     siman = simulated_annealing(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
     combs = []
     comb = combinations(range(150), 2)
     # Creates a list of the combs to be able to call shuffle
     for i in comb:
-        combs.append(i)    
+        combs.append(i)
     ploep = True
     while siman.iterations < siman.maxiterations:
         ploep = siman.run(random.choice(combs))
-    print("accepted")
-    print(siman.accepted)
+
+    with open("../../../Results/best_siman_hc_1.json", 'w') as jsonfile:
+        json.dump({"META": {"DATA": siman.houses, "BATTERIES": siman.batteries}}, jsonfile)
+    with open("../../../Results/best_siman_hc_1.csv1", "w") as f:
+        writer = csv.writer(f)
+        writer.writerow(["score", "configuration"])
+        writer.writerow([siman.calc_cost(), {"DATA": siman.houses}])
+
+
     print("score")
-    siman.calc_cost()
+    print(siman.calc_cost())
     # print(siman.batteries)
     # print(siman.houses)
 
@@ -84,9 +94,9 @@ class simulated_annealing:
         if house1[-2] is not house2[-2]:
             if (self.batteries[house1[-2]]['capacity'] + house1[-1]) >= house2[-1] and (self.batteries[house2[-2]]['capacity'] + house2[-1]) >= house1[-1]:
                 gain = (house1[house1[-2]] + house2[house2[-2]]) - (house1[house2[-2]] + house2[house1[-2]])
-                temperature = 80000 * (20/80000) ** (self.iterations / self.maxiterations)
-                # temperature = 80000 - self.iterations * (80000/20) /self.maxiterations
-                temperature
+                # temperature = 80000 * (20/80000) ** (self.iterations / self.maxiterations)
+                temperature = 80000 - self.iterations * (80000/20) /self.maxiterations
+                # temperature = 20 + ((8000 -20) / (1 + math.exp(0.3 * (self.iterations - self.maxiterations/2))))
                 chance = math.e ** (gain/temperature)
                 if chance > random.random():
                     self.accepted += 1
@@ -98,7 +108,7 @@ class simulated_annealing:
         for house in self.houses:
             total_cost += house[house[-2]]
 
-        print(total_cost)
+        return total_cost
 
 
 
