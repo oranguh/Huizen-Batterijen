@@ -4,20 +4,6 @@ import numpy as np
 import csv
 import random
 
-# x,y = divmod(18, 8)
-#
-# print(x,y)
-# print(len(range(1, 5)))
-# for x in itertools.combinations(range(10), 5):
-# # print(len(range(1, (48**2) + 1)))
-#     print(x)
-# x = 0
-# for i in range (10):
-    # print(random.randint(0, 4))
-    # print(random.randint(0,1))
-    # print([-1,1][random.randrange(2)])
-    # x += -1
-    # print(x)
 def battery_placer(the_grid, partitions, SIGMA = 10):
     """
     convolves a gaussian filter onto the grid, then visualizes this as a heat map
@@ -124,8 +110,8 @@ def battery_placer(the_grid, partitions, SIGMA = 10):
                 counter = 0
                 best_heat = score_battery_position
                 best_config = new_config
-                # print(best_config)
-                # print(best_heat)
+                print(best_config)
+                print(best_heat)
                 path = "Results/Battery_configurations/" + "SCORE:" + str(int(best_heat)) + "_SIGMA:" + str(SIGMA) + ".csv"
                 with open(path, "w") as f:
                     writer = csv.writer(f,delimiter=':',quoting=csv.QUOTE_NONE)

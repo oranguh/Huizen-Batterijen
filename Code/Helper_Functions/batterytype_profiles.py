@@ -58,6 +58,8 @@ def main():
                 dict_of_set["cost"] += 900
             else:
                 print("ERROR")
+        dict_of_set["batteries"].append(450)
+        dict_of_set["cost"] += 900
         accepted_list.append(dict_of_set)
 
     accepted_list = {"ALL_CONFIGURATIONS":accepted_list}
