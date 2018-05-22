@@ -32,27 +32,33 @@ def main():
     for element in batteries:
         wijk_brabo.create_battery(element['position'], element['capacity'])
 
-    solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_marco.json")
-    # print(wijk_brabo.house_dict_with_manhattan_distances)
-    hillclimberke = hillclimber(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
-    print(hillclimberke.calc_cost())
-    combs = []
-    comb = combinations(range(150), 2)
-    # Creates a list of the combs to be able to call shuffle
-    for i in comb:
-        combs.append(i)
-    ploep = True
-    while ploep:
-        ploep = hillclimberke.run(combs)
 
-    with open("../../../Results/best_hc_marco.json", 'w') as jsonfile:
-        json.dump({"META": {"DATA": hillclimberke.houses, "BATTERIES": hillclimberke.batteries}}, jsonfile)
-    with open("../../../Results/best_hc_marco.csv1", "w") as f:
-        writer = csv.writer(f)
-        writer.writerow(["score", "configuration"])
-        writer.writerow([hillclimberke.calc_cost(), {"DATA": hillclimberke.houses}])
+    count = 0
+    best_score = 1000000000
+    while count < 100:
+        count += 1
+        solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_1337.json")
+        # print(wijk_brabo.house_dict_with_manhattan_distances)
+        hillclimberke = hillclimber(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
+        print(hillclimberke.calc_cost())
+        combs = []
+        comb = combinations(range(150), 2)
+        # Creates a list of the combs to be able to call shuffle
+        for i in comb:
+            combs.append(i)
+        ploep = True
+        while ploep:
+            ploep = hillclimberke.run(combs)
 
-    print(hillclimberke.calc_cost())
+        if hillclimberke.calc_cost() < best_score:
+            with open("../../../Results/best_hc_1337.json", 'w') as jsonfile:
+                json.dump({"META": {"DATA": hillclimberke.houses, "BATTERIES": hillclimberke.batteries}}, jsonfile)
+            with open("../../../Results/best_hc_1337.csv1", "w") as f:
+                writer = csv.writer(f)
+                writer.writerow(["score", "configuration"])
+                writer.writerow([hillclimberke.calc_cost(), {"DATA": hillclimberke.houses}])
+
+    print(best_score)
 
 
 class hillclimber:

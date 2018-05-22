@@ -37,41 +37,46 @@ def main():
     # solution_reader(wijk_brabo, "../../../Results/best_brabo_solution.json")
     # solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_normal.json")
     # print(wijk_brabo.house_dict_with_manhattan_distances)
-    solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_marco.json")
-    # solution_reader(wijk_brabo, "../../../Results/best_hc_marco.json")
-    siman = simulated_annealing(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
-    combs = []
-    comb = combinations(range(150), 2)
-    # Creates a list of the combs to be able to call shuffle
-    for i in comb:
-        combs.append(i)
-    ploep = True
-    while siman.iterations < siman.maxiterations:
-        ploep = siman.run(random.choice(combs))
+    count = 0
+    best_score = 1000000000
+    while count < 100:
+        count += 1
+        # solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_marco.json")
+        solution_reader(wijk_brabo, "../../../Results/best_hc_1337.json")
+        siman = Simulated_annealing(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
+        combs = []
+        comb = combinations(range(150), 2)
+        # Creates a list of the combs to be able to call shuffle
+        for i in comb:
+            combs.append(i)
+        ploep = True
+        while siman.iterations < siman.maxiterations:
+            ploep = siman.run(random.choice(combs))
 
-    with open("../../../Results/best_siman_hc_1.json", 'w') as jsonfile:
-        json.dump({"META": {"DATA": siman.houses, "BATTERIES": siman.batteries}}, jsonfile)
-    with open("../../../Results/best_siman_hc_1.csv1", "w") as f:
-        writer = csv.writer(f)
-        writer.writerow(["score", "configuration"])
-        writer.writerow([siman.calc_cost(), {"DATA": siman.houses}])
+        # if best_score > siman.calc_cost():
+            # with open("../../../Results/best_siman_hc_1.json", 'w') as jsonfile:
+            #     json.dump({"META": {"DATA": siman.houses, "BATTERIES": siman.batteries}}, jsonfile)
+            # with open("../../../Results/best_siman_hc_1.csv1", "w") as f:
+            #     writer = csv.writer(f)
+            #     writer.writerow(["score", "configuration"])
+            #     writer.writerow([siman.calc_cost(), {"DATA": siman.houses}])
 
 
-    print("score")
-    print(siman.calc_cost())
+
+    print(best_score)
     # print(siman.batteries)
     # print(siman.houses)
 
 
 
-class simulated_annealing:
+class Simulated_annealing:
 
     def __init__(self, houses, batteries):
         self.houses = houses
         self.batteries = batteries
         self.accepted = 0
         self.iterations = 0
-        self.maxiterations = 100000
+        self.maxiterations = 100
 
     def run(self, combs):
         self.iterations += 1
@@ -98,10 +103,12 @@ class simulated_annealing:
         if house1[-2] is not house2[-2]:
             if (self.batteries[house1[-2]]['capacity'] + house1[-1]) >= house2[-1] and (self.batteries[house2[-2]]['capacity'] + house2[-1]) >= house1[-1]:
                 gain = (house1[house1[-2]] + house2[house2[-2]]) - (house1[house2[-2]] + house2[house1[-2]])
-                temperature = 80000 * (20/80000) ** (self.iterations / self.maxiterations)
-                # temperature = 80000 - self.iterations * (80000/20) /self.maxiterations
+                # temperature = 80000 * (20/80000) ** (self.iterations / self.maxiterations)
+                temperature = 80000 - self.iterations * (80000/20) /self.maxiterations
                 # temperature = 20 + ((8000 -20) / (1 + math.exp(0.3 * (self.iterations - self.maxiterations/2))))
+
                 chance = math.e ** (gain/temperature)
+                print(chance)
                 if chance > random.random():
                     self.accepted += 1
                     return True
