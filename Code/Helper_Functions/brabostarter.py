@@ -33,7 +33,14 @@ def brabo_starter():
 
     print(houses)
     root = node(batteries, houses, 5000000)
-    root.solve()
+    start = time.time()
+
+    try:
+        root.solve()
+
+    except KeyboardInterrupt:
+        run_time = time.time() - start
+        print(run_time)
     print("klaar")
 
 def main():
