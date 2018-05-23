@@ -6,16 +6,7 @@ import random
 import json
 import pprint
 import copy
-# for i in range(50):
-#     # print([-1,1][random.randrange(2)])
-#     # print(random.randint(0,1))
-#     print(random.randint(0, 4))
 
-
-
-config = [1,2,3,4]
-if any(config) in config:
-    print("duplicate")
 def battery_placer(the_grid, SIGMA = 10):
     """
     convolves a gaussian filter onto the grid, then visualizes this as a heat map
@@ -58,8 +49,10 @@ def battery_placer(the_grid, SIGMA = 10):
     Algo = "Hill_climb"
 
     heatmatrix_house = np.zeros(the_grid.size)
+    house_cords = []
     for housi in the_grid.house_dict:
         heatmatrix_house[housi['position'][0], housi['position'][1]] = housi['output']
+        house_cords.append(housi['position'])
     guass_heatmatrix_house = gaussian_filter(heatmatrix_house, sigma=SIGMA)
 
     if Algo == "Exhaust":
@@ -112,12 +105,12 @@ def battery_placer(the_grid, SIGMA = 10):
 
         while counter < 100:
             if inner_counter > 1000:
-                new_config = Battery_climber(best_config)
+                new_config = Battery_climber(best_config, house_cords)
                 inner_counter = 0
                 counter += 1
             else:
                 # print("searching")
-                new_config = Battery_climber(new_config)
+                new_config = Battery_climber(new_config, house_cords)
                 inner_counter += 1
             # print(new_config)
             heatmatrix_battery = np.zeros(the_grid.size)
@@ -129,6 +122,10 @@ def battery_placer(the_grid, SIGMA = 10):
             heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
             score_battery_position = np.sum(np.absolute(heatmatrix_difference))
             if score_battery_position < best_heat:
+                if check_overlap(best_config, house_cords):
+                    print("Overlap!")
+                    print(check_overlap(best_config, house_cords))
+                    continue
                 counter = 0
                 best_heat = score_battery_position
                 best_config = new_config
@@ -161,7 +158,7 @@ def battery_placer(the_grid, SIGMA = 10):
     print(best_heat)
     return(best_config)
 
-def Battery_climber(config):
+def Battery_climber(config, house_cords):
 
     battery_index = random.randint(0, len(config)-1)
     x_or_y = random.randint(0,1)
@@ -184,8 +181,6 @@ def Battery_climber(config):
             break
     return config
 
-
-
 def check_unique(listed):
     checked = []
     for i in listed:
@@ -194,3 +189,14 @@ def check_unique(listed):
             return i
         checked.append(i)
     return None
+
+def check_overlap(listed, house_cords):
+    overlaps = []
+    for i in listed:
+        if i in house_cords:
+            # print(listed)
+            overlaps.append(i)
+    if overlaps:
+        return i
+    else:
+        return None

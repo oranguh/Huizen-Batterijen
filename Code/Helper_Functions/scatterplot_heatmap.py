@@ -9,10 +9,12 @@ from smart_grid import SmartGrid
 from read_data import read_data
 from heat_map import heat_map
 import csv
+
 # sys.path.append('Code/Helper_Functions')
 sys.path.append('../Algorithms')
 # sys.path.append('Data/')
 # sys.path.append('Results/')
+from random_solve import random_solve
 
 def main():
     house_path = '../../Data/wijk1_huizen.csv'
@@ -36,13 +38,24 @@ def main():
         # pretty sure some houses and batteries overlap each other @.@ so much to do
         scatterwijk.add_house_dictionaries(houses)
         scatterwijk.add_battery_dictionaries(batteries)
+        for ughwhy in [x['position'] for x in scatterwijk.battery_dict]:
+            if ughwhy in [x['position'] for x in scatterwijk.house_dict]:
+                print("OEVERLAP")
+                print(ughwhy)
+        # print([x['position'] for x in scatterwijk.house_dict])
+        # print([x['position'] for x in scatterwijk.battery_dict])
         scatterwijk.house_dict_with_manhattan_distances()
         # print(scatterwijk.house_data)
         scatterwijk.get_lower_bound()
         # print(type(scatterwijk.lower_bound))
         parsed_data['DATAMETA']['DATA'][i]['lowerbound'] = scatterwijk.lower_bound
 
-        # parsed_data['DATAMETA']['DATA'][i]['siman_gridscore'] = 0
+        scatterwijk.grid = random_solve(scatterwijk)
+        # scatterwijk.prettify()
+        total_cost = scatterwijk.calc_cost()
+        print(total_cost)
+        # DO SIMANNEALING HERE
+        parsed_data['DATAMETA']['DATA'][i]['siman_gridscore'] = 0
 
     heat = []
     lower = []
