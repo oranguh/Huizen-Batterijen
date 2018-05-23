@@ -2,11 +2,11 @@ import numpy as np
 import colorama
 from termcolor import cprint
 
-from simple_solve import *
-from selected_solve import selected_solve
-from simple_solve2 import *
-from simple_solve3 import *
-from random_solve import *
+# from simple_solve import *
+# from selected_solve import selected_solve
+# from simple_solve2 import *
+# from simple_solve3 import *
+# from random_solve import *
 
 
 class SmartGrid:
@@ -265,7 +265,7 @@ class SmartGrid:
             pass
         else:
             # print("done! test")
-            print(len(self.house_data))
+            # print(len(self.house_data))
             for house in self.house_data:
                 shortest_cable_cost = 99999
                 for cable_cost in house[0:-2]:

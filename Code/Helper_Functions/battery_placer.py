@@ -3,7 +3,9 @@ from scipy.ndimage import gaussian_filter
 import numpy as np
 import csv
 import random
-
+import json
+import pprint
+import copy
 # for i in range(50):
 #     # print([-1,1][random.randrange(2)])
 #     # print(random.randint(0,1))
@@ -45,10 +47,13 @@ def battery_placer(the_grid, SIGMA = 10):
     """
     # determining sigma is important. A quick a dirty value is dimensions/batteries
     # 51/5 = 10
-
+    scatterplot_list = []
+    # scatterplot_list = np.array([])
     numb_battery = 5
     battery_capacity = 1507.0
     best_heat = 99999
+    counter = 0
+    inner_counter = 0
     # Algo = "Exhaust"
     Algo = "Hill_climb"
 
@@ -66,7 +71,7 @@ def battery_placer(the_grid, SIGMA = 10):
                 # print(x,y)
                 heatmatrix_battery[x, y] = battery_capacity
 
-            guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA)
+            guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA, mode = 'constant')
             heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
             score_battery_position = np.sum(np.absolute(heatmatrix_difference))
 
@@ -101,12 +106,10 @@ def battery_placer(the_grid, SIGMA = 10):
         for position in best_config:
             heatmatrix_battery[position[0], position[1]] = battery_capacity
 
-        guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA)
+        guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA, mode = 'constant')
         heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
         best_heat = np.sum(np.absolute(heatmatrix_difference))
 
-        counter = 0
-        inner_counter = 0
         while counter < 100:
             if inner_counter > 1000:
                 new_config = Battery_climber(best_config)
@@ -121,7 +124,8 @@ def battery_placer(the_grid, SIGMA = 10):
             for position in new_config:
                 heatmatrix_battery[position[0], position[1]] = battery_capacity
 
-            guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA)
+            guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA, mode = 'constant')
+            # print(np.sum(guass_heatmatrix_battery) , np.sum(guass_heatmatrix_house))
             heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
             score_battery_position = np.sum(np.absolute(heatmatrix_difference))
             if score_battery_position < best_heat:
@@ -135,12 +139,25 @@ def battery_placer(the_grid, SIGMA = 10):
                 with open(path, "w") as f:
                     writer = csv.writer(f,delimiter=':',quoting=csv.QUOTE_NONE)
                     writer.writerow(["pos		cap"])
-                    for battery in best_config:
-                        bad_format = "[" + str(battery[0]) + ", " + str(battery[1]) + "]\t" + str(1507.0)
+                    for batteris in best_config:
+                        bad_format = "[" + str(batteris[0]) + ", " + str(batteris[1]) + "]\t" + str(1507.0)
                         # print(bad_format)
                         writer.writerow([bad_format])
+
+                battery_dict_format = []
+                for perbattery in best_config:
+                    battery_dict_format.append({'position': perbattery, 'capacity': 1507.0})
+
+                # print(scatterplot_list)
+                scatterplot_list.append({"heatscore": best_heat, "battery_dict": copy.deepcopy(battery_dict_format), "lowerbound": 0, "siman_gridscore": 0})
+
     else:
         pass
+    # print(scatterplot_list)
+    scatterplot_data = {"DATAMETA": {"DATA": scatterplot_list, "SIGMA": SIGMA, "R2": 0, "regression": 0}}
+    path = "Results/Battery_configurations/" + "scatterplotdata_sigma" + str(SIGMA) + ".json"
+    with open(path, 'w') as jsonfile:
+        json.dump(scatterplot_data, jsonfile)
     print(best_heat)
     return(best_config)
 
