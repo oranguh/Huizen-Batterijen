@@ -28,9 +28,9 @@ class node:
                 if nextHouseNumber is len(self.houses):
                     # Is dit de beste oplossing tot nu toe?
                     if (nextSubPrice < self.bestPrice):
-                        with open("../../Results/best_brabo_solution_marco.json", 'w') as jsonfile:
+                        with open("../../Results/best_brabo_solution_1337.json", 'w') as jsonfile:
                             json.dump({"META": {"DATA": self.houses, "BATTERIES": self.batteries}}, jsonfile)
-                        with open("../../Results/best_brabo_solution_marco.csv1", "w") as f:
+                        with open("../../Results/best_brabo_solution_1337.csv1", "w") as f:
                             writer = csv.writer(f)
                             writer.writerow(["score", "configuration"])
                             writer.writerow([nextSubPrice, {"DATA": self.houses}])

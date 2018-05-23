@@ -1,4 +1,5 @@
 import sys
+import time
 sys.path.append('../../Code/Algorithms')
 sys.path.append('../../Data')
 sys.path.append('../../Results')
@@ -14,7 +15,7 @@ def brabo_starter():
     house_path = '../../Data/wijk1_huizen.csv'
     # battery_path = '../../Data/wijk1_batterijen.txt'
     # battery_path = '../../Results/Battery_configurations/SCORE:4486_SIGMA:10.csv'
-    battery_path = '../../Results/Battery_configurations/leuknaampjes.csv'
+    # battery_path = '../../Results/Battery_configurations/leuknaampjes.csv'
     battery_path = '../../Results/Battery_configurations/1137_nice_sigma10.csv'
 
 
