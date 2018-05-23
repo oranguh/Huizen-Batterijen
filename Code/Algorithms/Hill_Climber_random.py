@@ -4,10 +4,10 @@ import sys
 import json
 import csv
 
-sys.path.append('../../../Code/Helper_Functions')
-sys.path.append('../../../Code/Algorithms')
-sys.path.append('../../../Data')
-sys.path.append('../../../Results')
+sys.path.append('../../Code/Helper_Functions')
+sys.path.append('../../Code/Algorithms')
+sys.path.append('../../Data')
+sys.path.append('../../Results')
 
 
 from solution_reader_new_format import solution_reader
@@ -18,10 +18,10 @@ from smart_grid import *
 def main():
 
     # Paths to the houses and batteries compositions
-    house_path = '../../../Data/wijk1_huizen.csv'
-    # battery_path = '../../../Data/wijk1_batterijen.txt'
-    # battery_path = '../../../Results/Battery_configurations/SCORE:4486_SIGMA:10.csv'
-    battery_path = '../../../Results/Battery_configurations/1137_nice_sigma10.csv'
+    house_path = '../../Data/wijk1_huizen.csv'
+    # battery_path = '../../Data/wijk1_batterijen.txt'
+    # battery_path = '../../Results/Battery_configurations/SCORE:4486_SIGMA:10.csv'
+    battery_path = '../../Results/Battery_configurations/1137_nice_sigma10.csv'
 
     # Gets the houses and batteries
     houses, batteries = read_data(house_path, battery_path)
@@ -45,7 +45,7 @@ def main():
         count += 1
 
         # Gets the start position from a certain result
-        solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_1337.json")
+        solution_reader(wijk_brabo, "../../Results/best_brabo_solution_1337.json")
 
         # Initializes the hillclimber
         hillclimberke = hillclimber(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
@@ -63,9 +63,9 @@ def main():
 
         # If no hillclimber is in optimum, check if best score, if so print it.
         if hillclimberke.calc_cost() < best_score:
-            with open("../../../Results/best_hc_1337.json", 'w') as jsonfile:
+            with open("../../Results/best_hc_1337.json", 'w') as jsonfile:
                 json.dump({"META": {"DATA": hillclimberke.houses, "BATTERIES": hillclimberke.batteries}}, jsonfile)
-            with open("../../../Results/best_hc_1337.csv1", "w") as f:
+            with open("../../Results/best_hc_1337.csv1", "w") as f:
                 writer = csv.writer(f)
                 writer.writerow(["score", "configuration"])
                 writer.writerow([hillclimberke.calc_cost(), {"DATA": hillclimberke.houses}])

@@ -5,10 +5,10 @@ import sys
 import json
 import csv
 
-sys.path.append('../../../Code/Helper_Functions')
-sys.path.append('../../../Code/Algorithms')
-sys.path.append('../../../Data')
-sys.path.append('../../../Results')
+sys.path.append('../../Code/Helper_Functions')
+sys.path.append('../../Code/Algorithms')
+sys.path.append('../../Data')
+sys.path.append('../../Results')
 
 
 from solution_reader_new_format import solution_reader
@@ -19,10 +19,10 @@ from smart_grid import *
 def main():
 
     # Sets paths to house and battery compositions
-    house_path = '../../../Data/wijk1_huizen.csv'
-    # battery_path = '../../../Data/wijk1_batterijen.txt'
-    # battery_path = '../../../Results/Battery_configurations/SCORE:4486_SIGMA:10.csv'
-    battery_path = '../../../Results/Battery_configurations/1137_nice_sigma10.csv'
+    house_path = '../../Data/wijk1_huizen.csv'
+    # battery_path = '../../Data/wijk1_batterijen.txt'
+    # battery_path = '../../Results/Battery_configurations/SCORE:4486_SIGMA:10.csv'
+    battery_path = '../../Results/Battery_configurations/1137_nice_sigma10.csv'
 
     # Reads the data and puts it in a smartgrid for functinonality
     houses, batteries = read_data(house_path, battery_path)
@@ -43,8 +43,8 @@ def main():
         count += 1
 
         # Gets the startposition from a certain result and intializes the simulated annealing
-        # solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_marco.json")
-        solution_reader(wijk_brabo, "../../../Results/best_hc_1337.json")
+        # solution_reader(wijk_brabo, "../../Results/best_brabo_solution_marco.json")
+        solution_reader(wijk_brabo, "../../Results/best_hc_1337.json")
         siman = Simulated_annealing(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
 
         # makes a list of all possible legal and illegal swaps
@@ -60,9 +60,9 @@ def main():
         # If better score is found, save it
         if best_score > siman.calc_cost():
             best_score = siman.calc_cost()
-            with open("../../../Results/best_siman_hc_1.json", 'w') as jsonfile:
+            with open("../../Results/best_siman_hc_1.json", 'w') as jsonfile:
                 json.dump({"META": {"DATA": siman.houses, "BATTERIES": siman.batteries}}, jsonfile)
-            with open("../../../Results/best_siman_hc_1.csv1", "w") as f:
+            with open("../../Results/best_siman_hc_1.csv1", "w") as f:
                 writer = csv.writer(f)
                 writer.writerow(["score", "configuration"])
                 writer.writerow([siman.calc_cost(), {"DATA": siman.houses}])
