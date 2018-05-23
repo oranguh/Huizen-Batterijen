@@ -80,6 +80,7 @@ class Simulated_annealing:
         self.iterations = 0
         self.maxiterations = 100
 
+    # Starts the simulated annealing procces
     def run(self, combs):
         self.iterations += 1
         i = combs[0]
