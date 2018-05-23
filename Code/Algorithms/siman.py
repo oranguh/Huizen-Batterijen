@@ -22,7 +22,7 @@ def main():
     house_path = '../../Data/wijk1_huizen.csv'
     # battery_path = '../../Data/wijk1_batterijen.txt'
     # battery_path = '../../Results/Battery_configurations/SCORE:4486_SIGMA:10.csv'
-    battery_path = '../../Results/Battery_configurations/1137_nice_sigma10.csv'
+    battery_path = '../../Results/Battery_configurations/lucas_1137_nice_sigma10.csv'
 
     # Reads the data and puts it in a smartgrid for functinonality
     houses, batteries = read_data(house_path, battery_path)
@@ -39,7 +39,7 @@ def main():
     best_score = 1000000000
 
     # Runs the simulated annealing 100 times
-    while count < 100:
+    while count < 10000:
         count += 1
 
         # Gets the startposition from a certain result and intializes the simulated annealing
@@ -56,7 +56,7 @@ def main():
         # Runs the simulated annealing untill max iterations are reached
         while siman.iterations < siman.maxiterations:
             siman.run(random.choice(combs))
-        print(siman.calc_cost())
+        # print(siman.calc_cost())
         # If better score is found, save it
         if best_score > siman.calc_cost():
             best_score = siman.calc_cost()
