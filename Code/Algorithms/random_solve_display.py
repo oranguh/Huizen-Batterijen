@@ -14,7 +14,7 @@ def main():
 
     house_path = '../../Data/wijk1_huizen.csv'
     battery_path = '../../Data/wijk1_batterijen.txt'
-
+    battery_path = '../../Results/Battery_configurations/lucas_1137_nice_sigma10.csv'
     houses, batteries = read_data(house_path, battery_path)
 
     wijk1 = SmartGrid(51,51)
@@ -76,6 +76,7 @@ def random_solve(the_grid):
 
         house_path = '../../Data/wijk1_huizen.csv'
         battery_path = '../../Data/wijk1_batterijen.txt'
+        battery_path = '../../Results/Battery_configurations/lucas_1137_nice_sigma10.csv'
 
         houses, batteries = read_data(house_path, battery_path)
 
