@@ -17,14 +17,15 @@ from smart_grid import *
 
 
 def main():
+
+    # Sets paths to house and battery compositions
     house_path = '../../../Data/wijk1_huizen.csv'
     # battery_path = '../../../Data/wijk1_batterijen.txt'
     # battery_path = '../../../Results/Battery_configurations/SCORE:4486_SIGMA:10.csv'
     battery_path = '../../../Results/Battery_configurations/1137_nice_sigma10.csv'
 
-
+    # Reads the data and puts it in a smartgrid for functinonality
     houses, batteries = read_data(house_path, battery_path)
-
     wijk_brabo = SmartGrid(51,51)
     wijk_brabo.add_house_dictionaries(houses)
     wijk_brabo.add_battery_dictionaries(batteries)
@@ -34,41 +35,42 @@ def main():
     for element in batteries:
         wijk_brabo.create_battery(element['position'], element['capacity'])
 
-    # solution_reader(wijk_brabo, "../../../Results/best_brabo_solution.json")
-    # solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_normal.json")
-    # print(wijk_brabo.house_dict_with_manhattan_distances)
     count = 0
     best_score = 1000000000
+
+    # Runs the simulated annealing 100 times
     while count < 100:
         count += 1
+
+        # Gets the startposition from a certain result and intializes the simulated annealing
         # solution_reader(wijk_brabo, "../../../Results/best_brabo_solution_marco.json")
         solution_reader(wijk_brabo, "../../../Results/best_hc_1337.json")
         siman = Simulated_annealing(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
+
+        # makes a list of all possible legal and illegal swaps
         combs = []
         comb = combinations(range(150), 2)
-        # Creates a list of the combs to be able to call shuffle
         for i in comb:
             combs.append(i)
-        ploep = True
+
+        # Runs the simulated annealing untill max iterations are reached
         while siman.iterations < siman.maxiterations:
-            ploep = siman.run(random.choice(combs))
-
-        # if best_score > siman.calc_cost():
-            # with open("../../../Results/best_siman_hc_1.json", 'w') as jsonfile:
-            #     json.dump({"META": {"DATA": siman.houses, "BATTERIES": siman.batteries}}, jsonfile)
-            # with open("../../../Results/best_siman_hc_1.csv1", "w") as f:
-            #     writer = csv.writer(f)
-            #     writer.writerow(["score", "configuration"])
-            #     writer.writerow([siman.calc_cost(), {"DATA": siman.houses}])
-
-
+            siman.run(random.choice(combs))
+        print(siman.calc_cost())
+        # If better score is found, save it
+        if best_score > siman.calc_cost():
+            best_score = siman.calc_cost()
+            with open("../../../Results/best_siman_hc_1.json", 'w') as jsonfile:
+                json.dump({"META": {"DATA": siman.houses, "BATTERIES": siman.batteries}}, jsonfile)
+            with open("../../../Results/best_siman_hc_1.csv1", "w") as f:
+                writer = csv.writer(f)
+                writer.writerow(["score", "configuration"])
+                writer.writerow([siman.calc_cost(), {"DATA": siman.houses}])
 
     print(best_score)
-    # print(siman.batteries)
-    # print(siman.houses)
 
 
-
+# Class in which you can initialze a simulated annealing, run it and some extra functionality
 class Simulated_annealing:
 
     def __init__(self, houses, batteries):
@@ -82,20 +84,16 @@ class Simulated_annealing:
         self.iterations += 1
         i = combs[0]
         j = combs[1]
-            # Nog batterij capaciteit aanpassen
+
         if self.swap_check(self.houses[i], self.houses[j]):
-            battery_index = self.houses[i][-2]
-            battery_jndex = self.houses[j][-2]
-            self.batteries[battery_index]['capacity'] += (self.houses[i][-1] - self.houses[j][-1])
-            self.batteries[battery_jndex]['capacity'] += (self.houses[j][-1] - self.houses[i][-1])
+
+            # If swap was accepted, update battery capacity and the houses
+            self.batteries[self.houses[i][-2]]['capacity'] += (self.houses[i][-1] - self.houses[j][-1])
+            self.batteries[self.houses[j][-2]]['capacity'] += (self.houses[j][-1] - self.houses[i][-1])
             temp = self.houses[i][-2]
             self.houses[i][-2] = self.houses[j][-2]
             self.houses[j][-2] = temp
-            # print("Swap!")
             return True
-        # print("beste gevonden")
-        # print("swaps: ")
-        # print(self.swaps)
         return False
 
 
@@ -103,12 +101,11 @@ class Simulated_annealing:
         if house1[-2] is not house2[-2]:
             if (self.batteries[house1[-2]]['capacity'] + house1[-1]) >= house2[-1] and (self.batteries[house2[-2]]['capacity'] + house2[-1]) >= house1[-1]:
                 gain = (house1[house1[-2]] + house2[house2[-2]]) - (house1[house2[-2]] + house2[house1[-2]])
-                # temperature = 80000 * (20/80000) ** (self.iterations / self.maxiterations)
-                temperature = 80000 - self.iterations * (80000/20) /self.maxiterations
+                temperature = 10000 * (20/10000) ** (self.iterations / self.maxiterations)
+                # temperature = 80000 - self.iterations * (80000/20) /self.maxiterations
                 # temperature = 20 + ((8000 -20) / (1 + math.exp(0.3 * (self.iterations - self.maxiterations/2))))
 
                 chance = math.e ** (gain/temperature)
-                print(chance)
                 if chance > random.random():
                     self.accepted += 1
                     return True
