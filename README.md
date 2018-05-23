@@ -1,4 +1,4 @@
-# Mijn Project
+# SmartGrid - Een energiedistributienetwerk van de toekomst
 
 Er zijn tegenwoordig steeds meer huizen die zonnepanelen op het dak hebben. Dit
 is een goede zaak, aangezien we zo minder afhankelijk van fossiele brandstoffen
@@ -24,7 +24,9 @@ de kosten zo laag mogelijk houden.
 
 ### Vereisten (Prerequisites)
 
-Deze codebase is volledig geschreven in [Python3.6.3](https://www.python.org/downloads/). In requirements.txt staan alle benodigde packages om de code succesvol te draaien. Deze zijn gemakkelijk te installeren via pip dmv. de volgende instructie:
+De code is volledig geschreven in [Python3.6](https://www.python.org/downloads/).
+In requirements.txt staan alle benodigde packages om de code succesvol te draaien.
+Deze zijn gemakkelijk te installeren via pip d.m.v. de volgende instructie:
 
 ```
 pip install -r requirements.txt
