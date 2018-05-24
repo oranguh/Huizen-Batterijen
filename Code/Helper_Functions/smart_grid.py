@@ -118,7 +118,7 @@ class SmartGrid:
                     diff_y = abs(element.position[1] - element.battery_loc[1])
 
                     total_cost += ((diff_x + diff_y) * 9)
-        print("houses: {}\nbatteries: {}".format(houses, batteries))
+        # print("houses: {}\nbatteries: {}".format(houses, batteries))
         return total_cost
 
 
