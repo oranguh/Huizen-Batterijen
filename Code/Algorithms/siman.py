@@ -1,5 +1,5 @@
 from itertools import combinations
-from random import choice, random
+import random
 import math
 import sys
 import json
@@ -39,7 +39,7 @@ def main():
     best_score = 1000000000
 
     # Runs the simulated annealing 100 times
-    while count < 10000:
+    while count < 10:
         count += 1
 
         # Gets the startposition from a certain result and intializes the simulated annealing
@@ -56,16 +56,18 @@ def main():
         # Runs the simulated annealing untill max iterations are reached
         while siman.iterations < siman.maxiterations:
             siman.run(random.choice(combs))
+
+        print(siman.calc_cost())
         # print(siman.calc_cost())
         # If better score is found, save it
-        if best_score > siman.calc_cost():
-            best_score = siman.calc_cost()
-            with open("../../Results/best_siman_hc_1.json", 'w') as jsonfile:
-                json.dump({"META": {"DATA": siman.houses, "BATTERIES": siman.batteries}}, jsonfile)
-            with open("../../Results/best_siman_hc_1.csv1", "w") as f:
-                writer = csv.writer(f)
-                writer.writerow(["score", "configuration"])
-                writer.writerow([siman.calc_cost(), {"DATA": siman.houses}])
+        # if best_score > siman.calc_cost():
+        #     best_score = siman.calc_cost()
+        #     with open("../../Results/best_siman_hc_1.json", 'w') as jsonfile:
+        #         json.dump({"META": {"DATA": siman.houses, "BATTERIES": siman.batteries}}, jsonfile)
+        #     with open("../../Results/best_siman_hc_1.csv1", "w") as f:
+        #         writer = csv.writer(f)
+        #         writer.writerow(["score", "configuration"])
+        #         writer.writerow([siman.calc_cost(), {"DATA": siman.houses}])
 
     print(best_score)
 
@@ -78,7 +80,8 @@ class Simulated_annealing:
         self.batteries = batteries
         self.accepted = 0
         self.iterations = 0
-        self.maxiterations = 100
+        # 1 miljoen geeft ongeveer beste scores, niet handig voor testen
+        self.maxiterations = 1000000
 
     # Starts the simulated annealing procces
     def run(self, combs):
@@ -102,9 +105,10 @@ class Simulated_annealing:
         if house1[-2] is not house2[-2]:
             if (self.batteries[house1[-2]]['capacity'] + house1[-1]) >= house2[-1] and (self.batteries[house2[-2]]['capacity'] + house2[-1]) >= house1[-1]:
                 gain = (house1[house1[-2]] + house2[house2[-2]]) - (house1[house2[-2]] + house2[house1[-2]])
-                temperature = 10000 * (20/10000) ** (self.iterations / self.maxiterations)
+                # temperature = 10000 * (20/10000) ** (self.iterations / self.maxiterations)
                 # temperature = 80000 - self.iterations * (80000/20) /self.maxiterations
-                # temperature = 20 + ((8000 -20) / (1 + math.exp(0.3 * (self.iterations - self.maxiterations/2))))
+                sigfactor = self.maxiterations/(3000)
+                temperature = 20 + ((8000 -20) / (1 + math.exp(0.3 * ((self.iterations - self.maxiterations/2)/sigfactor))))
 
                 chance = math.e ** (gain/temperature)
                 if chance > random.random():
