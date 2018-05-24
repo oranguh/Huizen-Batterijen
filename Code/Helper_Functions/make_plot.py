@@ -1,5 +1,6 @@
 import csv
 import matplotlib.pyplot as plt
+import matplotlib.lines as lines
 
 first_distr = []
 second_distr = []
