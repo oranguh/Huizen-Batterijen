@@ -100,6 +100,8 @@ class SmartGrid:
             for batteries it uses battery.price.
             For connected houses it calculates the manhattan distance and multiplies by 9
         """
+        houses = 0
+        batteries = 0
         total_cost = 0
         for row in self.grid:
             for element in row:
@@ -107,14 +109,16 @@ class SmartGrid:
                     continue
                 if isinstance(element, SmartBattery):
                     total_cost += element.price
+                    batteries += 1
                 if isinstance(element, SmartHouse):
+                    houses += 1
                     if element.battery_connect is None:
                         continue
                     diff_x = abs(element.position[0] - element.battery_loc[0])
                     diff_y = abs(element.position[1] - element.battery_loc[1])
 
                     total_cost += ((diff_x + diff_y) * 9)
-
+        # print("houses: {}\nbatteries: {}".format(houses, batteries))
         return total_cost
 
 
@@ -216,6 +220,10 @@ class SmartGrid:
             self.house_data[i].append(None)
             self.house_data[i].append(house["output"])
 
+        for i,element in enumerate(self.house_dict):
+            # print("hoi")
+            # print(self.grid[element['position'][0],element["position"][1]].battery_connect)
+            self.house_data[i][-2] = self.grid[element['position'][0],element["position"][1]].battery_connect
         return(self.house_data)
 
     def cap_left(self):
