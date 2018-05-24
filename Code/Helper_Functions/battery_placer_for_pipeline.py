@@ -95,7 +95,7 @@ def battery_placer(house_dict, bat_comp, SIGMA = 10, counter_limit = 10, inner_c
             if check_unique(best_config):
                 continue
             duplicate = False
-            print("no overlaps!")
+            # print("no overlaps!")
             counter = 0
             best_heat = score_battery_position
             best_config = new_config
