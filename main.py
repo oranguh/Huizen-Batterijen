@@ -33,8 +33,8 @@ def main():
     max_y = max([dic['position'][1] for dic in houses] +
                 [dic['position'][1] for dic in batteries]) + 1
 
-    outputs = [dic['output'] for dic in houses]
-    print(outputs)
+    # outputs = [dic['output'] for dic in houses]
+    # print(outputs)
 
     # plt.hist(outputs)
     # plt.ylabel('count')
@@ -86,7 +86,8 @@ def main():
     battery_placer(wijk1, 10)
     # print(x)
     battery_path = 'Results/Battery_configurations/BESTSCORE_SIGMA_10.csv'
-
+    # battery_path = 'Results/Battery_configurations/1137_nice_sigma10.csv'
+    # battery_path = 'Results/Battery_configurations/leuknaampjes.csv'
     houses, batteries = read_data(house_path, battery_path)
     for element in batteries:
         wijk1.create_battery(element['position'], element['capacity'])
@@ -97,8 +98,10 @@ def main():
     wijk1.prettify()
     print(len(wijk1.house_data))
 
+    wijk1.get_lower_bound()
+    print("Lower bound of grid is: {}".format(wijk1.lower_bound))
     # DO SIMULATED ANNEALING HERE
-    # get the score of the sim annealing, set x to battery placement score. Plot    
+    # get the score of the sim annealing, set x to battery placement score. Plot
 
 if __name__ == "__main__":
     main()

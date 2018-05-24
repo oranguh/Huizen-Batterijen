@@ -265,7 +265,7 @@ class SmartGrid:
             pass
         else:
             # print("done! test")
-            print(len(self.house_data))
+            # print(len(self.house_data))
             for house in self.house_data:
                 shortest_cable_cost = 99999
                 for cable_cost in house[0:-2]:

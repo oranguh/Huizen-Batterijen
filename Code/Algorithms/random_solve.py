@@ -1,5 +1,6 @@
 # from ..Helper_Functions.smart_grid import *
 import random
+import numpy as np
 
 def random_solve(the_grid):
     """    """
@@ -7,14 +8,24 @@ def random_solve(the_grid):
     print("\n\n\n")
     print("You are now using random_solve!")
     # cap_limit telling the iterator to stop when battery_cap below this value
-
+    houses = the_grid.house_dict
+    batteries = the_grid.battery_dict
     # get number of batteries
     n_bat = len(the_grid.battery_dict)
     # count to keep looping through batteries, keep count to keep track of number of failures
     bat_pos = [dic['position'] for dic in the_grid.battery_dict]
     best_list = []
     best_score = 80000
-    for i in range(1000):
+    # the_grid.grid = np.empty((51, 51), dtype="object")
+    limit = 10
+    i = 0
+    while i < limit:
+        # Reset grid
+        the_grid.grid = np.empty((51, 51), dtype="object")
+        for element in houses:
+            the_grid.create_house(element['position'], element['output'])
+        for element in batteries:
+            the_grid.create_battery(element['position'], element['capacity'])
         # Iterates through nearest houses until cap full
         keepcount = 0
         count = 0
@@ -26,6 +37,7 @@ def random_solve(the_grid):
                 #print("Failed to connect")
                 count += 1
                 keepcount += 1
+                # print("hey")
 
                 if count is n_bat:
                     count = 0
@@ -34,13 +46,14 @@ def random_solve(the_grid):
             else:
                 #print("connected battery: {} with house {}".format(bat_pos, house_pos))
                 continue
-        score = the_grid.calc_cost()
-        if score < best_score:
-            best_score = score
-            best_list = house_pos
+        if the_grid.check_validity():
+            i += 1
+            score = the_grid.calc_cost()
+            if score < best_score:
+                best_score = score
+                best_list = house_pos
 
-
-    print(best_score)
+    # print(best_score)
     return the_grid.grid
 
 
