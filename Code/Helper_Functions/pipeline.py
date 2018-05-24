@@ -1,10 +1,12 @@
 import json
 from operator import itemgetter
 import sys
+from battery_placer_for_pipeline import battery_placer
 
 sys.path.append('../Algorithms')
 from random_solve import random_solve
 from read_data import read_data
+
 
 def main():
 
@@ -15,7 +17,10 @@ def main():
     best_4_bat_configs = sorted(parsed_data["ALL_CONFIGURATIONS"], key=itemgetter('score'))[0:4]
 
     for comp in best_4_bat_configs:
+        print(comp)
         comp = battery_placer(create_house_dict(1), comp, 10)
+        print(comp)
+
 
 def create_house_dict(wijk):
     battery_path = "../../Data/wijk" + str(wijk) + "_batterijen.txt"

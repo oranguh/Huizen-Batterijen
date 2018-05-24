@@ -7,7 +7,7 @@ import json
 import pprint
 import copy
 
-def battery_placer(house_dict, SIGMA = 10, nbatteries):
+def battery_placer(house_dict, nbatteries, SIGMA = 10):
     """
     convolves a gaussian filter onto the grid, then visualizes this as a heat map
     Setting SIGMA to a nice value is an important hyperparameter. my intuition tells me
