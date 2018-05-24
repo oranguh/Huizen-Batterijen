@@ -68,7 +68,8 @@ def battery_placer(house_dict, bat_comp, SIGMA = 10, counter_limit = 10, inner_c
     best_heat = np.sum(np.absolute(heatmatrix_difference))
     counter = 0
     inner_counter = 0
-    while counter < counter_limit:
+    duplicate = True
+    while counter < counter_limit and duplicate:
         if inner_counter > inner_counter_limit:
             new_config = Battery_climber(best_config, house_cords)
             inner_counter = 0
@@ -91,6 +92,10 @@ def battery_placer(house_dict, bat_comp, SIGMA = 10, counter_limit = 10, inner_c
                 # print("Overlap!")
                 # print(check_overlap(best_config, house_cords))
                 continue
+            if check_unique(best_config):
+                continue
+            duplicate = False
+            print("no overlaps!")
             counter = 0
             best_heat = score_battery_position
             best_config = new_config

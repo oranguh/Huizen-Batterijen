@@ -31,6 +31,8 @@ def main():
         print("hoi")
         compwijk.add_house_dictionaries(houses)
         compwijk.add_battery_dictionaries(battery_dict)
+        print("battery count according to comp: {}".format(len(comp["batteries"])))
+        compwijk.calc_cost()
         compwijk.grid = random_solve(compwijk)
         compwijk.prettify()
 
