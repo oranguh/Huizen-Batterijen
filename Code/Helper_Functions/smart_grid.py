@@ -223,7 +223,7 @@ class SmartGrid:
         for i,element in enumerate(self.house_dict):
             # print("hoi")
             # print(self.grid[element['position'][0],element["position"][1]].battery_connect)
-            self.house_data[i][-2] = self.grid[element['position'][0],element["position"][1]].battery_connect
+            self.house_data[i][-2] = self.grid[element['position'][0],element["position"][1]].battery_connect - 1
         return(self.house_data)
 
     def cap_left(self):

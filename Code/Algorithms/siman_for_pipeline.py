@@ -75,29 +75,33 @@ def main():
 # Class in which you can initialze a simulated annealing, run it and some extra functionality
 class Simulated_annealing:
 
-    def __init__(self, houses, batteries):
+    def __init__(self, houses, batteries, combs):
         self.houses = houses
         self.batteries = batteries
         self.accepted = 0
         self.iterations = 0
+        self.combs = combs
         # 1 miljoen geeft ongeveer beste scores, niet handig voor testen
         self.maxiterations = 1000
 
     # Starts the simulated annealing procces
-    def run(self, combs):
-        self.iterations += 1
-        i = combs[0]
-        j = combs[1]
+    def run(self):
+        while self.iterations < self.maxiterations:
+            self.iterations += 1
+            comb = random.choice(self.combs)
+            i = comb[0]
+            j = comb[1]
 
-        if self.swap_check(self.houses[i], self.houses[j]):
+            if self.swap_check(self.houses[i], self.houses[j]):
 
-            # If swap was accepted, update battery capacity and the houses
-            self.batteries[self.houses[i][-2]]['capacity'] += (self.houses[i][-1] - self.houses[j][-1])
-            self.batteries[self.houses[j][-2]]['capacity'] += (self.houses[j][-1] - self.houses[i][-1])
-            temp = self.houses[i][-2]
-            self.houses[i][-2] = self.houses[j][-2]
-            self.houses[j][-2] = temp
-            return True
+                # If swap was accepted, update battery capacity and the houses
+                self.batteries[self.houses[i][-2]]['capacity'] += (self.houses[i][-1] - self.houses[j][-1])
+                self.batteries[self.houses[j][-2]]['capacity'] += (self.houses[j][-1] - self.houses[i][-1])
+                temp = self.houses[i][-2]
+                self.houses[i][-2] = self.houses[j][-2]
+                self.houses[j][-2] = temp
+                return True
+        print(self.calc_cost())
         return False
 
 
