@@ -3,6 +3,7 @@ from operator import itemgetter
 import sys
 from battery_placer_for_pipeline import battery_placer
 from smart_grid import SmartGrid
+import csv
 
 sys.path.append('../Algorithms')
 from random_solve import random_solve
@@ -15,22 +16,39 @@ def main():
     bat_comp_path = "../../Results/battery_compositions.json"
     with open(bat_comp_path, "r") as f:
         parsed_data = json.load(f)
+    with open("../../Results/de_aller_beste_score_ooit.csv1", "r") as fa:
+        reader = csv.reader(fa)
+        for i, row in enumerate(reader):
+            if i is 1:
+                best_score = int(row[0])
 
     best_4_bat_configs = sorted(parsed_data["ALL_CONFIGURATIONS"], key=itemgetter('score'))[0:4]
-
     for comp in best_4_bat_configs:
+        compcost = comp['cost']
         houses = create_house_dict(1)
         comp = battery_placer(houses, comp, 10)
         compwijk = create_smart_grid(houses, comp)
-        #  doe tien keer
-        compwijk.grid = random_solve(compwijk)
-        compwijk.house_dict_with_manhattan_distances()
-        hillclimber = Hillclimber(compwijk.house_data, compwijk.battery_dict)
-        while hillclimber.run():
-            continue
+        for _ in range(10):
+            compwijk.grid = random_solve(compwijk)
+            for _ in range(10):
+                compwijk.house_dict_with_manhattan_distances()
+                hillclimber = Hillclimber(compwijk.house_data, compwijk.battery_dict)
+                while hillclimber.run():
+                    pass
+                for _ in range(10):
+                    siman = Simulated_annealing(hillclimber.houses, hillclimber.batteries, hillclimber.combs)
+                    siman.run()
+                    if (siman.calc_cost() + compcost) < best_score:
+                        print(siman.calc_cost() + compcost)
+                        best_score = siman.calc_cost() + compcost
+                        with open("../../Results/de_aller_beste_score_ooit.json", 'w') as jsonfile:
+                            json.dump({"META": {"DATA": siman.houses, "BATTERIES": siman.batteries}}, jsonfile)
+                        with open("../../Results/de_aller_beste_score_ooit.csv1", "w") as f:
+                            writer = csv.writer(f)
+                            writer.writerow(["score", "configuration"])
+                            writer.writerow([siman.calc_cost(), {"DATA": siman.houses}])
+            compwijk.get_lower_bound()
 
-        siman = Simulated_annealing(hillclimber.houses, hillclimber.batteries, hillclimber.combs)
-        siman.run()
 
 
 def create_house_dict(wijk):

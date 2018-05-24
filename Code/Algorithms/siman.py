@@ -81,10 +81,11 @@ class Simulated_annealing:
         self.accepted = 0
         self.iterations = 0
         # 1 miljoen geeft ongeveer beste scores, niet handig voor testen
-        self.maxiterations = 1000
+        self.maxiterations = 1000000
 
     # Starts the simulated annealing procces
     def run(self, combs):
+        while
         self.iterations += 1
         i = combs[0]
         j = combs[1]
