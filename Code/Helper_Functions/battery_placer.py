@@ -53,7 +53,7 @@ def battery_placer(the_grid, SIGMA = 10):
     for housi in the_grid.house_dict:
         heatmatrix_house[housi['position'][0], housi['position'][1]] = housi['output']
         house_cords.append(housi['position'])
-    guass_heatmatrix_house = gaussian_filter(heatmatrix_house, sigma=SIGMA)
+    guass_heatmatrix_house = gaussian_filter(heatmatrix_house, sigma=SIGMA, mode = 'constant')
 
     if Algo == "Exhaust":
         for battery_perm in itertools.combinations(range(1, ((the_grid.size[0] - 1)**2) + 1), numb_battery):
