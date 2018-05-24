@@ -24,9 +24,11 @@ def main():
         battery_dict = []
         for element in houses:
             compwijk.create_house(element['position'], element['output'])
+        print("hoi")
         for i,element in enumerate(comp["batteries"]):
             compwijk.create_battery(comp['bat_positions'][i], element)
             battery_dict.append({"position" : comp["bat_positions"][i], "capacity" : element})
+        print("hoi")
         compwijk.add_house_dictionaries(houses)
         compwijk.add_battery_dictionaries(battery_dict)
         compwijk.grid = random_solve(compwijk)
