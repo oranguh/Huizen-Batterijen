@@ -7,7 +7,7 @@ import json
 import pprint
 import copy
 
-def battery_placer(the_grid, SIGMA = 10, nbatteries):
+def battery_placer(the_grid, SIGMA = 10, batcomp):
     """
     convolves a gaussian filter onto the grid, then visualizes this as a heat map
     Setting SIGMA to a nice value is an important hyperparameter. my intuition tells me
@@ -40,7 +40,7 @@ def battery_placer(the_grid, SIGMA = 10, nbatteries):
     # 51/5 = 10
     scatterplot_list = []
     # scatterplot_list = np.array([])
-    numb_battery = nbatteries
+    numb_battery = len(batcomp["batteries"])
     battery_capacity = 1507.0
     best_heat = 99999
     counter = 0
@@ -88,10 +88,10 @@ def battery_placer(the_grid, SIGMA = 10, nbatteries):
 
     elif Algo == "Hill_climb":
         # best_config = [[12,12], [25,25], [12,37], [37,12], [37,37]]
-        new_config = placement = [[random.randint(0, 50),random.randint(0, 50)] for j in range(nbatteries)]
+        config = [[random.randint(0, 50),random.randint(0, 50)] for j in range(nbatteries)]
         heatmatrix_battery = np.zeros(the_grid.size)
 
-        for position in best_config:
+        for position in config:
             heatmatrix_battery[position[0], position[1]] = battery_capacity
 
         guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA, mode = 'constant')

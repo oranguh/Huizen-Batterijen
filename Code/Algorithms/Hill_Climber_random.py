@@ -27,14 +27,14 @@ def main():
     houses, batteries = read_data(house_path, battery_path)
 
     # Creates and fills the smartgrid so that we can use the functionality
-    wijk_brabo = SmartGrid(51,51)
-    wijk_brabo.add_house_dictionaries(houses)
-    wijk_brabo.add_battery_dictionaries(batteries)
+    wijk = SmartGrid(51,51)
+    wijk.add_house_dictionaries(houses)
+    wijk.add_battery_dictionaries(batteries)
 
     for element in houses:
-        wijk_brabo.create_house(element['position'], element['output'])
+        wijk.create_house(element['position'], element['output'])
     for element in batteries:
-        wijk_brabo.create_battery(element['position'], element['capacity'])
+        wijk.create_battery(element['position'], element['capacity'])
 
 
     count = 0
@@ -48,7 +48,7 @@ def main():
         solution_reader(wijk_brabo, "../../Results/best_brabo_solution_1337.json")
 
         # Initializes the hillclimber
-        hillclimberke = hillclimber(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
+        hillclimberke = hillclimber(wijk.house_dict_with_manhattan_distances, wijk_brabo.batteries)
 
         # Creates a list of the combs to be able to call shuffle
         combs = []
