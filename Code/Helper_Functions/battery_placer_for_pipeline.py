@@ -7,7 +7,7 @@ import json
 import pprint
 import copy
 
-def battery_placer(house_dict, nbatteries, SIGMA = 10):
+def battery_placer(house_dict, bat_comp, SIGMA = 10, counter_limit = 10, inner_counter_limit = 100):
     """
     convolves a gaussian filter onto the grid, then visualizes this as a heat map
     Setting SIGMA to a nice value is an important hyperparameter. my intuition tells me
@@ -39,25 +39,28 @@ def battery_placer(house_dict, nbatteries, SIGMA = 10):
     # determining sigma is important. A quick a dirty value is dimensions/batteries
     # 51/5 = 10
     # scatterplot_list = np.array([])
-    numb_battery = len(nbatteries['batteries'])
-    battery_capacity = nbatteries['batteries']
+    numb_battery = len(bat_comp['batteries'])
+    battery_capacity = bat_comp['batteries']
     best_heat = 99999
-    counter_limit = 100
+    counter_limit = 10
     inner_counter_limit = 100
 
-    heatmatrix_house = np.zeros(51)
+    heatmatrix_house = np.zeros([51,51])
     house_cords = []
-
+    # print(house_dict)
     for housi in house_dict:
-        heatmatrix_house[housi['position'][0], housi['position'][1]] = housi['output']
+        x = housi['position'][0]
+        y = housi['position'][1]
+        heatmatrix_house[x, y] = housi['output']
         house_cords.append(housi['position'])
     guass_heatmatrix_house = gaussian_filter(heatmatrix_house, sigma=SIGMA)
 
     # best_config = [[12,12], [25,25], [12,37], [37,12], [37,37]]
-    new_config = [[random.randint(0, 50),random.randint(0, 50)] for j in range(nbatteries['batteries'])]
-    heatmatrix_battery = np.zeros(51)
+    best_config = [[random.randint(0, 50),random.randint(0, 50)] for j in range(numb_battery)]
+    new_config = best_config
+    heatmatrix_battery = np.zeros([51,51])
 
-    for i, position in enumerate(new_config):
+    for i, position in enumerate(best_config):
         heatmatrix_battery[position[0], position[1]] = battery_capacity[i]
 
     guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA, mode = 'constant')
@@ -75,7 +78,7 @@ def battery_placer(house_dict, nbatteries, SIGMA = 10):
             new_config = Battery_climber(new_config, house_cords)
             inner_counter += 1
         # print(new_config)
-        heatmatrix_battery = np.zeros(51)
+        heatmatrix_battery = np.zeros([51,51])
         for i, position in enumerate(new_config):
             heatmatrix_battery[position[0], position[1]] = battery_capacity[i]
 
@@ -85,18 +88,18 @@ def battery_placer(house_dict, nbatteries, SIGMA = 10):
         score_battery_position = np.sum(np.absolute(heatmatrix_difference))
         if score_battery_position < best_heat:
             if check_overlap(best_config, house_cords):
-                print("Overlap!")
-                print(check_overlap(best_config, house_cords))
+                # print("Overlap!")
+                # print(check_overlap(best_config, house_cords))
                 continue
             counter = 0
             best_heat = score_battery_position
             best_config = new_config
-            print(best_config)
-            print(best_heat)
+            # print(best_config)
+            # print(best_heat)
 
-    nbatteries['bat_positions'] = best_config
+    bat_comp['bat_positions'] = best_config
     print(best_heat)
-    return(nbatteries)
+    return(bat_comp)
 
 def Battery_climber(config, house_cords):
 
