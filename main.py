@@ -86,7 +86,7 @@ def main():
     battery_placer(wijk1, 10)
     # print(x)
     battery_path = 'Results/Battery_configurations/BESTSCORE_SIGMA_10.csv'
-    # battery_path = 'Results/Battery_configurations/1137_nice_sigma10.csv'
+    # battery_path = 'Results/Battery_configurations/lucas_1137_nice_sigma10.csv'
     # battery_path = 'Results/Battery_configurations/leuknaampjes.csv'
     houses, batteries = read_data(house_path, battery_path)
     for element in batteries:

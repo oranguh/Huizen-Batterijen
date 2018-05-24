@@ -32,8 +32,8 @@ def heat_map(the_grid):
         heatmatrix_battery[batteri['position'][0], batteri['position'][1]] = batteri['capacity']
 
 
-    guass_heatmatrix_house = gaussian_filter(heatmatrix_house, sigma=SIGMA)
-    guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA)
+    guass_heatmatrix_house = gaussian_filter(heatmatrix_house, sigma=SIGMA, mode = 'constant')
+    guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA, mode = 'constant')
     heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
 
     # The sub plot part
