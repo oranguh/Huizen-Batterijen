@@ -15,6 +15,8 @@ sys.path.append('../Algorithms')
 # sys.path.append('Data/')
 # sys.path.append('Results/')
 from random_solve import random_solve
+from Hill_Climber_random_for_pipeline import Hillclimber
+from siman_for_pipeline import Simulated_annealing
 
 def main():
     house_path = '../../Data/wijk1_huizen.csv'
@@ -51,33 +53,59 @@ def main():
         parsed_data['DATAMETA']['DATA'][i]['lowerbound'] = scatterwijk.lower_bound
 
         scatterwijk.grid = random_solve(scatterwijk)
+        scatterwijk.house_dict_with_manhattan_distances()
+        hillclimber = Hillclimber(scatterwijk.house_data, scatterwijk.battery_dict)
+        while hillclimber.run():
+            pass
+        siman = Simulated_annealing(hillclimber.houses, hillclimber.batteries, hillclimber.combs)
+        siman.run()
         # scatterwijk.prettify()
         total_cost = scatterwijk.calc_cost()
-        print(total_cost)
+        print("Simulated Annealing: {}".format(siman.calc_cost()))
+        # print("price of wijk random{}".format(total_cost))
         # DO SIMANNEALING HERE
-        parsed_data['DATAMETA']['DATA'][i]['siman_gridscore'] = 0
+        parsed_data['DATAMETA']['DATA'][i]['siman_gridscore'] = total_cost
 
     heat = []
     lower = []
+    simanscore = []
     for datapoint in parsed_data['DATAMETA']['DATA']:
         heat.append(int(datapoint['heatscore']))
         lower.append(int(datapoint['lowerbound']))
+        simanscore.append(int(datapoint['siman_gridscore']) + 25000)
 
-    slope, intercept, r_value, p_value, std_err = stats.linregress(heat, lower)
+    slope, intercept, r_value, p_value, std_err = stats.linregress(heat, simanscore)
     print(slope, intercept, r_value, p_value, std_err)
-    fit = np.polyfit(heat, lower, deg=1)
+    fit = np.polyfit(heat, simanscore, deg=1)
+
     parsed_data['DATAMETA']['regression'] = fit
     parsed_data['DATAMETA']['R2'] = r_value
     # print(heat, lower)
     regresion = []
     for datapointo in heat:
         regresion.append(float(fit[0]) * datapointo + fit[1])
-    title = "correlation between heatmap and lower bound \n R^2 = " + str(r_value) + "\n sigma =" + str(parsed_data['DATAMETA']['SIGMA'])
+    title = "correlation between heatmap and Simulated Annealing \n R^2 = " + str(r_value) + "\n sigma =" + str(parsed_data['DATAMETA']['SIGMA'])
+    plt.figure(1)
+    plt.subplot(121)
     plt.title(title)
     plt.plot(heat, regresion, color='red')
-    plt.scatter(heat, lower, marker='+')
+    plt.scatter(heat, simanscore, marker='+')
     plt.xlabel('Heatmap Score')
-    plt.ylabel('Lower Bound')
+    plt.ylabel('Simulated Annealing')
+
+    slope, intercept, r_value, p_value, std_err = stats.linregress(lower, simanscore)
+    fit = np.polyfit(lower, simanscore, deg=1)
+    regresion = []
+    for datapointo in lower:
+        regresion.append(float(fit[0]) * datapointo + fit[1])
+
+    plt.subplot(122)
+    title = "correlation between lower bound and Simulated Annealing \n R^2 = " + str(r_value)
+    plt.title(title)
+    plt.plot(lower, regresion, color='red')
+    plt.scatter(lower, simanscore, marker='+')
+    plt.xlabel('Lower Bound')
+    plt.ylabel('Simulated Annealing')
     plt.show()
 
     # f.close()

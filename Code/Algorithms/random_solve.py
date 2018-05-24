@@ -2,7 +2,7 @@
 import random
 import numpy as np
 
-def random_solve(the_grid, a_limit = 10):
+def random_solve(the_grid, a_limit = 100):
     """    """
 
     print("\n\n\n")

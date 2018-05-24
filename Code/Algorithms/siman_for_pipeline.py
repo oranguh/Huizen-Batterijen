@@ -39,7 +39,7 @@ def main():
     best_score = 1000000000
 
     # Runs the simulated annealing 100 times
-    while count < 10:
+    while count < 1000:
         count += 1
 
         # Gets the startposition from a certain result and intializes the simulated annealing
