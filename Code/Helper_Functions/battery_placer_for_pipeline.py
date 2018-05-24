@@ -88,19 +88,18 @@ def battery_placer(house_dict, bat_comp, SIGMA = 10, counter_limit = 10, inner_c
         heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
         score_battery_position = np.sum(np.absolute(heatmatrix_difference))
         if score_battery_position < best_heat:
-            if check_overlap(best_config, house_cords):
+            if check_overlap(best_config, house_cords) or check_unique(best_config):
                 # print("Overlap!")
                 # print(check_overlap(best_config, house_cords))
                 continue
-            if check_unique(best_config):
-                continue
-            duplicate = False
-            # print("no overlaps!")
-            counter = 0
-            best_heat = score_battery_position
-            best_config = new_config
-            # print(best_config)
-            # print(best_heat)
+            else:
+                duplicate = False
+                # print("no overlaps!")
+                counter = 0
+                best_heat = score_battery_position
+                best_config = new_config
+                # print(best_config)
+                # print(best_heat)
 
     bat_comp['bat_positions'] = best_config
     print(best_heat)
