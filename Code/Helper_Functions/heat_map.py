@@ -46,7 +46,7 @@ def heat_map(the_grid):
     axs[0, 0].matshow(heatmatrix_house, vmin=None, vmax=None, cmap= 'Reds')
     axs[0, 1].matshow(heatmatrix_battery, vmin=None, vmax=None, cmap = 'Blues')
 
-    axs[1, 0].matshow(guass_heatmatrix_house, vmin= 0, cmap=cmap)
+    axs[1, 0].matshow(guass_heatmatrix_house, vmin= largest_val*-1, vmax= largest_val, cmap=cmap)
     # im = axs[1, 0].matshow(guass_heatmatrix_house, vmin= largest_val*-1, vmax= largest_val, cmap=cmap)
     im = axs[1, 1].matshow(guass_heatmatrix_battery *-1, vmin= largest_val*-1, vmax= largest_val, cmap=cmap)
     axs[2, 0].matshow(heatmatrix_difference, vmin= largest_val*-1, vmax= largest_val, cmap=cmap)
