@@ -7,7 +7,7 @@ import json
 import pprint
 import copy
 
-def battery_placer(the_grid, SIGMA = 10, nbatteries):
+def battery_placer(house_dict, SIGMA = 10, nbatteries):
     """
     convolves a gaussian filter onto the grid, then visualizes this as a heat map
     Setting SIGMA to a nice value is an important hyperparameter. my intuition tells me
@@ -38,120 +38,65 @@ def battery_placer(the_grid, SIGMA = 10, nbatteries):
     """
     # determining sigma is important. A quick a dirty value is dimensions/batteries
     # 51/5 = 10
-    scatterplot_list = []
     # scatterplot_list = np.array([])
-    numb_battery = nbatteries
-    battery_capacity = 1507.0
+    numb_battery = len(nbatteries['batteries'])
+    battery_capacity = nbatteries['batteries']
     best_heat = 99999
-    counter = 0
-    inner_counter = 0
-    # Algo = "Exhaust"
-    Algo = "Hill_climb"
+    counter_limit = 100
+    inner_counter_limit = 100
 
-    heatmatrix_house = np.zeros(the_grid.size)
+    heatmatrix_house = np.zeros(51)
     house_cords = []
-    for housi in the_grid.house_dict:
+
+    for housi in house_dict:
         heatmatrix_house[housi['position'][0], housi['position'][1]] = housi['output']
         house_cords.append(housi['position'])
     guass_heatmatrix_house = gaussian_filter(heatmatrix_house, sigma=SIGMA)
 
-    if Algo == "Exhaust":
-        for battery_perm in itertools.combinations(range(1, ((the_grid.size[0] - 1)**2) + 1), numb_battery):
+    # best_config = [[12,12], [25,25], [12,37], [37,12], [37,37]]
+    new_config = [[random.randint(0, 50),random.randint(0, 50)] for j in range(nbatteries['batteries'])]
+    heatmatrix_battery = np.zeros(51)
 
-            heatmatrix_battery = np.zeros(the_grid.size)
-            for batteri in battery_perm:
-                x,y = divmod(batteri, the_grid.size[0])
-                # print(x,y)
-                heatmatrix_battery[x, y] = battery_capacity
+    for i, position in enumerate(new_config):
+        heatmatrix_battery[position[0], position[1]] = battery_capacity[i]
 
-            guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA, mode = 'constant')
-            heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
-            score_battery_position = np.sum(np.absolute(heatmatrix_difference))
-
-            if score_battery_position < best_heat:
-                print(score_battery_position)
-                best_heat = score_battery_position
-                best_battery_config = heatmatrix_battery
-
-                path = "Results/Battery_configurations/" + "test" + ".csv"
-                with open(path, "w") as f:
-                    writer = csv.writer(f,delimiter=':',quoting=csv.QUOTE_NONE)
-                    writer.writerow(["pos		cap"])
-                    for x, row in enumerate(heatmatrix_battery):
-                        for y, column in enumerate(row):
-                            if column == 0:
-                                continue
-                            else:
-                                bad_format = "[" + str(x) + ", " + str(y) + "]\t" + str(column)
-                                # print(bad_format)
-                                writer.writerow([bad_format])
-
-    elif Algo == "Hill_climb":
-        # best_config = [[12,12], [25,25], [12,37], [37,12], [37,37]]
-        new_config = placement = [[random.randint(0, 50),random.randint(0, 50)] for j in range(nbatteries)]
-        heatmatrix_battery = np.zeros(the_grid.size)
-
-        for position in best_config:
-            heatmatrix_battery[position[0], position[1]] = battery_capacity
+    guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA, mode = 'constant')
+    heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
+    best_heat = np.sum(np.absolute(heatmatrix_difference))
+    counter = 0
+    inner_counter = 0
+    while counter < counter_limit:
+        if inner_counter > inner_counter_limit:
+            new_config = Battery_climber(best_config, house_cords)
+            inner_counter = 0
+            counter += 1
+        else:
+            # print("searching")
+            new_config = Battery_climber(new_config, house_cords)
+            inner_counter += 1
+        # print(new_config)
+        heatmatrix_battery = np.zeros(51)
+        for i, position in enumerate(new_config):
+            heatmatrix_battery[position[0], position[1]] = battery_capacity[i]
 
         guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA, mode = 'constant')
+        # print(np.sum(guass_heatmatrix_battery) , np.sum(guass_heatmatrix_house))
         heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
-        best_heat = np.sum(np.absolute(heatmatrix_difference))
+        score_battery_position = np.sum(np.absolute(heatmatrix_difference))
+        if score_battery_position < best_heat:
+            if check_overlap(best_config, house_cords):
+                print("Overlap!")
+                print(check_overlap(best_config, house_cords))
+                continue
+            counter = 0
+            best_heat = score_battery_position
+            best_config = new_config
+            print(best_config)
+            print(best_heat)
 
-        while counter < 100:
-            if inner_counter > 1000:
-                new_config = Battery_climber(best_config, house_cords)
-                inner_counter = 0
-                counter += 1
-            else:
-                # print("searching")
-                new_config = Battery_climber(new_config, house_cords)
-                inner_counter += 1
-            # print(new_config)
-            heatmatrix_battery = np.zeros(the_grid.size)
-            for position in new_config:
-                heatmatrix_battery[position[0], position[1]] = battery_capacity
-
-            guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA, mode = 'constant')
-            # print(np.sum(guass_heatmatrix_battery) , np.sum(guass_heatmatrix_house))
-            heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
-            score_battery_position = np.sum(np.absolute(heatmatrix_difference))
-            if score_battery_position < best_heat:
-                if check_overlap(best_config, house_cords):
-                    print("Overlap!")
-                    print(check_overlap(best_config, house_cords))
-                    continue
-                counter = 0
-                best_heat = score_battery_position
-                best_config = new_config
-                print(best_config)
-                print(best_heat)
-                # path = "Results/Battery_configurations/" + "SCORE_" + str(int(best_heat)) + "_SIGMA_" + str(SIGMA) + ".csv"
-                path = "Results/Battery_configurations/" + "BESTSCORE" + "_SIGMA_" + str(SIGMA) + ".csv"
-                with open(path, "w") as f:
-                    writer = csv.writer(f,delimiter=':',quoting=csv.QUOTE_NONE)
-                    writer.writerow(["pos		cap"])
-                    for batteris in best_config:
-                        bad_format = "[" + str(batteris[0]) + ", " + str(batteris[1]) + "]\t" + str(1507.0)
-                        # print(bad_format)
-                        writer.writerow([bad_format])
-
-                battery_dict_format = []
-                for perbattery in best_config:
-                    battery_dict_format.append({'position': perbattery, 'capacity': 1507.0})
-
-                # print(scatterplot_list)
-                scatterplot_list.append({"heatscore": best_heat, "battery_dict": copy.deepcopy(battery_dict_format), "lowerbound": 0, "siman_gridscore": 0})
-
-    else:
-        pass
-    # print(scatterplot_list)
-    scatterplot_data = {"DATAMETA": {"DATA": scatterplot_list, "SIGMA": SIGMA, "R2": 0, "regression": 0}}
-    path = "Results/Battery_configurations/" + "scatterplotdata_sigma" + str(SIGMA) + ".json"
-    with open(path, 'w') as jsonfile:
-        json.dump(scatterplot_data, jsonfile)
+    nbatteries['bat_positions'] = best_config
     print(best_heat)
-    return(best_config)
+    return(nbatteries)
 
 def Battery_climber(config, house_cords):
 
