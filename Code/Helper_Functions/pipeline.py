@@ -29,6 +29,8 @@ def main():
             battery_dict.append({"position" : comp["bat_positions"][i], "capacity" : element})
         compwijk.add_house_dictionaries(houses)
         compwijk.add_battery_dictionaries(battery_dict)
+        print("battery count according to comp: {}".format(len(comp["batteries"])))
+        compwijk.calc_cost()
         compwijk.grid = random_solve(compwijk)
         compwijk.prettify()
 
