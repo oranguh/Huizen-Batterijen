@@ -101,6 +101,7 @@ class Simulated_annealing:
                 self.houses[i][-2] = self.houses[j][-2]
                 self.houses[j][-2] = temp
                 return True
+        print("gecalculeerde kosten:")
         print(self.calc_cost())
         return False
 

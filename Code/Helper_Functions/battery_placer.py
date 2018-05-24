@@ -155,7 +155,7 @@ def battery_placer(the_grid, SIGMA = 10):
     path = "Results/Battery_configurations/" + "scatterplotdata_sigma" + str(SIGMA) + ".json"
     with open(path, 'w') as jsonfile:
         json.dump(scatterplot_data, jsonfile)
-    print(best_heat)
+    # print(best_heat)
     return(best_config)
 
 def Battery_climber(config, house_cords):

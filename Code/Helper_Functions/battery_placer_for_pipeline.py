@@ -102,7 +102,6 @@ def battery_placer(house_dict, bat_comp, SIGMA = 10, counter_limit = 10, inner_c
                 # print(best_heat)
 
     bat_comp['bat_positions'] = best_config
-    print(best_heat)
     return(bat_comp)
 
 def Battery_climber(config, house_cords):
