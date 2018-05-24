@@ -2,7 +2,7 @@
 import random
 import numpy as np
 
-def random_solve(the_grid):
+def random_solve(the_grid, a_limit = 10):
     """    """
 
     print("\n\n\n")
@@ -17,7 +17,7 @@ def random_solve(the_grid):
     best_list = []
     best_score = 80000
     # the_grid.grid = np.empty((51, 51), dtype="object")
-    limit = 10
+    limit = a_limit
     i = 0
     while i < limit:
         # Reset grid
