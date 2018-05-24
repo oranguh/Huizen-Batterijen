@@ -7,7 +7,8 @@ from smart_grid import SmartGrid
 sys.path.append('../Algorithms')
 from random_solve import random_solve
 from read_data import read_data
-
+from Hill_Climber_random_for_pipeline import Hillclimber
+from siman_for_pipeline import Simulated_annealing
 
 def main():
 
@@ -22,12 +23,14 @@ def main():
         comp = battery_placer(houses, comp, 10)
         compwijk = create_smart_grid(houses, comp)
         #  doe tien keer
-        print(compwijk.house_dict)
         compwijk.grid = random_solve(compwijk)
         compwijk.house_dict_with_manhattan_distances()
-        print(compwijk.house_data)
+        hillclimber = Hillclimber(compwijk.house_data, compwijk.battery_dict)
+        while hillclimber.run():
+            continue
 
-
+        siman = Simulated_annealing(hillclimber.houses, hillclimber.batteries, hillclimber.combs)
+        siman.run()
 
 
 def create_house_dict(wijk):
@@ -44,6 +47,7 @@ def create_smart_grid(houses, comp):
     for i,element in enumerate(comp["batteries"]):
         compwijk.create_battery(comp['bat_positions'][i], element)
         battery_dict.append({"position" : comp["bat_positions"][i], "capacity" : element})
+    compwijk.battery_dict = battery_dict
     compwijk.add_house_dictionaries(houses)
     compwijk.add_battery_dictionaries(battery_dict)
     return compwijk
