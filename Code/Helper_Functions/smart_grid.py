@@ -220,10 +220,10 @@ class SmartGrid:
             self.house_data[i].append(None)
             self.house_data[i].append(house["output"])
 
-        for i,row in enumerate(self.grid):
-            for element in row:
-                if isinstance(element, SmartBattery):
-                    self.house_data[element.house_id][-2] = element.battery_connect
+        for i,element in enumerate(self.house_dict):
+            # print("hoi")
+            # print(self.grid[element['position'][0],element["position"][1]].battery_connect)
+            self.house_data[i][-2] = self.grid[element['position'][0],element["position"][1]].battery_connect
         return(self.house_data)
 
     def cap_left(self):

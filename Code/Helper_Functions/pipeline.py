@@ -25,8 +25,7 @@ def main():
         print(compwijk.house_dict)
         compwijk.grid = random_solve(compwijk)
         compwijk.house_dict_with_manhattan_distances()
-        # print(compwijk.house_data)
-
+        print(compwijk.house_data)
 
 
 

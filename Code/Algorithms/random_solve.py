@@ -22,6 +22,8 @@ def random_solve(the_grid, a_limit = 10):
     while i < limit:
         # Reset grid
         the_grid.grid = np.empty((51, 51), dtype="object")
+        the_grid.house_count = 0
+        the_grid.battery_count = 0
         for element in houses:
             the_grid.create_house(element['position'], element['output'])
         for element in batteries:
