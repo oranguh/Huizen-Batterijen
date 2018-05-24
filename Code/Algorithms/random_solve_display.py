@@ -33,8 +33,8 @@ def main():
 def random_solve(the_grid):
     """    """
 
-    print("\n\n\n")
-    print("You are now using random_solve!")
+    print('\n\n\n')
+    print('You are now using random_solve!')
     # cap_limit telling the iterator to stop when battery_cap below this value
 
     # get number of batteries

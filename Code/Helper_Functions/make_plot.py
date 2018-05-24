@@ -19,12 +19,12 @@ with open('../../Results/random_solutions.csv', 'r') as csvfile:
             second_distr.append(int(item))
         break
 
-title_string = 'Random solve distributie n = 10000' + '\n' + 'Ongeldige oplossingen: 985077'
+title_string = '"Random solve" distributie n = 10000' + '\n' + 'Ongeldige oplossingen: 985077'
 # title_string = 'Vergelijking resultaten'
 plt.hist(first_distr, 50, facecolor='blue')
-plt.hist(second_distr, 50, facecolor='red')
-plt.plot([53000, 53000], [0, 750], 'b-', lw=1)
-plt.plot([40000, 40000], [0, 750], 'r-', lw=1)
+# plt.hist(second_distr, 50, facecolor='red')
+plt.plot([53000, 53000], [0, 750], 'b--', lw=1)
+# plt.plot([40000, 40000], [0, 750], 'r-', lw=1)
 # plt.plot([64492, 64492], [0, 400], 'k:', lw=2)
 # plt.plot([41596, 41596], [0, 400], 'k-.', lw=2)
 # plt.plot([41371, 41371], [0, 400], 'r:', lw=1)
