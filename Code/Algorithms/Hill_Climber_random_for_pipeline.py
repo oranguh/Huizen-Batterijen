@@ -48,7 +48,7 @@ def main():
         solution_reader(wijk_brabo, "../../Results/best_brabo_solution_1337.json")
 
         # Initializes the hillclimber
-        hillclimberke = hillclimber(wijk.house_dict_with_manhattan_distances, wijk_brabo.batteries)
+        hillclimberke = Hillclimber(wijk.house_dict_with_manhattan_distances, wijk_brabo.batteries)
 
         # Creates a list of the combs to be able to call shuffle
         combs = []
@@ -74,18 +74,24 @@ def main():
 
 
 # Class in which a hillclimber is initialized with some functions to run, check and calculate costs
-class hillclimber:
+class Hillclimber:
 
     def __init__(self, houses, batteries):
         self.houses = houses
         self.batteries = batteries
         self.swaps = 0
+        self.combs = []
+        comb = combinations(range(150), 2)
+        for i in comb:
+            self.combs.append(i)
+
 
     # run starts the hillclimbing proces
-    def run(self, combs):
+    def run(self):
         # Shuffles the list of combinations then loops through all the possible combinations
-        shuffelke(combs)
-        for i, j in combs:
+        # print("GOAN we")
+        shuffelke(self.combs)
+        for i, j in self.combs:
             if self.swap_check(self.houses[i], self.houses[j]):
 
                 # Updates the batteries
