@@ -40,4 +40,4 @@ resultaat van hill climber. Het cooling scheme van simulated annealing is expone
 
 ## Het plaatsen van verschillende typen batterijen
 
-![alt text](Figures/heat_simannealing_sigma10_2.png)
+![alt text](Figures/Sigma_experiments/heat_simannealing_sigma10_2.png)
