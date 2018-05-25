@@ -11,7 +11,7 @@ from Hill_Climber_random_for_pipeline import Hillclimber
 from siman_for_pipeline import Simulated_annealing
 from battery_placer_for_pipeline import battery_placer
 from smart_grid import SmartGrid
-def main():
+def main(wijk_number = 1, iteration_count = 10):
     """
     pipeline for creating a good battery composition, in good battery positions
     with good connections.
@@ -30,37 +30,21 @@ def main():
     If a highscore is found the data is saved onto a file
 
     PARAMETERS:
-                wijk_number: determines which wijk to use, default 1
+                wijk_number: determines which wijk to use
                 iteration_count: amount of times to iterate, default 10
     """
-    # determine which "wijk" you are using
-
-    wijk_number = 1
-    iteration_count = 10
-
-    wijk_number = input("please give wijk number: ")
-    if not int(wijk_number) in [1,2,3]:
-        wijk_number = 1
-        print("invalid input, using default wijk 1")
-
-    iteration_count = input("please give iteration count: ")
-
-    if int(iteration_count) not in list(range(1,20)):
-        iteration_count = 10
-        print("invalid/unreasonable input using 10")
     # load file containing all 26 battery compositions
     bat_comp_path = "Results/battery_compositions.json"
     with open(bat_comp_path, "r") as f:
         parsed_data = json.load(f)
 
     # Load the best score ever found using this pipeline
-    best_score_path = "Results/de_aller_beste_score_ooit_wijk" + str(wijk_number) + ".csv"
-    best_score_path_json = "Results/de_aller_beste_score_ooit_wijk" + str(wijk_number) + ".json"
-    with open(best_score_path, "r") as fa:
+    with open("Results/de_aller_beste_score_ooit.csv1", "r") as fa:
         reader = csv.reader(fa)
         for i, row in enumerate(reader):
             if i is 1:
                 best_score = int(row[0])
+
     # Determines the heatmap scores for the 26 battery
     for i, comp in enumerate(parsed_data["ALL_CONFIGURATIONS"]):
             houses = create_house_dict(wijk_number)
@@ -69,7 +53,7 @@ def main():
     # picks the best 4 configurations to loop through
     best_4_bat_configs = sorted(parsed_data["ALL_CONFIGURATIONS"], key=itemgetter('heatmap_score'))[0:4]
     for i, comp in enumerate(best_4_bat_configs):
-        print("Battery composition: {}/{} \nBattery count: {}".format(i+1, len(best_4_bat_configs), len(comp["batteries"])))
+        print("Battery composition: {}/{} \n Batteries total: {}".format(i+1, len(best_4_bat_configs), len(comp["batteries"])))
         compcost = comp['cost']
         houses = create_house_dict(wijk_number)
         compwijk = create_smart_grid(houses, comp)
@@ -89,9 +73,9 @@ def main():
                     if (siman.calc_cost() + compcost) < best_score:
                         print("NEW ALLTIME HIGHSCORE: {}".format(siman.calc_cost() + compcost))
                         best_score = siman.calc_cost() + compcost
-                        with open(best_score_path_json, 'w') as jsonfile:
+                        with open("Results/de_aller_beste_score_ooit.json", 'w') as jsonfile:
                             json.dump({"META": {"DATA": siman.houses, "BATTERIES": siman.batteries}}, jsonfile)
-                        with open(best_score_path, "w") as f:
+                        with open("Results/de_aller_beste_score_ooit.csv1", "w") as f:
                             writer = csv.writer(f)
                             writer.writerow(["score", "configuration"])
                             writer.writerow([siman.calc_cost(), {"DATA": siman.houses}])
