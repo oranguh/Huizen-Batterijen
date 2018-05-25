@@ -257,19 +257,19 @@ class SmartGrid:
         """ determines lower bound of the grid configuration
         """
         self.lower_bound = 0
-        # for bat in self.battery_dict:
-        #     print(bat)
-        #     if (bat['capacity'] == 1507.0):
-        #         self.lower_bound += 5000
-        #     elif (bat['capacity'] == 450):
-        #         self.lower_bound += 900
-        #     elif (bat['capacity'] == 900):
-        #         self.lower_bound += 1350
-        #     elif (bat['capacity'] == 1800):
-        #         self.lower_bound += 1800
-        #     else:
-        #         # print("unknown battery type")
-        #         pass
+        for bat in self.battery_dict:
+            # print(bat)
+            if (bat['capacity'] == 1507.0):
+                self.lower_bound += 5000
+            elif (bat['capacity'] == 450):
+                self.lower_bound += 900
+            elif (bat['capacity'] == 900):
+                self.lower_bound += 1350
+            elif (bat['capacity'] == 1800):
+                self.lower_bound += 1800
+            else:
+                # print("unknown battery type")
+                pass
         if self.house_data == None:
             # print("Missing self.house_data")
             pass

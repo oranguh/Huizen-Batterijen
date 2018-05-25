@@ -24,7 +24,7 @@ def main():
     houses, unused = read_data(house_path, battery_path)
     # print(unused)
 
-    with open("../../Results/Battery_configurations/scatterplotdata_sigma10.json") as f:
+    with open("../../Results/Battery_configurations/scatterplotdata_sigma4.json") as f:
         parsed_data = json.load(f)
 
     for i, batter_positions in enumerate(parsed_data['DATAMETA']['DATA']):
@@ -64,7 +64,7 @@ def main():
         print("Simulated Annealing: {}".format(siman.calc_cost()))
         # print("price of wijk random{}".format(total_cost))
         # DO SIMANNEALING HERE
-        parsed_data['DATAMETA']['DATA'][i]['siman_gridscore'] = total_cost
+        parsed_data['DATAMETA']['DATA'][i]['siman_gridscore'] = siman.calc_cost()
 
     heat = []
     lower = []
