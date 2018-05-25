@@ -12,7 +12,7 @@ sys.path.append('../../Results')
 
 from solution_reader_new_format import solution_reader
 from read_data import read_data
-from smart_grid import *
+from smart_grid import SmartGrid, SmartHouse, SmartBattery
 
 
 def main():
