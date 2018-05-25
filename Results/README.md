@@ -41,3 +41,36 @@ resultaat van hill climber. Het cooling scheme van simulated annealing is expone
 ## Het plaatsen van verschillende typen batterijen
 
 ![alt text](Figures/Sigma_experiments/heat_simannealing_sigma10_2.png)
+
+Het linkerfiguur van bovenstaande figuren toont dat een goede score van de
+heat map een goede indicatie is van de score die met simulated annealing voor een
+bepaalde batterijpositionering behaald kan worden. Ook zie je dat de lower bound
+net zo een goede indicator lijkt hiervoor. Echter, in deze figuren hebben de batterijen
+een gelijke capaciteit. Dat is een vereiste voor het gebruik van de lower bound
+als indicator. Als er verschillende typen batterijen geplaatst moeten worden, dan
+moet je de heat map score gebruiken, omdat die dat verschil in typen meeneemt.
+Een toekomstig figuur zal dit aantonen.
+
+![alt text](Figures/Sigma_experiments/n_batteries_vs_cable_cost.png)
+
+Bovenstaand figuur lijkt een redelijk logisch beeld te tonen. Hoe meer batterijen
+hoe lager de kabelkosten. Volgend figuur lijkt echter ook iets belangrijks te tonen...
+
+![alt text](Figures/Sigma_experiments/n_batteries_vs_lower_bound_2.png)
+
+Bovenstaand figuur toont aan dat de korting op de kabelkosten teniet wordt gedaan
+als je ook de kosten van de batterijen meeneemt. Hierdoor lijkt het erop dat, zolang
+je precies genoeg capaciteit in het grid hebt voor de output van de huizen, het niet
+zoveel uit maakt hoeveel batterijen er geplaatst worden. Dit figuur heeft echter
+wel de lower bound op de y-as staan en niet een score van, bijvoorbeeld, simulated
+annealing.
+
+## Nog missende figuren
+
+* De eindscores voor de beste (door ons gevonden) positionering van de nieuwe
+batterijen moeten getoond worden.
+
+* We hebben voor simulated annealing 3 cooling schemes met elkaar vergeleken:
+lineair, exponentieel en sigmoïdaal. Het lijkt erop dat sigmoïdaal het beste werkt,
+daarna exponentieel en lineair het minst goed. Deze vergelijking moet nog in cijfers
+getoond worden. 
