@@ -12,34 +12,55 @@ from Hill_Climber_random_for_pipeline import Hillclimber
 from siman_for_pipeline import Simulated_annealing
 
 def main():
+    """
+    pipeline for creating a good battery composition, in good battery positions
+    with good connections.
 
+    
+
+
+    """
+    # determine which "wijk" you are using
+    wijk_number = 1
+
+    # load file containing all 26 battery compositions
     bat_comp_path = "../../Results/battery_compositions.json"
     with open(bat_comp_path, "r") as f:
         parsed_data = json.load(f)
+
+    # Load the best score ever found using this pipeline
     with open("../../Results/de_aller_beste_score_ooit.csv1", "r") as fa:
         reader = csv.reader(fa)
         for i, row in enumerate(reader):
             if i is 1:
                 best_score = int(row[0])
 
-    best_4_bat_configs = sorted(parsed_data["ALL_CONFIGURATIONS"], key=itemgetter('score'))[0:4]
-    for comp in best_4_bat_configs:
+    for i, comp in enumerate(parsed_data["ALL_CONFIGURATIONS"]):
+            houses = create_house_dict(wijk_number)
+            comp = battery_placer(houses, comp, 10)
+            parsed_data["ALL_CONFIGURATIONS"][i]['heatmap_score'] = comp['heatmap_score']
+
+    best_4_bat_configs = sorted(parsed_data["ALL_CONFIGURATIONS"], key=itemgetter('heatmap_score'))[0:4]
+    for i, comp in enumerate(best_4_bat_configs):
+        print("Battery composition: {}/{} \n Batteries total: {}".format(i+1, len(best_4_bat_configs), len(comp["batteries"])))
         compcost = comp['cost']
-        houses = create_house_dict(1)
-        comp = battery_placer(houses, comp, 10)
+        houses = create_house_dict(wijk_number)
         compwijk = create_smart_grid(houses, comp)
-        for _ in range(10):
+        for _ in range(2):
             compwijk.grid = random_solve(compwijk)
-            for _ in range(10):
+            if compwijk.grid is False:
+                print("Skipping due to random taking too long")
+                continue
+            for _ in range(2):
                 compwijk.house_dict_with_manhattan_distances()
                 hillclimber = Hillclimber(compwijk.house_data, compwijk.battery_dict)
                 while hillclimber.run():
                     pass
-                for _ in range(10):
+                for _ in range(2):
                     siman = Simulated_annealing(hillclimber.houses, hillclimber.batteries, hillclimber.combs)
                     siman.run()
                     if (siman.calc_cost() + compcost) < best_score:
-                        print(siman.calc_cost() + compcost)
+                        print("NEW ALLTIME HIGHSCORE: {}".format(siman.calc_cost() + compcost))
                         best_score = siman.calc_cost() + compcost
                         with open("../../Results/de_aller_beste_score_ooit.json", 'w') as jsonfile:
                             json.dump({"META": {"DATA": siman.houses, "BATTERIES": siman.batteries}}, jsonfile)
@@ -51,9 +72,9 @@ def main():
 
 
 
-def create_house_dict(wijk):
-    battery_path = "../../Data/wijk" + str(wijk) + "_batterijen.txt"
-    house_path = "../../Data/wijk" + str(wijk) +"_huizen.csv"
+def create_house_dict(wijk_number):
+    battery_path = "../../Data/wijk" + str(wijk_number) + "_batterijen.txt"
+    house_path = "../../Data/wijk" + str(wijk_number) +"_huizen.csv"
     houses, batteries = read_data(house_path, battery_path)
     return houses
 

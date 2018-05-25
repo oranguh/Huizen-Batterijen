@@ -1,108 +1,104 @@
-#!/usr/bin/env python
+import json
+from operator import itemgetter
 import sys
-import numpy as np
-import colorama
-from termcolor import cprint
-import matplotlib.pyplot as plt
+import csv
 
-sys.path.append('Code/Helper_Functions')
 sys.path.append('Code/Algorithms')
-sys.path.append('Data/')
-sys.path.append('Results/')
-
-from smart_grid import SmartGrid
+sys.path.append('Code/Helper_Functions')
+from random_solve import random_solve
 from read_data import read_data
-from heat_map import heat_map
-from solution_reader import solution_reader
-from battery_placer import battery_placer
+from Hill_Climber_random_for_pipeline import Hillclimber
+from siman_for_pipeline import Simulated_annealing
+from battery_placer_for_pipeline import battery_placer
+from smart_grid import SmartGrid
+def main(wijk_number = 1, iteration_count = 10):
+    """
+    pipeline for creating a good battery composition, in good battery positions
+    with good connections.
 
+    The pipeline starts with all 26 possible battery profiles. This json dataset
+    is generated using batterytype_profiles.py
 
-def main():
-    colorama.init()
+    These configurations are all scored using a heatmap by a hillclimber in the
+    script battery_placer_for_pipeline.py
 
+    The 4 best scores are chosen
+    First, 10 random solutions are generated using random_solve.py
+    For each random solution, 10 hillclimbers are performed using Hill_Climber_random_for_pipeline.py
+    For each hillclimber, 10 simulated annealings are performed usin siman_for_pipeline.py
 
-    house_path = 'Data/wijk1_huizen.csv'
-    battery_path = 'Data/wijk1_batterijen.txt'
+    If a highscore is found the data is saved onto a file
 
+    PARAMETERS:
+                wijk_number: determines which wijk to use
+                iteration_count: amount of times to iterate, default 10
+    """
+    # load file containing all 26 battery compositions
+    bat_comp_path = "Results/battery_compositions.json"
+    with open(bat_comp_path, "r") as f:
+        parsed_data = json.load(f)
+
+    # Load the best score ever found using this pipeline
+    with open("Results/de_aller_beste_score_ooit.csv1", "r") as fa:
+        reader = csv.reader(fa)
+        for i, row in enumerate(reader):
+            if i is 1:
+                best_score = int(row[0])
+
+    # Determines the heatmap scores for the 26 battery
+    for i, comp in enumerate(parsed_data["ALL_CONFIGURATIONS"]):
+            houses = create_house_dict(wijk_number)
+            comp = battery_placer(houses, comp, 10)
+            parsed_data["ALL_CONFIGURATIONS"][i]['heatmap_score'] = comp['heatmap_score']
+    # picks the best 4 configurations to loop through
+    best_4_bat_configs = sorted(parsed_data["ALL_CONFIGURATIONS"], key=itemgetter('heatmap_score'))[0:4]
+    for i, comp in enumerate(best_4_bat_configs):
+        print("Battery composition: {}/{} \n Batteries total: {}".format(i+1, len(best_4_bat_configs), len(comp["batteries"])))
+        compcost = comp['cost']
+        houses = create_house_dict(wijk_number)
+        compwijk = create_smart_grid(houses, comp)
+        for _ in range(10):
+            compwijk.grid = random_solve(compwijk)
+            if compwijk.grid is False:
+                print("Skipping due to random taking too long")
+                continue
+            for _ in range(10):
+                compwijk.house_dict_with_manhattan_distances()
+                hillclimber = Hillclimber(compwijk.house_data, compwijk.battery_dict)
+                while hillclimber.run():
+                    pass
+                for _ in range(10):
+                    siman = Simulated_annealing(hillclimber.houses, hillclimber.batteries, hillclimber.combs)
+                    siman.run()
+                    if (siman.calc_cost() + compcost) < best_score:
+                        print("NEW ALLTIME HIGHSCORE: {}".format(siman.calc_cost() + compcost))
+                        best_score = siman.calc_cost() + compcost
+                        with open("Results/de_aller_beste_score_ooit.json", 'w') as jsonfile:
+                            json.dump({"META": {"DATA": siman.houses, "BATTERIES": siman.batteries}}, jsonfile)
+                        with open("Results/de_aller_beste_score_ooit.csv1", "w") as f:
+                            writer = csv.writer(f)
+                            writer.writerow(["score", "configuration"])
+                            writer.writerow([siman.calc_cost(), {"DATA": siman.houses}])
+            compwijk.get_lower_bound()
+
+def create_house_dict(wijk_number):
+    battery_path = "Data/wijk" + str(wijk_number) + "_batterijen.txt"
+    house_path = "Data/wijk" + str(wijk_number) +"_huizen.csv"
     houses, batteries = read_data(house_path, battery_path)
+    return houses
 
-
-    # find ranges for the grid matrix
-    max_x = max([dic['position'][0] for dic in houses] +
-                [dic['position'][0] for dic in batteries]) + 1
-    max_y = max([dic['position'][1] for dic in houses] +
-                [dic['position'][1] for dic in batteries]) + 1
-
-    # outputs = [dic['output'] for dic in houses]
-    # print(outputs)
-
-    # plt.hist(outputs)
-    # plt.ylabel('count')
-    # plt.xlabel('max output')
-    # plt.show()
-
-    # creates our very own smart_grid object! yay
-    wijk1 = SmartGrid(max_x,max_y)
-
-    # Populate the houses in the smart_grid, should I make this a method?
+def create_smart_grid(houses, comp):
+    compwijk = SmartGrid(51,51)
+    battery_dict = []
     for element in houses:
-        wijk1.create_house(element['position'], element['output'])
-
-    # populate the batteries in the smart_grid
-    # for element in batteries:
-    #     wijk1.create_battery(element['position'], element['capacity'])
-
-    # adds dictionaries to the SmartGrid object
-    wijk1.add_house_dictionaries(houses)
-    # wijk1.add_battery_dictionaries(batteries)
-
-
-
-    # pretty display
-    # wijk1.prettify()
-    print("The cost of this grid is: {}".format(wijk1.calc_cost()))
-
-    # solution_reader(wijk1, 'Results/best_brabo_solution.csv')
-    # wijk1.solve("simple_solve3")
-
-    # wijk1.prettify()
-    print("The cost of this grid is: {}".format(wijk1.calc_cost()))
-
-    # wijk1.cap_left()
-    # print("The remaining capacity of batteries are: {}".format(wijk1.bat_cap_left))
-
-    # heat_map(wijk1)
-
-    # wijk1.house_dict_with_manhattan_distances()
-    # wijk1.disconnect(houses[1]["position"])
-
-    # house_coordinatesx = [dic['position'][0] for dic in houses]
-    # house_coordinatesy = [dic['position'][1] for dic in houses]
-    #
-    # plt.scatter(house_coordinatesx, house_coordinatesy)
-    # plt.show()
-    # wijk1.get_lower_bound()
-    # print("Lower bound of grid is: {}".format(wijk1.lower_bound))
-    battery_placer(wijk1, 2)
-    # print(x)
-    battery_path = 'Results/Battery_configurations/test.csv'
-    # battery_path = 'Results/Battery_configurations/BESTSCORE_SIGMA_2.csv'
-    # battery_path = 'Results/Battery_configurations/lucas_1137_nice_sigma10.csv'
-    # battery_path = 'Results/Battery_configurations/leuknaampjes.csv'
-    houses, batteries = read_data(house_path, battery_path)
-    for element in batteries:
-        wijk1.create_battery(element['position'], element['capacity'])
-
-    wijk1.add_battery_dictionaries(batteries)
-    wijk1.house_dict_with_manhattan_distances()
-    heat_map(wijk1)
-    wijk1.prettify()
-    print(len(wijk1.house_data))
-
-    wijk1.get_lower_bound()
-    print("Lower bound of grid is: {}".format(wijk1.lower_bound))
-    # DO SIMULATED ANNEALING HERE
-    # get the score of the sim annealing, set x to battery placement score. Plot
+        compwijk.create_house(element['position'], element['output'])
+    for i,element in enumerate(comp["batteries"]):
+        compwijk.create_battery(comp['bat_positions'][i], element)
+        battery_dict.append({"position" : comp["bat_positions"][i], "capacity" : element})
+    compwijk.battery_dict = battery_dict
+    compwijk.add_house_dictionaries(houses)
+    compwijk.add_battery_dictionaries(battery_dict)
+    return compwijk
 
 if __name__ == "__main__":
     main()

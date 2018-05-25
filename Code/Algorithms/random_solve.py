@@ -2,7 +2,7 @@
 import random
 import numpy as np
 
-def random_solve(the_grid, a_limit = 100):
+def random_solve(the_grid, a_limit = 10):
     """    """
 
     print("\n\n\n")
@@ -19,6 +19,7 @@ def random_solve(the_grid, a_limit = 100):
     # the_grid.grid = np.empty((51, 51), dtype="object")
     limit = a_limit
     i = 0
+    infinite_loop_counter = 0
     while i < limit:
         # Reset grid
         the_grid.grid = np.empty((51, 51), dtype="object")
@@ -40,7 +41,10 @@ def random_solve(the_grid, a_limit = 100):
                 count += 1
                 keepcount += 1
                 # print("hey")
-
+                infinite_loop_counter += 1
+                if infinite_loop_counter > 1000000:
+                    print("maximum reached inner")
+                    return False
                 if count is n_bat:
                     count = 0
                 if keepcount is n_bat:
@@ -50,10 +54,20 @@ def random_solve(the_grid, a_limit = 100):
                 continue
         if the_grid.check_validity():
             i += 1
+            infinite_loop_counter = 0
             score = the_grid.calc_cost()
             if score < best_score:
                 best_score = score
                 best_list = house_pos
+        else:
+            infinite_loop_counter += 1
+            if infinite_loop_counter > 100000:
+                print("maximum reached outer")
+
+                if i == 0:
+                    return False
+                else:
+                    return the_grid.grid
 
     # print(best_score)
     return the_grid.grid

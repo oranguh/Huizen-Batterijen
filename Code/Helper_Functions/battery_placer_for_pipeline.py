@@ -36,14 +36,13 @@ def battery_placer(house_dict, bat_comp, SIGMA = 10, counter_limit = 10, inner_c
     OR... use a greedy start configuration [12*12, 25*25, 12*37, 37*12, 37*37]
     and then use hill_climber
     """
-    # determining sigma is important. A quick a dirty value is dimensions/batteries
-    # 51/5 = 10
-    # scatterplot_list = np.array([])
+
     numb_battery = len(bat_comp['batteries'])
     battery_capacity = bat_comp['batteries']
     best_heat = 99999
     counter_limit = 10
     inner_counter_limit = 100
+    SIGMA = 51/numb_battery
 
     heatmatrix_house = np.zeros([51,51])
     house_cords = []
@@ -102,6 +101,7 @@ def battery_placer(house_dict, bat_comp, SIGMA = 10, counter_limit = 10, inner_c
                 # print(best_heat)
 
     bat_comp['bat_positions'] = best_config
+    bat_comp['heatmap_score'] = best_heat
     return(bat_comp)
 
 def Battery_climber(config, house_cords):
