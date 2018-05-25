@@ -51,12 +51,12 @@ als indicator. Als er verschillende typen batterijen geplaatst moeten worden, da
 moet je de heat map score gebruiken, omdat die dat verschil in typen meeneemt.
 Een toekomstig figuur zal dit aantonen.
 
-![alt text](Figures/Sigma_experiments/n_batteries_vs_cable_cost.png)
+![alt text](Figures/n_batteries_vs_cable_cost.png)
 
 Bovenstaand figuur lijkt een redelijk logisch beeld te tonen. Hoe meer batterijen
 hoe lager de kabelkosten. Volgend figuur lijkt echter ook iets belangrijks te tonen...
 
-![alt text](Figures/Sigma_experiments/n_batteries_vs_lower_bound_2.png)
+![alt text](Figures/n_batteries_vs_lower_bound_2.png)
 
 Bovenstaand figuur toont aan dat de korting op de kabelkosten teniet wordt gedaan
 als je ook de kosten van de batterijen meeneemt. Hierdoor lijkt het erop dat, zolang
@@ -73,4 +73,4 @@ batterijen moeten getoond worden.
 * We hebben voor simulated annealing 3 cooling schemes met elkaar vergeleken:
 lineair, exponentieel en sigmoïdaal. Het lijkt erop dat sigmoïdaal het beste werkt,
 daarna exponentieel en lineair het minst goed. Deze vergelijking moet nog in cijfers
-getoond worden. 
+getoond worden.
