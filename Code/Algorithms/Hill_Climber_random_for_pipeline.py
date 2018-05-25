@@ -21,7 +21,7 @@ class Hillclimber:
 
     has method calc_cost(self) which returns the cost of the configurations
 
-    If you want to have the best configuration you can use the Hillclimber.houses property
+    If you want to have the best configuration you can use the property Hillclimber.houses
 
     """
 

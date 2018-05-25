@@ -64,7 +64,7 @@ def main():
     # Determines the heatmap scores for the 26 battery
     for i, comp in enumerate(parsed_data["ALL_CONFIGURATIONS"]):
             houses = create_house_dict(wijk_number)
-            comp = battery_placer(houses, comp, 10)
+            comp = battery_placer(houses, comp)
             parsed_data["ALL_CONFIGURATIONS"][i]['heatmap_score'] = comp['heatmap_score']
     # picks the best 4 configurations to loop through
     best_4_bat_configs = sorted(parsed_data["ALL_CONFIGURATIONS"], key=itemgetter('heatmap_score'))[0:4]

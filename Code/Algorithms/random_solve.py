@@ -13,9 +13,7 @@ def random_solve(the_grid, limit = 10):
 
         If random_solve takes too long to find a solution, false is returned
 
-        Otherwise the best solution
-
-
+        Otherwise the best solution is returned
     """
 
     print("\n\n")

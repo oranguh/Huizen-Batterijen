@@ -1,6 +1,10 @@
 import csv
 import json
 class node:
+    """
+    DEPRECATED
+    Exhaustive algorithms are not worth running for this case
+    """
 
     def __init__(self, batteryDict, houseList, bestPrice, subPrice = 0,houseNumber = 0, previousBattery = None):
         self.houseNumber = houseNumber
