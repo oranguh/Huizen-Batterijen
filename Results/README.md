@@ -26,4 +26,18 @@ positionering van de batterijen uit...
 
 In bovenstaand figuur is te zien hoe de scoredistributie van de willekeurige
 oplossingen én lower bound is verschoven. Dit duidt erop dat met deze nieuwe
-positionering van de batterijen lagere kosten gerealiseerd kunnen worden.          
+positionering van de batterijen lagere kosten gerealiseerd kunnen worden.
+
+## Vergelijking scores na verplaatsen batterijen
+
+![alt text](Figures/results_table_1.png)
+
+Deze tabel toont de hoogst behaalde scores van de verschillende algoritmes. Hiervoor
+zijn de batterijposities gebruikt die in de vorige paragraaf worden besproken.
+Voor de hill climber en de simulated annealing is het resultaat van de branch 'n bound
+als startpunt gebruikt. Bovendien is er een simulated annealing gedaan vanuit het
+resultaat van hill climber. Het cooling scheme van simulated annealing is exponentieel.
+
+## Het plaatsen van verschillende typen batterijen
+
+![alt text](Figures/heat_simannealing_sigma10_2.png)
