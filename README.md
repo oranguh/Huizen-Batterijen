@@ -49,7 +49,7 @@ in tabellen en figuren zijn uitgebeeld.
 
 ### Test (Testing)
 
-TO DO (hoe instrueren we de gebruik omtrent het gebruik van onze code?)
+TO DO (hoe instrueren we de gebruiker omtrent het gebruik van onze code?)
 
 ```
 python main.py
