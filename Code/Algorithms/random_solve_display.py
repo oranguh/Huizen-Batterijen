@@ -11,6 +11,12 @@ from read_data import read_data
 from smart_grid import SmartGrid, SmartHouse, SmartBattery
 
 def main():
+    """
+        plots a distribution using random_solve. The distribution gives a good
+        indication to the statespace and its density. Increasing the amount of
+        batteries will significantly increase runtime.
+
+    """
 
     house_path = '../../Data/wijk1_huizen.csv'
     battery_path = '../../Data/wijk1_batterijen.txt'

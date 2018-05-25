@@ -17,6 +17,24 @@ from smart_grid import SmartGrid, SmartHouse, SmartBattery
 
 
 def main():
+    """
+        Simulated annealing
+
+        By using a solved grid simulated annealing tries to randomly make swaps.
+        Depending on the cooling scheme used different results will follow.
+
+        heatscheme:
+            linear
+            exponential
+            sigmoid
+
+        The Simulated_annealing object takes as input a battery dictionary and
+        a houses dictionary (new format)
+        The Simulated_annealing object has the method calc_cost()
+        which returns the cost
+    """
+
+    heatscheme = "exponential"
 
     # Sets paths to house and battery compositions
     house_path = '../../Data/wijk1_huizen.csv'
@@ -57,8 +75,6 @@ def main():
         while siman.iterations < siman.maxiterations:
             siman.run(random.choice(combs))
 
-        # print(siman.calc_cost())
-        # print(siman.calc_cost())
         # If better score is found, save it
         if best_score > siman.calc_cost():
             best_score = siman.calc_cost()
@@ -106,10 +122,15 @@ class Simulated_annealing:
         if house1[-2] is not house2[-2]:
             if (self.batteries[house1[-2]]['capacity'] + house1[-1]) >= house2[-1] and (self.batteries[house2[-2]]['capacity'] + house2[-1]) >= house1[-1]:
                 gain = (house1[house1[-2]] + house2[house2[-2]]) - (house1[house2[-2]] + house2[house1[-2]])
-                # temperature = 10000 * (20/10000) ** (self.iterations / self.maxiterations)
-                temperature = 80000 - self.iterations * (80000/20) /self.maxiterations
-                # sigfactor = self.maxiterations/(3000)
-                # temperature = 20 + ((8000 -20) / (1 + math.exp(0.3 * ((self.iterations - self.maxiterations/2)/sigfactor))))
+
+                # Various heating schemes
+                if heatscheme == "linear":
+                    temperature = 10000 * (20/10000) ** (self.iterations / self.maxiterations)
+                elif heatscheme == "exponential":
+                    temperature = 80000 - self.iterations * (80000/20) /self.maxiterations
+                else:
+                    sigfactor = self.maxiterations/(3000)
+                    temperature = 20 + ((8000 -20) / (1 + math.exp(0.3 * ((self.iterations - self.maxiterations/2)/sigfactor))))
 
                 chance = math.e ** (gain/temperature)
                 if chance > random.random():

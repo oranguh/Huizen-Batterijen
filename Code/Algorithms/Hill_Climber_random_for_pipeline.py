@@ -14,67 +14,16 @@ from solution_reader_new_format import solution_reader
 from read_data import read_data
 from smart_grid import SmartGrid, SmartHouse, SmartBattery
 
-
-def main():
-
-    # Paths to the houses and batteries compositions
-    house_path = '../../Data/wijk1_huizen.csv'
-    # battery_path = '../../Data/wijk1_batterijen.txt'
-    # battery_path = '../../Results/Battery_configurations/SCORE:4486_SIGMA:10.csv'
-    battery_path = '../../Results/Battery_configurations/1137_nice_sigma10.csv'
-
-    # Gets the houses and batteries
-    houses, batteries = read_data(house_path, battery_path)
-
-    # Creates and fills the smartgrid so that we can use the functionality
-    wijk = SmartGrid(51,51)
-    wijk.add_house_dictionaries(houses)
-    wijk.add_battery_dictionaries(batteries)
-
-    for element in houses:
-        wijk.create_house(element['position'], element['output'])
-    for element in batteries:
-        wijk.create_battery(element['position'], element['capacity'])
-
-
-    count = 0
-    best_score = 1000000000
-
-    # runs the Hillclimber a 100 times
-    while count < 100:
-        count += 1
-
-        # Gets the start position from a certain result
-        solution_reader(wijk_brabo, "../../Results/best_brabo_solution_1337.json")
-
-        # Initializes the hillclimber
-        hillclimberke = Hillclimber(wijk.house_dict_with_manhattan_distances, wijk_brabo.batteries)
-
-        # Creates a list of the combs to be able to call shuffle
-        combs = []
-        comb = combinations(range(150), 2)
-        for i in comb:
-            combs.append(i)
-
-        # Keeps hillclimbing untill no better option is found (ploep = false)
-        ploep = True
-        while ploep:
-            ploep = hillclimberke.run(combs)
-
-        # If no hillclimber is in optimum, check if best score, if so print it.
-        if hillclimberke.calc_cost() < best_score:
-            with open("../../Results/best_hc_1337.json", 'w') as jsonfile:
-                json.dump({"META": {"DATA": hillclimberke.houses, "BATTERIES": hillclimberke.batteries}}, jsonfile)
-            with open("../../Results/best_hc_1337.csv1", "w") as f:
-                writer = csv.writer(f)
-                writer.writerow(["score", "configuration"])
-                writer.writerow([hillclimberke.calc_cost(), {"DATA": hillclimberke.houses}])
-
-    print(best_score)
-
-
 # Class in which a hillclimber is initialized with some functions to run, check and calculate costs
 class Hillclimber:
+    """
+    Hillclimber object takes as input batteries dictionary and houses dictionary (new format)
+
+    has method calc_cost(self) which returns the cost of the configurations
+
+    If you want to have the best configuration you can use the Hillclimber.houses property
+
+    """
 
     def __init__(self, houses, batteries):
         self.houses = houses
@@ -131,7 +80,3 @@ class Hillclimber:
         for house in self.houses:
             total_cost += house[house[-2]]
         return total_cost
-
-
-if __name__ == "__main__":
-    main()
