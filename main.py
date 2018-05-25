@@ -38,14 +38,14 @@ def main():
     wijk_number = 1
     iteration_count = 10
 
-    wijk_number = input("please give wijk number: ")
-    if not int(wijk_number) in [1,2,3]:
+    wijk_number = int(input("please give wijk number: "))
+    if not wijk_number in [1,2,3]:
         wijk_number = 1
         print("invalid input, using default wijk 1")
 
-    iteration_count = input("please give iteration count: ")
+    iteration_count = int(input("please give iteration count: "))
 
-    if int(iteration_count) not in list(range(1,20)):
+    if iteration_count not in list(range(1,20)):
         iteration_count = 10
         print("invalid/unreasonable input using 10")
     # load file containing all 26 battery compositions
@@ -69,23 +69,24 @@ def main():
     # picks the best 4 configurations to loop through
     best_4_bat_configs = sorted(parsed_data["ALL_CONFIGURATIONS"], key=itemgetter('heatmap_score'))[0:4]
     for i, comp in enumerate(best_4_bat_configs):
-        print("Battery composition: {}/{} \nBattery count: {}".format(i+1, len(best_4_bat_configs), len(comp["batteries"])))
+        print("\nBattery composition: {}/{} \nBattery count: {}".format(i+1, len(best_4_bat_configs), len(comp["batteries"])))
         compcost = comp['cost']
         houses = create_house_dict(wijk_number)
         compwijk = create_smart_grid(houses, comp)
-        for _ in range(10):
+        for _ in range(iteration_count):
             compwijk.grid = random_solve(compwijk)
             if compwijk.grid is False:
                 print("Skipping due to random taking too long")
                 continue
-            for _ in range(10):
+            for _ in range(iteration_count):
                 compwijk.house_dict_with_manhattan_distances()
                 hillclimber = Hillclimber(compwijk.house_data, compwijk.battery_dict)
                 while hillclimber.run():
                     pass
-                for _ in range(10):
+                for _ in range(iteration_count):
                     siman = Simulated_annealing(hillclimber.houses, hillclimber.batteries, hillclimber.combs)
                     siman.run()
+                    print("simulated annealing score: {}".format(siman.calc_cost() + compcost))
                     if (siman.calc_cost() + compcost) < best_score:
                         print("NEW ALLTIME HIGHSCORE: {}".format(siman.calc_cost() + compcost))
                         best_score = siman.calc_cost() + compcost

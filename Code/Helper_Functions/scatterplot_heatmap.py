@@ -19,6 +19,13 @@ from Hill_Climber_random_for_pipeline import Hillclimber
 from siman_for_pipeline import Simulated_annealing
 
 def main():
+    """
+        Creates a scatterplot of the heatmap. Creates 2 subplots, one comparing
+        the heatmaps_scores with grid_scores from simulated annealing
+        the other comparing grid_lowerbounds with grid_scores from simulated annealing
+
+
+    """
     house_path = '../../Data/wijk1_huizen.csv'
     battery_path = '../../Data/wijk1_batterijen.txt'
     houses, unused = read_data(house_path, battery_path)
@@ -114,7 +121,6 @@ def main():
     #     json.dump(parsed_data, f)
 
 
-    # print(parsed_data)
 
 if __name__ == "__main__":
     main()

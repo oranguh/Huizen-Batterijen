@@ -1,11 +1,24 @@
 # from ..Helper_Functions.smart_grid import *
 import random
 import numpy as np
+import copy
+def random_solve(the_grid, limit = 10):
+    """
+        randomly tries to generate a VALID solution to the grid
+        This can take a very long time depending on the amount of batteries there are
 
-def random_solve(the_grid, a_limit = 10):
-    """    """
+        Typically for 5 batteries, one in every 100 random solutions will be
+        valid. However, when you have more batteries, the chance to get
+        a random valid solution decreases greatly
 
-    print("\n\n\n")
+        If random_solve takes too long to find a solution, false is returned
+
+        Otherwise the best solution
+
+
+    """
+
+    print("\n\n")
     print("You are now using random_solve!")
     # cap_limit telling the iterator to stop when battery_cap below this value
     houses = the_grid.house_dict
@@ -15,9 +28,8 @@ def random_solve(the_grid, a_limit = 10):
     # count to keep looping through batteries, keep count to keep track of number of failures
     bat_pos = [dic['position'] for dic in the_grid.battery_dict]
     best_list = []
-    best_score = 80000
+    best_score = 999999999
     # the_grid.grid = np.empty((51, 51), dtype="object")
-    limit = a_limit
     i = 0
     infinite_loop_counter = 0
     while i < limit:
@@ -44,7 +56,10 @@ def random_solve(the_grid, a_limit = 10):
                 infinite_loop_counter += 1
                 if infinite_loop_counter > 1000000:
                     print("maximum reached inner")
-                    return False
+                    if i == 0:
+                        return False
+                    else:
+                        return best_grid
                 if count is n_bat:
                     count = 0
                 if keepcount is n_bat:
@@ -59,18 +74,18 @@ def random_solve(the_grid, a_limit = 10):
             if score < best_score:
                 best_score = score
                 best_list = house_pos
+                best_grid = copy.deepcopy(the_grid.grid)
         else:
             infinite_loop_counter += 1
             if infinite_loop_counter > 100000:
                 print("maximum reached outer")
-
                 if i == 0:
                     return False
                 else:
-                    return the_grid.grid
+                    return best_grid
 
     # print(best_score)
-    return the_grid.grid
+    return best_grid
 
 
 

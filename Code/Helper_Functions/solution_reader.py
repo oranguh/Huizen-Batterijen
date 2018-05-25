@@ -33,6 +33,10 @@ def main():
 def solution_reader(smart_wijk, results_path = 'Results/best_brabo_solution.csv'):
     """
     Reads the solution from a file
+
+        reads a solution from a csv
+
+    DEPRECATED DO NOT USE
     """
     with open(results_path, 'r') as f:
         best_reader = csv.reader(f)

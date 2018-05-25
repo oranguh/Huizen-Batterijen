@@ -12,7 +12,9 @@ from smart_grid import *
 
 
 def main():
-    """ fixed, you can now use this as both a function and as script"""
+    """ fixed, you can now use this as both a function and as script
+
+    """
 
     house_path = '../../Data/wijk1_huizen.csv'
     battery_path = '../../Data/wijk1_batterijen.txt'
@@ -33,25 +35,25 @@ def main():
 def solution_reader(smart_wijk, results_path = "../../Results/best_brabo_solution.json"):
     """
     Reads the solution from a file
+        The new format is a numpy matrix. Each column corresponds to a house.
+        Each column is a list of length n + 2. With n being the amount of batteries
+        The last element of the list is the output of the house
+        the second to last element of the list is the current connection between
+        the house and the battery
+
+        The files are stored as json
+
     """
-    # with open(results_path, 'r') as f:
-        # best_reader = csv.reader(f)
-        # for i, row in enumerate(best_reader):
-    # print(results_path)
+
     with open(results_path) as f:
         parsed_data = json.load(f)
-    # print(parsed_data)
 
     best_houses = parsed_data['META']['DATA']
     batteries = parsed_data['META']['BATTERIES']
-    # print(best_houses)
 
     smart_wijk.house_dict_with_manhattan_distances = best_houses
     smart_wijk.batteries = batteries
 
-    # smart_wijk.prettify()
-    # print(smart_wijk.calc_cost())
-    # smart_wijk.cap_left()
 
 if __name__ == "__main__":
     main()

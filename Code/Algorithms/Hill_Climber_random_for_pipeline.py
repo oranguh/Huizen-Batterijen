@@ -12,7 +12,7 @@ sys.path.append('../../Results')
 
 from solution_reader_new_format import solution_reader
 from read_data import read_data
-from smart_grid import *
+from smart_grid import SmartGrid, SmartHouse, SmartBattery
 
 
 def main():
@@ -105,8 +105,7 @@ class Hillclimber:
                 self.swaps += 1
                 return True
 
-        print("best found, number of swaps: ")
-        print(self.swaps)
+        print("hillclimber finished, number of swaps: {}".format(self.swaps))
 
         # Returns false only if all combinations have been checked and no steps could be made
         return False

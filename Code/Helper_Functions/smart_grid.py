@@ -11,15 +11,8 @@ from termcolor import cprint
 
 class SmartGrid:
     """
-        things to add?
-        .buckets oplossing
-        .calcost + validity --> +optie loggen
-        .visualisatie:kleuren/nummers + x-as
-        .check_validity()
-        .visualize_wires()?
-        .disconect --> update dict!!!!
-        .hillclimb
-        .move --> batterijkes (let op de dict!)
+        SmartGrid object
+        Is used a lot 
     """
     def __init__(self, range_x, range_y):
         """ user inputs ranges to define the matrix dimenions """
@@ -32,11 +25,12 @@ class SmartGrid:
         self.battery_count = 0
 
     def __str__(self):
-        """ print the grid with objects and its not pretty"""
+        """ print the grid with objects and its not pretty
+            use prettify() for pretty data
+
+        """
         return str(self.grid)
 
-    def __repr__(self):
-        """ prints something ??? """
 
     def add_house_dictionaries(self, house_dict):
         """ Adds the whole dictionary for easy access in other functions
@@ -157,6 +151,7 @@ class SmartGrid:
         """ Solves the grid using an algorithm, default is simple
             solve takes in the whole SmartGrid object and returns a 'solved' grid
 
+            METHOD DEPRECATED DO NOT USE!
         """
 
         if algorithm is 'simple':

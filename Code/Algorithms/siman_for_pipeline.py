@@ -13,7 +13,7 @@ sys.path.append('../../Results')
 
 from solution_reader_new_format import solution_reader
 from read_data import read_data
-from smart_grid import *
+from smart_grid import SmartGrid, SmartHouse, SmartBattery
 
 
 def main():
@@ -57,7 +57,7 @@ def main():
         while siman.iterations < siman.maxiterations:
             siman.run(random.choice(combs))
 
-        print(siman.calc_cost())
+        print("Simulated annealing cost: {}".format(siman.calc_cost()))
         # print(siman.calc_cost())
         # If better score is found, save it
         # if best_score > siman.calc_cost():
@@ -69,7 +69,7 @@ def main():
         #         writer.writerow(["score", "configuration"])
         #         writer.writerow([siman.calc_cost(), {"DATA": siman.houses}])
 
-    print(best_score)
+    print("Simulated annealing cost: {}".format(best_score))
 
 
 # Class in which you can initialze a simulated annealing, run it and some extra functionality
@@ -101,8 +101,7 @@ class Simulated_annealing:
                 self.houses[i][-2] = self.houses[j][-2]
                 self.houses[j][-2] = temp
                 return True
-        print("gecalculeerde kosten:")
-        print(self.calc_cost())
+        print("gecalculeerde kosten: {}".format(self.calc_cost()))
         return False
 
 
@@ -125,7 +124,7 @@ class Simulated_annealing:
         total_cost = 0
         for house in self.houses:
             total_cost += house[house[-2]]
-
+        # print("simulated annealing cost: {}".format(total_cost))
         return total_cost
 
 
