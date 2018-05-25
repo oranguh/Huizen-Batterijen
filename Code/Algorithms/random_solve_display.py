@@ -8,7 +8,7 @@ sys.path.append('../../Code/Algorithms')
 sys.path.append('../../Code/Helper_Functions')
 sys.path.append('../../Results')
 from read_data import read_data
-from smart_grid import *
+from smart_grid import SmartGrid, SmartHouse, SmartBattery
 
 def main():
 

@@ -49,7 +49,10 @@ in tabellen en figuren zijn uitgebeeld.
 
 ### Test (Testing)
 
-TO DO (hoe instrueren we de gebruiker omtrent het gebruik van onze code?)
+Als je main.py runt worden alle belangrijke algoritmes doorlopen. Als input wordt
+gevraagd of je het voor wijk 1, 2, 3 wilt runnen en hoeveel iteraties.
+
+Om dit te runnen, voer het volgende in...
 
 ```
 python main.py
