@@ -9,10 +9,11 @@ Imerse-II 	900 	1350
 Imerse-III 	1800 	1800
 
 Note: all caps keep increasing by factor 2. Furthermore, the total output of the
-grid is 7500. If we divide 7500 by 450 we get 16.66. Therefore, we always require
-17 of the smallest battery.
+grid is 7500. If we divide 7500 by 450 we get 16.66. Therefore, we would for example
+require 17 of the smallest battery.
 
-In other words, we will ALWAYS use at least 1 small battery.
+Furthermore, we will ALWAYS use at least 1 small battery since 17 is not divisible
+by 4 or 2.
 
 Say we define powerstart to be of value 1, Imerse-II to be of value 2, Imerse-III
 to be of value 4. We redefine the problem as follows:
@@ -45,7 +46,7 @@ def main():
             part_sets_copy.remove(part_set)
     part_sets_copy = list(part_sets_copy)
     for setsies in part_sets_copy:
-        dict_of_set = {"batteries": [],"bat_positions":[], "cost": 0, "score": 0}
+        dict_of_set = {"batteries": [],"bat_positions":[], "cost": 0, "score": 0, "manhattan_houses": []}
         for battery in list(setsies):
             if battery == 4:
                 dict_of_set["batteries"].append(1800)

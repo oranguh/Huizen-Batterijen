@@ -62,16 +62,25 @@ def main():
             if i is 1:
                 best_score = int(row[0])
     # Determines the heatmap scores for the 26 battery
-    for i, comp in enumerate(parsed_data["ALL_CONFIGURATIONS"]):
-            houses = create_house_dict(wijk_number)
-            comp = battery_placer(houses, comp)
-            parsed_data["ALL_CONFIGURATIONS"][i]['heatmap_score'] = comp['heatmap_score']
-    # picks the best 4 configurations to loop through
-    best_4_bat_configs = sorted(parsed_data["ALL_CONFIGURATIONS"], key=itemgetter('heatmap_score'))[0:4]
+    # for i, comp in enumerate(parsed_data["ALL_CONFIGURATIONS"]):
+    #         print("finding optimal location for battery composition: {}/{}".format(i, len(parsed_data["ALL_CONFIGURATIONS"])))
+    #         houses = create_house_dict(wijk_number)
+    #         comp = battery_placer(houses, comp)
+    #         parsed_data["ALL_CONFIGURATIONS"][i]["bat_positions"] = comp['bat_positions']
+    #         parsed_data["ALL_CONFIGURATIONS"][i]['heatmap_score'] = comp['heatmap_score']
+    # # picks the best 4 configurations to loop through
+    # best_4_bat_configs = sorted(parsed_data["ALL_CONFIGURATIONS"], key=itemgetter('heatmap_score'))[0:4]
+
+    # heatmap score not working that well atm, so we used the lowerbound
+    best_4_bat_configs = sorted(parsed_data["ALL_CONFIGURATIONS"], key=itemgetter('score'))[0:4]
     for i, comp in enumerate(best_4_bat_configs):
         print("\nBattery composition: {}/{} \nBattery count: {}".format(i+1, len(best_4_bat_configs), len(comp["batteries"])))
         compcost = comp['cost']
         houses = create_house_dict(wijk_number)
+        print("Finding optimal position...")
+        comp = battery_placer(houses, comp)
+        parsed_data["ALL_CONFIGURATIONS"][i]["bat_positions"] = comp['bat_positions']
+        parsed_data["ALL_CONFIGURATIONS"][i]['heatmap_score'] = comp['heatmap_score']
         compwijk = create_smart_grid(houses, comp)
         for _ in range(iteration_count):
             compwijk.grid = random_solve(compwijk)
@@ -90,8 +99,9 @@ def main():
                     if (siman.calc_cost() + compcost) < best_score:
                         print("NEW ALLTIME HIGHSCORE: {}".format(siman.calc_cost() + compcost))
                         best_score = siman.calc_cost() + compcost
+                        # parsed_data["ALL_CONFIGURATIONS"][i]["manhattan_houses"] = siman.houses
                         with open(best_score_path_json, 'w') as jsonfile:
-                            json.dump({"META": {"DATA": siman.houses, "BATTERIES": siman.batteries}}, jsonfile)
+                            json.dump(comp, jsonfile)
                         with open(best_score_path, "w") as f:
                             writer = csv.writer(f)
                             writer.writerow(["score", "configuration"])

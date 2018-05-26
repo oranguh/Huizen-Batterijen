@@ -3,6 +3,7 @@ import sys
 import numpy as np
 import colorama
 from termcolor import cprint
+import json
 import matplotlib.pyplot as plt
 
 sys.path.append('Code/Helper_Functions')
@@ -12,7 +13,7 @@ sys.path.append('Results/')
 
 from smart_grid import SmartGrid
 from read_data import read_data
-from heat_map import heat_map
+from heat_map import visuale_2d, visuale_3d
 from solution_reader import solution_reader
 from battery_placer import battery_placer
 
@@ -83,10 +84,20 @@ def main():
     # plt.show()
     # wijk1.get_lower_bound()
     # print("Lower bound of grid is: {}".format(wijk1.lower_bound))
-    battery_placer(wijk1, 2)
+
+    bat_comp_path = "Results/battery_compositions.json"
+    with open(bat_comp_path, "r") as f:
+        parsed_data = json.load(f)
+    battery_configuration = parsed_data["ALL_CONFIGURATIONS"][3]
+    print(battery_configuration)
+
+    battery_configuration, matrices_for_vis = battery_placer(wijk1, battery_configuration)
+    print(battery_configuration)
+    visuale_2d(matrices_for_vis[0], matrices_for_vis[1], matrices_for_vis[2], matrices_for_vis[3],)
+
     # print(x)
-    battery_path = 'Results/Battery_configurations/test.csv'
-    # battery_path = 'Results/Battery_configurations/BESTSCORE_SIGMA_2.csv'
+    # battery_path = 'Results/Battery_configurations/test.csv'
+    battery_path = 'Results/Battery_configurations/BESTSCORE_SIGMA_relative.csv'
     # battery_path = 'Results/Battery_configurations/lucas_1137_nice_sigma10.csv'
     # battery_path = 'Results/Battery_configurations/leuknaampjes.csv'
     houses, batteries = read_data(house_path, battery_path)
@@ -95,7 +106,7 @@ def main():
 
     wijk1.add_battery_dictionaries(batteries)
     wijk1.house_dict_with_manhattan_distances()
-    heat_map(wijk1)
+    # heat_map(wijk1)
     wijk1.prettify()
     print(len(wijk1.house_data))
 

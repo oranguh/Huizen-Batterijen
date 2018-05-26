@@ -40,9 +40,9 @@ def battery_placer(house_dict, bat_comp, counter_limit = 10, inner_counter_limit
     numb_battery = len(bat_comp['batteries'])
     battery_capacity = bat_comp['batteries']
     best_heat = 99999
-    counter_limit = 10
+    counter_limit = 100
     inner_counter_limit = 100
-    SIGMA = 51/numb_battery
+    SIGMA = 10
 
     heatmatrix_house = np.zeros([51,51])
     house_cords = []
@@ -55,22 +55,22 @@ def battery_placer(house_dict, bat_comp, counter_limit = 10, inner_counter_limit
     guass_heatmatrix_house = gaussian_filter(heatmatrix_house, sigma=SIGMA)
 
     # best_config = [[12,12], [25,25], [12,37], [37,12], [37,37]]
-    best_config = [[random.randint(0, 50),random.randint(0, 50)] for j in range(numb_battery)]
-    new_config = best_config
+    new_config = [[random.randint(0, 50),random.randint(0, 50)] for j in range(numb_battery)]
     heatmatrix_battery = np.zeros([51,51])
 
-    for i, position in enumerate(best_config):
-        heatmatrix_battery[position[0], position[1]] = battery_capacity[i]
+    guass_heatmatrix_battery = heatmatrix_batteries(new_config, battery_capacity)
 
-    guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA, mode = 'constant')
     heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
     best_heat = np.sum(np.absolute(heatmatrix_difference))
     counter = 0
     inner_counter = 0
     duplicate = True
-    while counter < counter_limit and duplicate:
+    while counter < counter_limit or duplicate:
         if inner_counter > inner_counter_limit:
-            new_config = Battery_climber(best_config, house_cords)
+            if duplicate:
+                new_config = Battery_climber(new_config, house_cords)
+            else:
+                new_config = Battery_climber(best_config, house_cords)
             inner_counter = 0
             counter += 1
         else:
@@ -78,30 +78,36 @@ def battery_placer(house_dict, bat_comp, counter_limit = 10, inner_counter_limit
             new_config = Battery_climber(new_config, house_cords)
             inner_counter += 1
         # print(new_config)
-        heatmatrix_battery = np.zeros([51,51])
-        for i, position in enumerate(new_config):
-            heatmatrix_battery[position[0], position[1]] = battery_capacity[i]
+        guass_heatmatrix_battery = heatmatrix_batteries(new_config, battery_capacity)
 
-        guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA, mode = 'constant')
         # print(np.sum(guass_heatmatrix_battery) , np.sum(guass_heatmatrix_house))
         heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
         score_battery_position = np.sum(np.absolute(heatmatrix_difference))
         if score_battery_position < best_heat:
-            if check_overlap(best_config, house_cords) or check_unique(best_config):
+            if check_overlap(new_config, house_dict):
                 # print("Overlap!")
                 # print(check_overlap(best_config, house_cords))
                 continue
+            elif check_unique(new_config):
+                # print("nounique")
+                continue
             else:
+                # print(check_unique(new_config), check_overlap(new_config, house_dict))
+                # print("not overlap")
                 duplicate = False
                 # print("no overlaps!")
                 counter = 0
                 best_heat = score_battery_position
-                best_config = new_config
-                # print(best_config)
-                # print(best_heat)
+                best_config = copy.deepcopy(new_config)
 
-    bat_comp['bat_positions'] = best_config
-    bat_comp['heatmap_score'] = best_heat
+                bat_comp['bat_positions'] = copy.deepcopy(best_config)
+                bat_comp['heatmap_score'] = best_heat
+
+    # for i in best_config:
+    #     for j in house_dict:
+    #         if i == j["position"]:
+    #             print(i, j["position"])
+    # print(duplicate)
     return(bat_comp)
 
 def Battery_climber(config, house_cords):
@@ -132,17 +138,50 @@ def check_unique(listed):
     for i in listed:
         if i in checked:
             # print(listed)
-            return i
+            return True
         checked.append(i)
     return None
 
-def check_overlap(listed, house_cords):
-    overlaps = []
+def check_overlap(listed, house_dict):
     for i in listed:
-        if i in house_cords:
-            # print(listed)
-            overlaps.append(i)
-    if overlaps:
-        return i
+        for j in house_dict:
+            if i == j["position"]:
+                return True
     else:
         return None
+
+def heatmatrix_batteries(new_config, battery_capacity):
+
+    heatmatrix_battery = np.zeros([51,51])
+    heatmatrix_battery_450 = np.zeros([51,51])
+    heatmatrix_battery_900 = np.zeros([51,51])
+    heatmatrix_battery_1800 = np.zeros([51,51])
+    for i, position in enumerate(new_config):
+        if battery_capacity[i] == 450:
+            default = False
+            heatmatrix_battery_450[position[0], position[1]] = battery_capacity[i]
+        elif battery_capacity[i] == 900:
+            default = False
+            heatmatrix_battery_900[position[0], position[1]] = battery_capacity[i]
+        elif battery_capacity[i] == 1800:
+            default = False
+            heatmatrix_battery_1800[position[0], position[1]] = battery_capacity[i]
+        elif battery_capacity[i] > 1500 and battery_capacity[i] < 1510:
+            default = True
+            heatmatrix_battery[position[0], position[1]] = battery_capacity[i]
+        else:
+            print("unknown battery type")
+            return False
+        heatmatrix_battery[position[0], position[1]] = battery_capacity[i]
+
+    if default:
+        guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=10, mode = 'constant')
+        return(guass_heatmatrix_battery)
+    else:
+        guass_heatmatrix_battery_450 = gaussian_filter(heatmatrix_battery_450, sigma=3, mode = 'constant')
+        guass_heatmatrix_battery_900 = gaussian_filter(heatmatrix_battery_900, sigma=6, mode = 'constant')
+        guass_heatmatrix_battery_1800 = gaussian_filter(heatmatrix_battery_1800, sigma=12, mode = 'constant')
+        guass_heatmatrix_battery = np.add(guass_heatmatrix_battery_450,guass_heatmatrix_battery_900,guass_heatmatrix_battery_1800)
+        # print(guass_heatmatrix_battery)
+        # return(False)
+        return(guass_heatmatrix_battery)

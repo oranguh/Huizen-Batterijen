@@ -18,7 +18,7 @@ def heat_map(the_grid):
     # determining sigma is important. A quick a dirty value is dimensions/batteries
     # 51/5 = 10
     SIGMA = 10
-    style.use('classic')
+
 
 
     heatmatrix_house = np.zeros(the_grid.size)
@@ -36,6 +36,12 @@ def heat_map(the_grid):
     guass_heatmatrix_battery = gaussian_filter(heatmatrix_battery, sigma=SIGMA, mode = 'constant')
     heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
 
+    visuale_2d(heatmatrix_battery, guass_heatmatrix_battery, heatmatrix_house, guass_heatmatrix_house)
+
+def visuale_2d(heatmatrix_battery, guass_heatmatrix_battery, heatmatrix_house, guass_heatmatrix_house):
+
+    heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
+    style.use('classic')
     # The sub plot part
     largest_val = np.max([np.max(guass_heatmatrix_battery), np.max(guass_heatmatrix_house)])
 
@@ -60,41 +66,43 @@ def heat_map(the_grid):
     print("The penalty score for this battery configuration is: {}".format(score_battery_position))
 
     # 3-D subplots
-    if False:
-        fig = plt.figure(figsize=plt.figaspect(0.5))
-        ax = fig.add_subplot(2, 2, 1, projection='3d')
-        plt.title("Houses gaussian smoothed")
+def visuale_3d(heatmatrix_battery, guass_heatmatrix_battery, heatmatrix_house, guass_heatmatrix_house):
 
-        X = np.arange(0, 51, 1)
-        Y = np.arange(0, 51, 1)
-        X, Y = np.meshgrid(X, Y)
+    heatmatrix_difference = np.subtract(guass_heatmatrix_house,guass_heatmatrix_battery)
+    fig = plt.figure(figsize=plt.figaspect(0.5))
+    ax = fig.add_subplot(2, 2, 1, projection='3d')
+    plt.title("Houses gaussian smoothed")
 
-        Z = guass_heatmatrix_house
-        surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, vmin= largest_val*-1, vmax= largest_val,
-                               cmap=cmap, linewidth=0, antialiased=False)
-        ax.set_zlim(largest_val*-1, largest_val)
-        ax.view_init(30, 180)
+    X = np.arange(0, 51, 1)
+    Y = np.arange(0, 51, 1)
+    X, Y = np.meshgrid(X, Y)
 
-        ax = fig.add_subplot(2, 2, 2, projection='3d')
-        plt.title("Batteries gaussian smoothed")
+    Z = guass_heatmatrix_house
+    surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, vmin= largest_val*-1, vmax= largest_val,
+                           cmap=cmap, linewidth=0, antialiased=False)
+    ax.set_zlim(largest_val*-1, largest_val)
+    ax.view_init(30, 180)
 
-        Z = guass_heatmatrix_battery*-1
-        ax.plot_surface(X, Y, Z, rstride=1, cstride=1, vmin= largest_val*-1, vmax= largest_val,
-                               cmap=cmap, linewidth=0, antialiased=False)
-        ax.set_zlim(largest_val*-1, largest_val)
-        ax.view_init(30, 180)
+    ax = fig.add_subplot(2, 2, 2, projection='3d')
+    plt.title("Batteries gaussian smoothed")
 
-        ax = fig.add_subplot(2, 2, 3, projection='3d')
-        plt.title("Difference between houses and batteries")
+    Z = guass_heatmatrix_battery*-1
+    ax.plot_surface(X, Y, Z, rstride=1, cstride=1, vmin= largest_val*-1, vmax= largest_val,
+                           cmap=cmap, linewidth=0, antialiased=False)
+    ax.set_zlim(largest_val*-1, largest_val)
+    ax.view_init(30, 180)
 
-        Z = heatmatrix_difference
-        ax.plot_surface(X, Y, Z, rstride=1, cstride=1, vmin= largest_val*-1, vmax= largest_val,
-                               cmap=cmap, linewidth=0, antialiased=False)
-        ax.set_zlim(largest_val*-1, largest_val)
-        ax.view_init(30, 180)
+    ax = fig.add_subplot(2, 2, 3, projection='3d')
+    plt.title("Difference between houses and batteries")
+
+    Z = heatmatrix_difference
+    ax.plot_surface(X, Y, Z, rstride=1, cstride=1, vmin= largest_val*-1, vmax= largest_val,
+                           cmap=cmap, linewidth=0, antialiased=False)
+    ax.set_zlim(largest_val*-1, largest_val)
+    ax.view_init(30, 180)
 
 
 
-        fig.colorbar(surf, aspect=10)
-        plt.tight_layout()
-        plt.show()
+    fig.colorbar(surf, aspect=10)
+    plt.tight_layout()
+    plt.show()
