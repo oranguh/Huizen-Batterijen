@@ -30,8 +30,9 @@ def main():
     battery_path = '../../Data/wijk1_batterijen.txt'
     houses, unused = read_data(house_path, battery_path)
     # print(unused)
+    best_score = 999999
 
-    with open("../../Results/Battery_configurations/scatterplotdata_sigma4.json") as f:
+    with open("../../Results/Battery_configurations/scatterplotdata_sigma_relative.json") as f:
         parsed_data = json.load(f)
 
     for i, batter_positions in enumerate(parsed_data['DATAMETA']['DATA']):
@@ -47,31 +48,36 @@ def main():
         # pretty sure some houses and batteries overlap each other @.@ so much to do
         scatterwijk.add_house_dictionaries(houses)
         scatterwijk.add_battery_dictionaries(batteries)
-        for ughwhy in [x['position'] for x in scatterwijk.battery_dict]:
-            if ughwhy in [x['position'] for x in scatterwijk.house_dict]:
-                print("OEVERLAP")
-                print(ughwhy)
-        # print([x['position'] for x in scatterwijk.house_dict])
-        # print([x['position'] for x in scatterwijk.battery_dict])
+
         scatterwijk.house_dict_with_manhattan_distances()
         # print(scatterwijk.house_data)
         scatterwijk.get_lower_bound()
         # print(type(scatterwijk.lower_bound))
         parsed_data['DATAMETA']['DATA'][i]['lowerbound'] = scatterwijk.lower_bound
 
-        scatterwijk.grid = random_solve(scatterwijk)
-        scatterwijk.house_dict_with_manhattan_distances()
-        hillclimber = Hillclimber(scatterwijk.house_data, scatterwijk.battery_dict)
-        while hillclimber.run():
-            pass
-        siman = Simulated_annealing(hillclimber.houses, hillclimber.batteries, hillclimber.combs)
-        siman.run()
-        # scatterwijk.prettify()
-        total_cost = scatterwijk.calc_cost()
-        print("Simulated Annealing: {}".format(siman.calc_cost()))
+        for _ in range(10):
+            scatterwijk.grid = random_solve(scatterwijk)
+            if scatterwijk.grid is False:
+                print("Skipping due to random taking too long")
+                continue
+            for _ in range(2):
+                scatterwijk.house_dict_with_manhattan_distances()
+                hillclimber = Hillclimber(scatterwijk.house_data, scatterwijk.battery_dict)
+                while hillclimber.run():
+                    pass
+                for _ in range(1):
+                    siman = Simulated_annealing(hillclimber.houses, hillclimber.batteries, hillclimber.combs)
+                    siman.run()
+                    print("Simulated Annealing: {}".format(siman.calc_cost()))
+                    if (siman.calc_cost()) < best_score:
+                        best_score = siman.calc_cost()
+        # # scatterwijk.prettify()
+        # total_cost = scatterwijk.calc_cost()
+        # print("Simulated Annealing: {}".format(siman.calc_cost()))
+        print("Best score: {}".format(best_score))
         # print("price of wijk random{}".format(total_cost))
         # DO SIMANNEALING HERE
-        parsed_data['DATAMETA']['DATA'][i]['siman_gridscore'] = siman.calc_cost()
+        parsed_data['DATAMETA']['DATA'][i]['siman_gridscore'] = best_score
 
     heat = []
     lower = []
@@ -79,7 +85,7 @@ def main():
     for datapoint in parsed_data['DATAMETA']['DATA']:
         heat.append(int(datapoint['heatscore']))
         lower.append(int(datapoint['lowerbound']))
-        simanscore.append(int(datapoint['siman_gridscore']) + 25000)
+        simanscore.append(int(datapoint['siman_gridscore']) + parsed_data['DATAMETA']['battery_price'])
 
     slope, intercept, r_value, p_value, std_err = stats.linregress(heat, simanscore)
     print(slope, intercept, r_value, p_value, std_err)

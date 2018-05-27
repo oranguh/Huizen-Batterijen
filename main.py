@@ -37,6 +37,7 @@ def main():
 
     wijk_number = 1
     iteration_count = 10
+    best_score = 9999999
 
     wijk_number = int(input("please give wijk number: "))
     if not wijk_number in [1,2,3]:

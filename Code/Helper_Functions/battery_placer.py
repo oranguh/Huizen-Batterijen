@@ -67,7 +67,7 @@ def battery_placer(the_grid, bat_comp):
     counter = 0
     inner_counter = 0
     duplicate = True
-    while (counter < 10000 or duplicate):
+    while (counter < 1000 or duplicate):
         # print("hey")
         if inner_counter > 1000:
             new_config = Battery_climber(best_config, house_cords)
@@ -111,19 +111,19 @@ def battery_placer(the_grid, bat_comp):
                 with open(path, "w") as f:
                     writer = csv.writer(f,delimiter=':',quoting=csv.QUOTE_NONE)
                     writer.writerow(["pos		cap"])
-                    for batteris in best_config:
-                        bad_format = "[" + str(batteris[0]) + ", " + str(batteris[1]) + "]\t" + str(1507.0)
+                    for i, batteris in enumerate(best_config):
+                        bad_format = "[" + str(batteris[0]) + ", " + str(batteris[1]) + "]\t" + str(battery_capacity[i])
                         # print(bad_format)
                         writer.writerow([bad_format])
 
                 battery_dict_format = []
-                for perbattery in best_config:
-                    battery_dict_format.append({'position': perbattery, 'capacity': 1507.0})
+                for i, perbattery in enumerate(best_config):
+                    battery_dict_format.append({'position': perbattery, 'capacity': battery_capacity[i]})
 
                 # print(scatterplot_list)
                 scatterplot_list.append({"heatscore": best_heat, "battery_dict": copy.deepcopy(battery_dict_format), "lowerbound": 0, "siman_gridscore": 0})
     # print(scatterplot_list)
-    scatterplot_data = {"DATAMETA": {"DATA": scatterplot_list, "SIGMA": "relative", "R2": 0, "regression": 0}}
+    scatterplot_data = {"DATAMETA": {"DATA": scatterplot_list, "SIGMA": "relative", "R2": 0, "regression": 0, "battery_price": bat_comp['cost']}}
     path = "Results/Battery_configurations/" + "scatterplotdata_sigma_relative.json"
     with open(path, 'w') as jsonfile:
         json.dump(scatterplot_data, jsonfile)
