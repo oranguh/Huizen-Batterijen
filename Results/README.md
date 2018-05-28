@@ -9,6 +9,9 @@ getoond voor wijk 1 met de initiële plaatsing van de batterijen. Verder geeft
 stippellijn de lower bound aan. Deze is berekend door alle Manhattan-afstanden
 van de huizen tot hun dichtstbijzijnde batterij bij elkaar op te tellen.
 
+Verder is aan het aantal ongeldige oplossingen te zien de oplossingsdichtheid
+zeer laag is. Slechts 1% van de willekeurige oplossingen lijkt geldig te zijn. 
+
 ## Batterijen verplaatsen
 
 ![alt text](Figures/reposition_hillclimber.png)
