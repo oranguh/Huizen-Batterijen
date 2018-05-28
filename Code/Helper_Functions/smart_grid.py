@@ -12,7 +12,7 @@ from termcolor import cprint
 class SmartGrid:
     """
         SmartGrid object
-        Is used a lot 
+        Is used a lot
     """
     def __init__(self, range_x, range_y):
         """ user inputs ranges to define the matrix dimenions """
@@ -103,6 +103,7 @@ class SmartGrid:
                     continue
                 if isinstance(element, SmartBattery):
                     total_cost += element.price
+                    # print(element.price)
                     batteries += 1
                 if isinstance(element, SmartHouse):
                     houses += 1
@@ -254,7 +255,7 @@ class SmartGrid:
         self.lower_bound = 0
         for bat in self.battery_dict:
             # print(bat)
-            if (bat['capacity'] == 1507.0):
+            if (bat['capacity'] == 1507):
                 self.lower_bound += 5000
             elif (bat['capacity'] == 450):
                 self.lower_bound += 900
@@ -315,13 +316,13 @@ class SmartBattery:
         self.battery_id = battery_id
         self.capacity_left = self.capacity
 
-        if self.capacity is 450:
+        if self.capacity == 450:
             self.name = "Powerstar"
             self.price = 900
-        elif self.capacity is 900:
+        elif self.capacity == 900:
             self.name = "Imerse-II"
             self.price = 1350
-        elif self.capacity is 1800:
+        elif self.capacity == 1800:
             self.name = "Imerse-III"
             self.price = 1800
         else:

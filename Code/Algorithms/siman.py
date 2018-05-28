@@ -34,7 +34,7 @@ def main():
         which returns the cost
     """
 
-    heatscheme = "exponential"
+    heatscheme = "linear"
 
     # Sets paths to house and battery compositions
     house_path = '../../Data/wijk1_huizen.csv'
@@ -57,20 +57,19 @@ def main():
     best_score = 1000000000
 
     # Runs the simulated annealing 100 times
-    while count < 100:
+    while count < 1:
         count += 1
 
         # Gets the startposition from a certain result and intializes the simulated annealing
         # solution_reader(wijk_brabo, "../../Results/best_brabo_solution_marco.json")
-        solution_reader(wijk_brabo, "../../Results/best_brabo_solution_1337.json")
-        siman = Simulated_annealing(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries)
-
+        solution_reader(wijk_brabo, "../../Results/Do_not_write_in_this_map_results/best_brabo_solution_1337.json")
+        siman = Simulated_annealing(wijk_brabo.house_dict_with_manhattan_distances, wijk_brabo.batteries, heatscheme)
         # makes a list of all possible legal and illegal swaps
         combs = []
         comb = combinations(range(150), 2)
         for i in comb:
             combs.append(i)
-
+        # print(combs)
         # Runs the simulated annealing untill max iterations are reached
         while siman.iterations < siman.maxiterations:
             siman.run(random.choice(combs))
@@ -91,30 +90,30 @@ def main():
 # Class in which you can initialze a simulated annealing, run it and some extra functionality
 class Simulated_annealing:
 
-    def __init__(self, houses, batteries):
+    def __init__(self, houses, batteries, heatscheme):
         self.houses = houses
         self.batteries = batteries
         self.accepted = 0
         self.iterations = 0
         # 1 miljoen geeft ongeveer beste scores, niet handig voor testen
         self.maxiterations = 1000000
+        self.heatscheme = heatscheme
 
     # Starts the simulated annealing procces
     def run(self, combs):
-        while self.iterations < self.maxiterations:
-            self.iterations += 1
-            i = combs[0]
-            j = combs[1]
+        self.iterations += 1
+        i = combs[0]
+        j = combs[1]
 
-            if self.swap_check(self.houses[i], self.houses[j]):
+        if self.swap_check(self.houses[i], self.houses[j]):
 
-                # If swap was accepted, update battery capacity and the houses
-                self.batteries[self.houses[i][-2]]['capacity'] += (self.houses[i][-1] - self.houses[j][-1])
-                self.batteries[self.houses[j][-2]]['capacity'] += (self.houses[j][-1] - self.houses[i][-1])
-                temp = self.houses[i][-2]
-                self.houses[i][-2] = self.houses[j][-2]
-                self.houses[j][-2] = temp
-                return True
+            # If swap was accepted, update battery capacity and the houses
+            self.batteries[self.houses[i][-2]]['capacity'] += (self.houses[i][-1] - self.houses[j][-1])
+            self.batteries[self.houses[j][-2]]['capacity'] += (self.houses[j][-1] - self.houses[i][-1])
+            temp = self.houses[i][-2]
+            self.houses[i][-2] = self.houses[j][-2]
+            self.houses[j][-2] = temp
+            return True
         return False
 
 
@@ -122,12 +121,11 @@ class Simulated_annealing:
         if house1[-2] is not house2[-2]:
             if (self.batteries[house1[-2]]['capacity'] + house1[-1]) >= house2[-1] and (self.batteries[house2[-2]]['capacity'] + house2[-1]) >= house1[-1]:
                 gain = (house1[house1[-2]] + house2[house2[-2]]) - (house1[house2[-2]] + house2[house1[-2]])
-
                 # Various heating schemes
-                if heatscheme == "linear":
+                if self.heatscheme == "exponential":
                     temperature = 10000 * (20/10000) ** (self.iterations / self.maxiterations)
-                elif heatscheme == "exponential":
-                    temperature = 80000 - self.iterations * (80000/20) /self.maxiterations
+                elif self.heatscheme == "linear":
+                    temperature = 80000 - self.iterations * ((80000 - 20) / self.maxiterations)
                 else:
                     sigfactor = self.maxiterations/(3000)
                     temperature = 20 + ((8000 -20) / (1 + math.exp(0.3 * ((self.iterations - self.maxiterations/2)/sigfactor))))
