@@ -10,7 +10,7 @@ stippellijn de lower bound aan. Deze is berekend door alle Manhattan-afstanden
 van de huizen tot hun dichtstbijzijnde batterij bij elkaar op te tellen.
 
 Verder is aan het aantal ongeldige oplossingen te zien de oplossingsdichtheid
-zeer laag is. Slechts 1% van de willekeurige oplossingen is lijkt geldig te zijn. 
+zeer laag is. Slechts 1% van de willekeurige oplossingen lijkt geldig te zijn. 
 
 ## Batterijen verplaatsen
 
