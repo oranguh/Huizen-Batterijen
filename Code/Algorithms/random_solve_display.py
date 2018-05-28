@@ -21,6 +21,7 @@ def main():
     house_path = '../../Data/wijk1_huizen.csv'
     battery_path = '../../Data/wijk1_batterijen.txt'
     battery_path = '../../Results/Battery_configurations/lucas_1137_nice_sigma10.csv'
+    battery_path = '../../Results/Battery_configurations/BESTSCORE_SIGMA_relative.csv'
     houses, batteries = read_data(house_path, battery_path)
 
     wijk1 = SmartGrid(51,51)
@@ -49,7 +50,7 @@ def random_solve(the_grid):
     bat_pos = [dic['position'] for dic in the_grid.battery_dict]
     solutions_list = []
     # best_score = 80000
-    limit = 10000
+    limit = 100000
     invalids = 0
     i = 0
     while i < limit:
@@ -77,12 +78,16 @@ def random_solve(the_grid):
             # print(i)
             score = the_grid.calc_cost()
             solutions_list.append(score)
+            # the_grid.house_dict_with_manhattan_distances()
+            # the_grid.get_lower_bound()
+            # print(the_grid.lower_bound)
         else:
             invalids += 1
 
         house_path = '../../Data/wijk1_huizen.csv'
         battery_path = '../../Data/wijk1_batterijen.txt'
         battery_path = '../../Results/Battery_configurations/lucas_1137_nice_sigma10.csv'
+        battery_path = '../../Results/Battery_configurations/BESTSCORE_SIGMA_relative.csv'
 
         houses, batteries = read_data(house_path, battery_path)
 
@@ -93,7 +98,8 @@ def random_solve(the_grid):
         for element in houses:
             the_grid.create_house(element['position'], element['output'])
         for element in batteries:
-            the_grid.create_battery(element['position'], element['capacity'])
+            # print(element['capacity'])
+            the_grid.create_battery(element['position'], int(element['capacity']))
         # if score < best_score:
         #     best_score = score
         #     best_list = house_pos
@@ -107,7 +113,7 @@ def random_solve(the_grid):
     plt.xlabel('Grid Score')
     plt.ylabel('Count')
     plt.title(title_string)
-    plt.xlim(xmin = 30000)
+    # plt.xlim(xmin = 30000)
     plt.show()
     # return the_grid.grid
 
