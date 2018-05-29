@@ -78,3 +78,11 @@ dan een lineair cooling scheme. Verder zagen we terug dat sigmoïdaal over het
 algemeen iets lager uitkomt dan exponentieel.
 
 ## Beste resultaat met onze beste positionering
+
+![alt text](Figures/End_result_2.png)
+
+In de wijk waarin we nieuwe batterijen met behulp van een hill climber op zo goed
+mogelijk posities hebben geplaats hebben we simulated annealing gebruikt om zo
+goedkoop mogelijke verbindingen te leggen. Bovenstaand figuur toont de scoredistributie
+van de random solve, de lower bound (stippellijn) en de laagste score met simulated
+annealing (doorgetrokken lijn). 
