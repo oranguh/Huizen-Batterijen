@@ -50,7 +50,7 @@ def random_solve(the_grid):
     bat_pos = [dic['position'] for dic in the_grid.battery_dict]
     solutions_list = []
     # best_score = 80000
-    limit = 100000
+    limit = 10000
     invalids = 0
     i = 0
     while i < limit:

@@ -10,7 +10,7 @@ stippellijn de lower bound aan. Deze is berekend door alle Manhattan-afstanden
 van de huizen tot hun dichtstbijzijnde batterij bij elkaar op te tellen.
 
 Verder is aan het aantal ongeldige oplossingen te zien de oplossingsdichtheid
-zeer laag is. Slechts 1% van de willekeurige oplossingen lijkt geldig te zijn. 
+zeer laag is. Slechts 1% van de willekeurige oplossingen lijkt geldig te zijn.
 
 ## Batterijen verplaatsen
 
@@ -68,12 +68,13 @@ zoveel uit maakt hoeveel batterijen er geplaatst worden. Dit figuur heeft echter
 wel de lower bound op de y-as staan en niet een score van, bijvoorbeeld, simulated
 annealing.
 
-## Nog missende figuren
+## Vergelijking cooling schemes
 
-* De eindscores voor de beste (door ons gevonden) positionering van de nieuwe
-batterijen moeten getoond worden.
+![alt text](Figures/results_table_2.png)
 
-* We hebben voor simulated annealing 3 cooling schemes met elkaar vergeleken:
-lineair, exponentieel en sigmoïdaal. Het lijkt erop dat sigmoïdaal het beste werkt,
-daarna exponentieel en lineair het minst goed. Deze vergelijking moet nog in cijfers
-getoond worden.
+In bovenstaand tabel zijn de resultaten van drie cooling schemes van simulated
+annealing naast elkaar gelegd. Exponentieel en sigmoïdaal lijken beter te werken
+dan een lineair cooling scheme. Verder zagen we terug dat sigmoïdaal over het
+algemeen iets lager uitkomt dan exponentieel.
+
+## Beste resultaat met onze beste positionering
